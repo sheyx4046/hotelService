@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Start Page</title>
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+    <style>
+        header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            background-color: #333; /* Optional: Add a background color to the header */
+            color: #fff; /* Optional: Set text color to white */
+            padding: 10px; /* Optional: Add padding for spacing */
+        }
+
+        header a {
+            text-decoration: none;
+            color: inherit;
+            margin-left: 10px; /* Optional: Add margin between buttons */
+        }
+    </style>
+</head>
+<body>
+<header>
+    <a href="/auth/login">Login</a>
+    <a href="/auth/register">Register</a>
+</header>
+</body>
+</html>

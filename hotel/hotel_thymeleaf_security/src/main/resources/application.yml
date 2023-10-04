@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    username: postgres
+    password: 1999
+    url: jdbc:postgresql://localhost:5432/hotel
+    driver-class-name: org.postgresql.Driver
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: elmurodov1106@gmail.com
+    password: rehixeessiscctor
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    resources:
+      static-locations: classpath:/static/

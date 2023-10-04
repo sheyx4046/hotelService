@@ -1,6 +1,9 @@
 package uz.pdp.roomservice.controller;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.roomservice.domain.dto.RoomRequestDto;
@@ -33,7 +36,7 @@ public class RoomController {
     }
 
     @GetMapping("{id}/byActives")
-    public ResponseEntity<List<RoomEntity>> hotelActives(@PathVariable UUID hotelId, @RequestParam Boolean isActive, @PathVariable String id) {
+    public ResponseEntity<List<RoomEntity>> hotelActives(@PathVariable UUID hotelId, @RequestParam Boolean isActive) {
         return ResponseEntity.ok(roomService.getByActives(hotelId,isActive));
     }
 

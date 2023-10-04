@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="login-box">
+
+    <h2>Register</h2>
+    <form action="/auth/register" method="post">
+        <div>
+            <div class="user-box">
+                <input type="text" name="username" required="">
+                <label>Username</label>
+            </div>
+            <div class="user-box">
+                <input type="password" name="password" required="">
+                <label>Password</label>
+            </div>
+            <div class="user-box">
+                <input type="email" name="email" required="">
+                <label>Email</label>
+            </div>
+        </div>
+        <button>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            submit
+        </button>
+    </form>
+</div>
+
+</body>
+</html>

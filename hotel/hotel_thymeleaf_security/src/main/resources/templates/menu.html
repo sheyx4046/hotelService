@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+</head>
+<body>
+<div th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'USER')}">
+    <a th:href="@{/auth/user}"> WELCOME USER </a>
+</div>
+<div th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN')}">
+    <a th:href="@{/auth/admin}"> WELCOME ADMIN
+    </a>
+
+</div>
+<!--<div sec:authorize="hasRole('ADMIN')" > <a href="/auth/admin"> </a></div>-->
+<!--<div sec:authorize="hasRole('USER')" > <a href=/auth/user"> </a></div>-->
+<!--<h1 sec:authorize="hasRole('ADMIN')" > </h1>-->
+<!--<h1 sec:authorize="hasRole('USER')">Hello User</h1>-->
+<!--<h1 sec:authorize="isAuthenticated()">For everyone</h1>-->
+<!--<h1 sec:authentication="principal.username"></h1>-->
+<!--<h1 sec:authentication="name"></h1>-->
+<!--<form action="/test">-->
+<!--    <button>test</button>-->
+<!--</form>-->
+
+</body>
+</html>
