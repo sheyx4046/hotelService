@@ -3,22 +3,19 @@ package com.example.hotel_thymeleaf_security.service.hotel;
 
 import com.example.hotel_thymeleaf_security.dto.HotelRequestDto;
 import com.example.hotel_thymeleaf_security.entity.hotel.HotelEntity;
-import com.example.hotel_thymeleaf_security.entity.user.Role;
-import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
+import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.*;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
-import com.example.hotel_thymeleaf_security.exception.UniqueObjectException;
-import com.example.hotel_thymeleaf_security.repository.HotelRepository;
+import com.example.hotel_thymeleaf_security.repository.hotelRepositories.HotelRepository;
 import com.example.hotel_thymeleaf_security.repository.UserRepository;
+import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,54 +23,121 @@ public class HotelService {
     private final HotelRepository hotelRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
+    private final RoomTypesRepository roomTypesRepository;
+    private final LanguageSpokenRepository languageSpokenRepository;
+    private final RoomAmenityRepository roomAmenityRepository;
+    private final PaymentMethodRepository paymentMethodRepository;
+    private final EventAndConferencesRepository eventAndConferencesRepository;
     public HotelEntity save(HotelRequestDto hotelRequestDto, Long ownerId) {
-        UserEntity userEntity = userRepository.findUserEntityById(ownerId).orElseThrow(() -> new DataNotFoundException("Your access has expired"));
-        Optional<HotelEntity> hotelEntityByName = hotelRepository.findHotelEntityByName(hotelRequestDto.getName());
-        Optional<HotelEntity> hotelEntityByWebsite = hotelRepository.findHotelEntityByWebsite(hotelRequestDto.getWebsite());
-        if (hotelEntityByName.isPresent()) {
-            throw new UniqueObjectException("Hotel name already exists");
-        } else if (hotelEntityByWebsite.isPresent()) {
-            throw new UniqueObjectException("Hotel website already exists");
-        }
-        HotelEntity hotel = modelMapper.map(hotelRequestDto, HotelEntity.class);
-        userEntity.setRoles(Role.ADMIN);
-        UserEntity owner = userRepository.save(userEntity);
-        hotel.setOwner(owner);
-        return hotelRepository.save(hotel);
+        HotelEntity map = modelMapper.map(hotelRequestDto, HotelEntity.class);
+        map.setPaymentOptions(checkPaymentMethodAndCreatePayment(hotelRequestDto.getPaymentOptions()));
+        map.setLanguageSpokens(checkAndCreateLanguage(hotelRequestDto.getLanguageSpokens()));
+        map.setRoomTypes(checkRoomTypeAndCreateType(hotelRequestDto.getRoomTypes()));
+        map.setRoomAmenities(checkRoomAmenitiesAndSaCreateAmenity(hotelRequestDto.getRoomAmenities()));
+        map.setEventsAndConferences(checkEventsAndConferenceToCreate(hotelRequestDto.getEventsAndConferences()));
+        map.setManagerOfHotel(UUID.randomUUID());   //TODO must changed when baseEntity will be LONG-->UUID
+        return hotelRepository.save(map);
     }
         public List<HotelEntity> getAll (int page, int size){
             Pageable pageable = PageRequest.of(page, size);
             return hotelRepository.findAll(pageable).getContent();
         }
 
+
         public HotelEntity update (HotelRequestDto update,Long id){
-            HotelEntity hotel = hotelRepository.findById(id).orElseThrow(() -> new DataNotFoundException("hotel not found"));
-            if (update.getName() != null) {
-                if(!update.getName().equals(hotel.getName())){
-                    Optional<HotelEntity> hotelEntityByName = hotelRepository.findHotelEntityByName(update.getName());
-                    if(hotelEntityByName.isPresent()){
-                        throw new UniqueObjectException("Hotel name already exists");
-                    }
-                    hotel.setName(update.getName());
-                }
-            }
-            if(update.getWebsite() != null) {
-                if(!update.getWebsite().equals(hotel.getWebsite())){
-                    Optional<HotelEntity> hotelEntityByWebsite = hotelRepository.findHotelEntityByWebsite(update.getWebsite());
-                    if(hotelEntityByWebsite.isPresent()){
-                        throw new UniqueObjectException("Hotel website already exists");
-                    }
-                    hotel.setWebsite(update.getWebsite());
-                }
-            }
-            if(update.getAddress() != null){
-                hotel.setAddress(update.getAddress());
-            }
-            return hotelRepository.save(hotel);
+            HotelEntity map = modelMapper.map(update, HotelEntity.class);
+            HotelEntity hotelEntity = hotelRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Hotel not found with ID"));
+            hotelEntity.setUpdatedDate(LocalDateTime.now());
+            return hotelRepository.save(map);
         }
         public void deleteById (Long id){
             hotelRepository.findById(id).orElseThrow(() -> new DataNotFoundException("This hotel not found"));
             hotelRepository.deleteById(id);
         }
+    private static <T> List<T> convertFromStrToClass(List<String> list, Class<T> clazz) {
+        List<T> convertedList = new ArrayList<>();
+
+        try {
+            for (String str : list) {
+                T obj = clazz.getDeclaredConstructor(String.class).newInstance(str);
+                convertedList.add(obj);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return convertedList;
+    }
+
+    private List<LanguageSpoken> checkAndCreateLanguage(List<LanguageSpoken> languages) {
+        List<LanguageSpoken> languageSpokenList = new ArrayList<>();
+        for (LanguageSpoken language : languages) {
+            LanguageSpoken existingLanguage = languageSpokenRepository.findLanguageSpokenByLanguage(language.getLanguage());
+            if (existingLanguage == null) {
+                LanguageSpoken savedLanguage = languageSpokenRepository.save(language);
+                languageSpokenList.add(savedLanguage);
+            } else {
+                languageSpokenList.add(existingLanguage);
+            }
+        }
+        return languageSpokenList;
+    }
+
+    private List<RoomType> checkRoomTypeAndCreateType(List<RoomType> roomTypes){
+        List<RoomType> roomTypeList = new ArrayList<>();
+        for (RoomType type : roomTypes) {
+            Optional<RoomType> found = roomTypesRepository.findRoomTypeByTypeName(type.getTypeName());
+            if (found.isEmpty()) {
+                RoomType rt = roomTypesRepository.save(type);
+                roomTypeList.add(rt);
+            } else {
+                roomTypeList.add(found.orElseThrow(()-> new DataNotFoundException("RoomType not found")));
+            }
+        }
+        return roomTypeList;
+    }
+
+    private List<RoomAmenity> checkRoomAmenitiesAndSaCreateAmenity(List<RoomAmenity> roomAmenities) {
+        List<RoomAmenity> roomAmenitiesList = new ArrayList<>();
+        for (RoomAmenity amenity : roomAmenities) {
+            Optional<RoomAmenity> found = roomAmenityRepository.findRoomAmenitiesByAmenity(amenity.getAmenity());
+            if (found.isEmpty()) {
+                RoomAmenity rm = roomAmenityRepository.save(amenity);
+                roomAmenitiesList.add(rm);
+            } else {
+                roomAmenitiesList.add(found.orElseThrow(()-> new DataNotFoundException("Amenity not found")));
+            }
+        }
+        return roomAmenitiesList;
+    }
+
+
+    private List<PaymentMethod> checkPaymentMethodAndCreatePayment(List<PaymentMethod> paymentOptions) {
+        List<PaymentMethod> paymentMethodsList = new ArrayList<>();
+        for (PaymentMethod amenity : paymentOptions) {
+            Optional<PaymentMethod> found = paymentMethodRepository.findPaymentMethodByName(amenity.getName());
+            if (found.isEmpty()) {
+                PaymentMethod rm = paymentMethodRepository.save(amenity);
+                paymentMethodsList.add(rm);
+            } else {
+                paymentMethodsList.add(found.orElseThrow(()-> new DataNotFoundException("Payment_method not found")));
+            }
+        }
+        return paymentMethodsList;
+    }
+
+
+    private List<EventsAndConferencesEntity> checkEventsAndConferenceToCreate(List<EventsAndConferencesEntity> eventsAndConferences) {
+        List<EventsAndConferencesEntity> eventsAndConferencesEntityList = new ArrayList<>();
+        for (EventsAndConferencesEntity eventsAndConferences1 : eventsAndConferences) {
+            Optional<EventsAndConferencesEntity> found = eventAndConferencesRepository.findEventsAndConferencesEntitiesByEvent(eventsAndConferences1.getEvent());
+            if (found.isEmpty()) {
+                EventsAndConferencesEntity rm = eventAndConferencesRepository.save(eventsAndConferences1);
+                eventsAndConferencesEntityList.add(rm);
+            } else {
+                eventsAndConferencesEntityList.add(found.orElseThrow(()-> new DataNotFoundException("Event not found")));
+            }
+        }
+        return eventsAndConferencesEntityList;
+    }
     }

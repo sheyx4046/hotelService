@@ -2,6 +2,8 @@ package com.example.hotel_thymeleaf_security.controller;
 
 import com.example.hotel_thymeleaf_security.config.CookieValue;
 import com.example.hotel_thymeleaf_security.dto.HotelRequestDto;
+import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.RoomAmenity;
+import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.RoomType;
 import com.example.hotel_thymeleaf_security.service.hotel.HotelService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -34,4 +37,22 @@ public class HotelController {
         model.addAttribute("message","hotel successfully added");
         return "admin";
     }
+
+    @GetMapping("/hotels/search")
+    public String hotelFilter(){return "";}
+    @GetMapping("/hotels/search")
+    public String hotelFilter(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) List<RoomType> roomTypes,
+            @RequestParam(required = false) List<RoomAmenity> roomAmenities,
+            @RequestParam(required = false) double priceRangeMin,
+            @RequestParam(required = false) double priceRangeMax,
+            @RequestParam(required = false) boolean availability,
+            @RequestParam(required = false) Boolean cancellationPolicy,
+            @RequestParam(required = false) boolean petFriendly,
+            @RequestParam(required = false) boolean parkingAvailable,
+            @RequestParam(required = false) UUID managerOfHotel){
+        return "";}
+
+
 }
