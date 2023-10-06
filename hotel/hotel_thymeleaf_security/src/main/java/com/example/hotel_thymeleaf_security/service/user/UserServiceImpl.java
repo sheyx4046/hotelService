@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity login(AuthDto auth) {
-        UserEntity userEntity = userRepository.findByUsername(auth.getUsername())
+        UserEntity userEntity = userRepository.findByEmail(auth.getEmail())
                 .orElseThrow(() -> new DataNotFoundException("user not found"));
         if (passwordEncoder.matches(auth.getPassword(), userEntity.getPassword())) {
             return userEntity;

@@ -7,7 +7,6 @@ import lombok.*;
 @Getter
 @Setter
 public class AuthDto {
-    private String username;
-    private String password;
     private String email;
+    private String password;
 }
