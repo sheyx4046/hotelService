@@ -1,7 +1,14 @@
 package com.example.hotel_thymeleaf_security.dto;
 
+import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.*;
+import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.region.City;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -9,12 +16,22 @@ import lombok.*;
 @Setter
 @Builder
 public class HotelRequestDto {
-    @NotEmpty(message = "name cannot be empty")
     private String name;
-
-    @NotEmpty(message = "address cannot be empty")
-    private String address;
-
-    @NotEmpty(message = "website cannot be empty")
-    private String website;
+    private List<RoomType> roomTypes;
+    private List<RoomAmenity> roomAmenities;
+    private List<HotelFilesEntity> photos;
+    private String description;
+    private double priceRangeMin;
+    private double priceRangeMax;
+    private boolean availability=false;
+    private Boolean cancellationPolicy;
+    private ContactInfo contactInfo;
+    private MapLocation mapLocation;
+    private List<PaymentMethod> paymentOptions;
+    private List<SpecialOffer> specialOffers;
+    private List<LanguageSpoken> languageSpokens;
+    private List<EventsAndConferencesEntity> eventsAndConferences;
+    private boolean petFriendly=false;
+    private boolean parkingAvailable=false;
+    private UUID managerOfHotel;
 }
