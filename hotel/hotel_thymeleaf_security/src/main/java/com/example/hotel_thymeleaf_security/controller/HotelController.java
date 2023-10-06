@@ -40,7 +40,7 @@ public class HotelController {
 
     @GetMapping("/hotels/search")
     public String hotelFilter(){return "";}
-    @GetMapping("/hotels/search")
+    @GetMapping("/hotels/search/filter")
     public String hotelFilter(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) List<RoomType> roomTypes,

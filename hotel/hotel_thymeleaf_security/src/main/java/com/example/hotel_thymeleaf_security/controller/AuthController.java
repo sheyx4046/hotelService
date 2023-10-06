@@ -26,7 +26,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage() {
-        return "login";
+        return "auth-templates/auth-login-basic";
     }
 
     @PostMapping("/login")
@@ -53,14 +53,14 @@ public class AuthController {
 
     @GetMapping("/register")
     public String registerPage() {
-        return "register";
+        return "auth-templates/auth-register-basic";
     }
 
     @PostMapping("/register")
     public String register(
             @ModelAttribute UserRequestDto userRequestDto
     ) {
-        UserEntity userEntity = userService.create(userRequestDto);
+        userService.create(userRequestDto);
         return "index";
     }
     @GetMapping("forgortPassword")

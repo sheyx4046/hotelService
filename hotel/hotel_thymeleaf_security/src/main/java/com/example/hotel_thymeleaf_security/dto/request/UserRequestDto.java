@@ -1,7 +1,10 @@
 package com.example.hotel_thymeleaf_security.dto.request;
 
+import com.example.hotel_thymeleaf_security.entity.user.Role;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +18,5 @@ public class UserRequestDto {
     private String email;
     @NotBlank(message = "password must not be blank")
     private String password;
-//    private List<Role> roles;
-
+    private Role roles=Role.USER;
 }
