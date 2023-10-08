@@ -31,7 +31,8 @@ public class SecurityConfig {
                         "/static/**",
                         "/css/**",
                         "/js/**",
-                        "images").permitAll()
+                        "images",
+                        "/**").permitAll()
                 .anyRequest().authenticated()
 //                .and()
 //                .formLogin()

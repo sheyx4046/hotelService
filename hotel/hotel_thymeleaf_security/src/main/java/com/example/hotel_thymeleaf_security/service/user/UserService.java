@@ -12,5 +12,5 @@ public interface UserService extends BaseService<UserEntity, UserRequestDto> {
     UserEntity login(AuthDto auth);
     UserEntity getByEmail(String email);
 
-    UserEntity forgotPassowrd(ForgotDto forgotDto);
+    UserEntity forgotPassword(ForgotDto forgotDto);
 }

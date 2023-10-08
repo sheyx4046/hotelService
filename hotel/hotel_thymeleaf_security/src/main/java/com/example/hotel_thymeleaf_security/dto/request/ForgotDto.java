@@ -11,8 +11,6 @@ import lombok.Setter;
 @Setter
 public class ForgotDto {
     private String email;
-    private String code;
-    private String newPas;
-    private String newPas2;
+    private String newPassword;
 
 }
