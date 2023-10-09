@@ -8,12 +8,14 @@ import com.example.hotel_thymeleaf_security.entity.user.Role;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.exception.VerificationPassword;
 import com.example.hotel_thymeleaf_security.repository.UserRepository;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.UUID;
 
@@ -30,10 +32,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity create(UserRequestDto userRequestDto) {
+        try{
         UserEntity userEntity = modelMapper.map(userRequestDto, UserEntity.class);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userEntity.setRoles(Role.USER);
-        return userRepository.save(userEntity);
+        return userRepository.save(userEntity);}
+        catch (Exception e){
+            System.out.println("UserCreating Exception: "+e);
+            return null;
+        }
     }
 
     @Override
@@ -55,12 +62,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity login(AuthDto auth) {
+        try{
         UserEntity userEntity = userRepository.findByEmail(auth.getEmail())
                 .orElseThrow(() -> new DataNotFoundException("user not found"));
         if (passwordEncoder.matches(auth.getPassword(), userEntity.getPassword())) {
             return userEntity;
+        }}catch (DataNotFoundException e){
+            System.out.println("Login password or email uncorrect");
+            return null;
         }
-        throw new DataNotFoundException("username/password is wrong");
+        return null;
     }
 
     @Override
@@ -68,19 +79,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email).orElseThrow(()-> new DataNotFoundException("User by email not found"));
     }
 
-    public UserEntity forgotPassowrd (ForgotDto forgotDto) {
-        UserEntity userEntity = userEmail(forgotDto.getEmail());
-        userEntity.setVerificationCode(generateVerificationCode());
-        if (forgotDto.getCode().equals(userEntity.getVerificationCode())){
-            if(forgotDto.getNewPas().equals(forgotDto.getNewPas2())){
-                userEntity.setPassword(passwordEncoder.encode(forgotDto.getNewPas()));
-            } else {
-                new VerificationPassword("passwords are not equal");
-            }
-        } else {
-            new VerificationPassword("verification is not equal");
-        }
-        mailService.sendMessage(userEntity);
+    @Override
+    public UserEntity forgotPassword(ForgotDto forgotDto) {
+        UserEntity userEntity = getByEmail(forgotDto.getEmail());
+        userEntity.setPassword(forgotDto.getNewPassword());
+        userEntity.setUpdatedDate(LocalDateTime.now());
         return userRepository.save(userEntity);
     }
 
@@ -88,7 +91,4 @@ public class UserServiceImpl implements UserService {
         return String.valueOf(random.nextInt(1000000));
     }
 
-    private UserEntity userEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundException("user not found"));
-    }
 }

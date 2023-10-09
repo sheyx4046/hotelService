@@ -1,13 +1,7 @@
 package com.example.hotel_thymeleaf_security.config;
 
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
-import com.example.hotel_thymeleaf_security.exception.RequestValidationException;
-import com.example.hotel_thymeleaf_security.exception.UniqueObjectException;
-import com.example.hotel_thymeleaf_security.exception.UserBadRequestException;
-import jakarta.mail.AuthenticationFailedException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.hibernate.ObjectNotFoundException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -165,3 +165,10 @@ body {
         bottom: 100%;
     }
 }
+
+.small, .text-danger {
+    font-size: 80%; /* You can adjust the percentage to change the font size */
+    color: #FF0000; /* Change the text color to red */
+    font-weight: bold; /* Make the text bold */
+    margin-top: 5px; /* Add some top margin to create spacing */
+}

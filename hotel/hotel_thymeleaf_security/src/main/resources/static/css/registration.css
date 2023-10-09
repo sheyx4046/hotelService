@@ -205,3 +205,10 @@ body {
     bottom: 100%;
   }
 }
+
+.small, .text-danger {
+  font-size: 80%;
+  color: #FF0000;
+  font-weight: bold;
+  margin-top: 5px;
+}

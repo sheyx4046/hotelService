@@ -1,11 +1,16 @@
 server:
   port: 8081
+  error:
+    path: /error
+    whitelabel:
+      enabled: false
+
 
 spring:
   datasource:
     username: postgres
-    password: 1999
-    url: jdbc:postgresql://localhost:5432/hotel
+    password: 1
+    url: jdbc:postgresql://localhost:5432/hotel_service
     driver-class-name: org.postgresql.Driver
   thymeleaf:
     prefix: classpath:/templates/
@@ -29,3 +34,4 @@ spring:
             enable: true
     resources:
       static-locations: classpath:/static/
+
