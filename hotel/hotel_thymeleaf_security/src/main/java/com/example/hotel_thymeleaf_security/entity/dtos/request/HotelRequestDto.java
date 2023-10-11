@@ -1,4 +1,4 @@
-package com.example.hotel_thymeleaf_security.dto;
+package com.example.hotel_thymeleaf_security.entity.dtos.request;
 
 import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.*;
 import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.region.City;

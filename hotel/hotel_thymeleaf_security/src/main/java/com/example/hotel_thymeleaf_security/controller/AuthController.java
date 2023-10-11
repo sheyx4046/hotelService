@@ -1,19 +1,21 @@
 package com.example.hotel_thymeleaf_security.controller;
 
-
-import com.example.hotel_thymeleaf_security.dto.request.AuthDto;
-import com.example.hotel_thymeleaf_security.dto.request.ForgotDto;
-import com.example.hotel_thymeleaf_security.dto.request.UserRequestDto;
+import com.example.hotel_thymeleaf_security.entity.dtos.AuthDto;
+import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.entity.user.Role;
-import com.example.hotel_thymeleaf_security.service.user.UserService;
+import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+
+import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/auth")
@@ -66,20 +68,44 @@ public class AuthController {
             @ModelAttribute UserRequestDto userRequestDto,
             Model model
     ) {
-        if(userService.create(userRequestDto)!=null){
-            return "auth-templates/auth-login-basic";
+        if(userService.create(userRequestDto,true)!=null){
+            model.addAttribute("userEntity", userService.getByEmail(userRequestDto.getEmail()));
+            return "auth-templates/auth-verification-password";
         }
             model.addAttribute("msg","BAD");
             return "auth-templates/auth-register-basic";
     }
+
+    @GetMapping("{id}/verify-code")
+    public String verifyCodePage(
+            @PathVariable UUID id
+            ){
+        userService.verifyCode(id);
+        return "redirect:/auth/login";
+    }
+
+    @GetMapping("/new-verify-code")
+    public String newVerifyCodePage(){
+        return "auth-templates/auth-new-verification";
+    }
+    @PostMapping("/new-verify-code")
+    public String newVerifyCode(
+            @ModelAttribute String email,
+            Model model
+    ) throws MessagingException, UnsupportedEncodingException {
+        userService.newVerifyCode(email);
+        model.addAttribute("userEntity",userService.getByEmail(email));
+        return "auth-templates/auth-verification-password";
+    }
+
     @GetMapping("/forgotPassword")
     public String forgotPasswordPage(){
         return "auth-templates/auth-forgot-password-basic";
     }
-    @PostMapping("forgotPassword")
-    public String forgotPassword(@ModelAttribute ForgotDto forgotDto){
-        userService.forgotPassword(forgotDto);
-        return "menu";}
+    @PostMapping("/forgotPassword")
+    public String forgotPassword(@ModelAttribute String email, Model model){
+        model.addAttribute("email", email);
+        return "auth-templates/auth-create-new-password";}
 
     @GetMapping("/logout")
     public String logOutUser(HttpServletResponse response){

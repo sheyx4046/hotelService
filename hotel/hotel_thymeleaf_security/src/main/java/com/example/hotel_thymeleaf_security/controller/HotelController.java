@@ -1,7 +1,7 @@
 package com.example.hotel_thymeleaf_security.controller;
 
 import com.example.hotel_thymeleaf_security.config.CookieValue;
-import com.example.hotel_thymeleaf_security.dto.HotelRequestDto;
+import com.example.hotel_thymeleaf_security.entity.dtos.request.HotelRequestDto;
 import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.RoomAmenity;
 import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.RoomType;
 import com.example.hotel_thymeleaf_security.service.hotel.HotelService;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.example.hotel_thymeleaf_security.repository;
+package com.example.hotel_thymeleaf_security.repository.userRepository;
 
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,8 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    Optional<UserEntity> findUserEntityById(Long id);
+public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     Optional<UserEntity> findByEmail(String email);
-    Optional<UserEntity> findByUsername(String username);
+    Optional<UserEntity> findUserEntitiesByName(String name);
 }

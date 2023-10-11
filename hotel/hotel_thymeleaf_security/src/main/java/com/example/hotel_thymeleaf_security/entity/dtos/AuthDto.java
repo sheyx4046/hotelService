@@ -1,4 +1,4 @@
-package com.example.hotel_thymeleaf_security.dto.request;
+package com.example.hotel_thymeleaf_security.entity.dtos;
 
 import lombok.*;
 
