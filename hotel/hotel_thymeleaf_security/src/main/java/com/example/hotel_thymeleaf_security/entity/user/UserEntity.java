@@ -14,21 +14,22 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
 public class UserEntity extends BaseEntity implements UserDetails {
-    private String username;
-   
+    private String name;
+   @Column(nullable = false)
     private String password;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
     @Enumerated(value = EnumType.STRING)
-    private Role roles;
-    private String verificationCode;
+    private Role roles=Role.USER;
+    @Enumerated(value = EnumType.STRING)
+    private States state;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -45,7 +46,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return name;
     }
 
     @Override

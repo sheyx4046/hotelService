@@ -18,8 +18,8 @@ import java.util.UUID;
 public abstract class BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected UUID id;
 
     @CreationTimestamp
     protected LocalDateTime createdDate;

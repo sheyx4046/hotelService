@@ -1,12 +1,12 @@
 package com.example.hotel_thymeleaf_security.service.hotel;
 
 
-import com.example.hotel_thymeleaf_security.dto.HotelRequestDto;
+import com.example.hotel_thymeleaf_security.entity.dtos.request.HotelRequestDto;
 import com.example.hotel_thymeleaf_security.entity.hotel.HotelEntity;
 import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.*;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.HotelRepository;
-import com.example.hotel_thymeleaf_security.repository.UserRepository;
+import com.example.hotel_thymeleaf_security.repository.userRepository.UserRepository;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
