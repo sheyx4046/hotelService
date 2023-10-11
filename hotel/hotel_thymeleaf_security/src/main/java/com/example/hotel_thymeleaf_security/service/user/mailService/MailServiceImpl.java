@@ -35,7 +35,7 @@ public class MailServiceImpl  implements MailService{
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         UserEntity user = userRepository.findByEmail(toUserEmail).orElseThrow(()->new DataNotFoundException("User not found"));
-        String address = "http://localhost:8082/auth/"+user.getId().toString()+"/verify-code/"+user.getUpdatedDate().toString();
+        String address = "http://localhost:8082/auth/"+user.getId().toString()+"/verify-code";
         String msgHtml = verificationTemplate().replace("{{email_address}}", address).replace("{{support_email}}", sender);
          messageHelper.setTo(user.getEmail());
         messageHelper.setFrom(sender,"Hotelier");//sender
