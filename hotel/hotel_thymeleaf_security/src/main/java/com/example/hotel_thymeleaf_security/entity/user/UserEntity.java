@@ -11,8 +11,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
 
 @Entity(name = "users")
 @AllArgsConstructor
@@ -24,19 +26,20 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private String name;
    @Column(nullable = false)
     private String password;
+    @Getter
     @Column(unique = true, nullable = false)
     private String email;
+    @Getter
     @Enumerated(value = EnumType.STRING)
-    private Role roles=Role.USER;
+    private Role role=Role.USER;
+    @Getter
     @Enumerated(value = EnumType.STRING)
     private States state;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+roles.name()));
-        return authorities;
-       // return roles.stream().map((role) -> new SimpleGrantedAuthority("ROLE_" + role.name())).toList();
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override
@@ -44,9 +47,10 @@ public class UserEntity extends BaseEntity implements UserDetails {
         return password;
     }
 
+    public void setUsername(String email){this.email=email;}
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override
@@ -66,6 +70,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return state==States.ACTIVE;
     }
+
 }

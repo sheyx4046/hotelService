@@ -10,8 +10,6 @@ import com.example.hotel_thymeleaf_security.service.BaseService;
 import jakarta.mail.MessagingException;
 
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface UserService extends BaseService<UserEntity, UserRequestDto> {
@@ -19,6 +17,7 @@ public interface UserService extends BaseService<UserEntity, UserRequestDto> {
     UserEntity login(AuthDto auth);
     UserEntity getByEmail(String email);
     UserEntity create(UserRequestDto userRequestDto, Boolean sendMessage);
+    void sendForgotPassword(String email) throws MessagingException, UnsupportedEncodingException;
 
     UserEntity forgotPassword(ForgotDto forgotDto);
     UserEntity update(UserDto userDto,  UUID userId);

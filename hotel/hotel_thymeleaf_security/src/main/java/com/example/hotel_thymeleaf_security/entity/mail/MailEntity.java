@@ -12,4 +12,5 @@ import lombok.EqualsAndHashCode;
 public class MailEntity extends BaseEntity {
     @Column(length = 1000000)
     private String message;
+    private String toUser;
 }
