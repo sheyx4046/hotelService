@@ -15,11 +15,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -46,6 +44,13 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public void sendForgotPassword(String email) throws MessagingException, UnsupportedEncodingException {
+        UserEntity userEntity = getByEmail(email);
+        mailService.sendForgotPassword(email);
+    }
+
 
     @Override
     public UserEntity create(UserRequestDto userRequestDto) {
@@ -100,6 +105,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email).orElseThrow(()-> new DataNotFoundException("User by email not found"));
     }
 
+
     @Override
     public UserEntity forgotPassword(ForgotDto forgotDto) {
         UserEntity userEntity = getByEmail(forgotDto.getEmail());
@@ -115,7 +121,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setState(userDto.getState());
-        user.setRoles(userDto.getRoles());
+        user.setRole(userDto.getRoles());
         user.setUpdatedDate(LocalDateTime.now());
         return userRepository.save(user);
     }

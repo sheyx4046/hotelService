@@ -1,9 +1,10 @@
 package com.example.hotel_thymeleaf_security.controller;
 
 import com.example.hotel_thymeleaf_security.entity.dtos.AuthDto;
+import com.example.hotel_thymeleaf_security.entity.dtos.ForgotDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
+import com.example.hotel_thymeleaf_security.entity.user.States;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
-import com.example.hotel_thymeleaf_security.entity.user.Role;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
@@ -14,15 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
-
     private final UserService userService;
     @GetMapping("/login")
     public String loginPage(Model model) {
@@ -36,18 +34,18 @@ public class AuthController {
             Model model
     ) {
         UserEntity user = userService.login(authDto);
-        if(user!=null){
-            Cookie cookie=new Cookie("userId",user.getId().toString());
+        if(user!=null && user.getState().equals(States.ACTIVE)) {
+            Cookie cookie = new Cookie("userId", user.getId().toString());
             cookie.setPath("/");
             response.addCookie(cookie);
             model.addAttribute("error", "OK");
-            if(user.getRoles().equals(Role.ADMIN)){
-                return "redirect:/auth/admin";
-            }else {
-                return "redirect:/auth/user";}}
+            model.addAttribute("user", user);
+            return "menu";
+        }
         model.addAttribute("msg","BAD");
         return "auth-templates/auth-login-basic";
     }
+
     @GetMapping("/admin")
     public String adminPage(){
         return "admin";
@@ -69,7 +67,7 @@ public class AuthController {
             Model model
     ) {
         if(userService.create(userRequestDto,true)!=null){
-            model.addAttribute("userEntity", userService.getByEmail(userRequestDto.getEmail()));
+            model.addAttribute("email", userService.getByEmail(userRequestDto.getEmail()).getEmail());
             return "auth-templates/auth-verification-password";
         }
             model.addAttribute("msg","BAD");
@@ -90,7 +88,7 @@ public class AuthController {
     }
     @PostMapping("/new-verify-code")
     public String newVerifyCode(
-            @ModelAttribute String email,
+            @RequestParam("email") String email,
             Model model
     ) throws MessagingException, UnsupportedEncodingException {
         userService.newVerifyCode(email);
@@ -103,9 +101,23 @@ public class AuthController {
         return "auth-templates/auth-forgot-password-basic";
     }
     @PostMapping("/forgotPassword")
-    public String forgotPassword(@ModelAttribute String email, Model model){
-        model.addAttribute("email", email);
-        return "auth-templates/auth-create-new-password";}
+    public String forgotPassword(@RequestParam("email") String email, Model model) throws MessagingException, UnsupportedEncodingException {
+        model.addAttribute("email", userService.getByEmail(email).getEmail());
+        userService.sendForgotPassword(email);
+        return "auth-templates/auth-verification-password";}
+
+    @GetMapping("/{userId}/{userName}/set-new-password")
+    public String changePasswordPage(
+            @PathVariable String userId, @PathVariable String userName){
+        return "auth-templates/auth-create-new-password";
+    }
+    @PostMapping("/{userId}/{userName}/set-new-password")
+    public String changePassword(
+            @ModelAttribute ForgotDto forgotDto,
+            @PathVariable String userId, @PathVariable String userName){
+        userService.forgotPassword(forgotDto);
+        return "redirect:auth/login";
+    }
 
     @GetMapping("/logout")
     public String logOutUser(HttpServletResponse response){
@@ -124,5 +136,10 @@ public class AuthController {
         } else {
             return "cook";
         }
+    }
+
+    @GetMapping("/message")
+    public String message(){
+        return "auth-templates/auth-verification-password";
     }
 }
