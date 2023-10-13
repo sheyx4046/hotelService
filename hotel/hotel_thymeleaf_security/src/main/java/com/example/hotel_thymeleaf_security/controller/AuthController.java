@@ -1,7 +1,6 @@
 package com.example.hotel_thymeleaf_security.controller;
 
 import com.example.hotel_thymeleaf_security.entity.dtos.AuthDto;
-import com.example.hotel_thymeleaf_security.entity.dtos.ForgotDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
 import com.example.hotel_thymeleaf_security.entity.user.States;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
@@ -108,15 +107,18 @@ public class AuthController {
 
     @GetMapping("/{userId}/{userName}/set-new-password")
     public String changePasswordPage(
-            @PathVariable String userId, @PathVariable String userName){
+            @PathVariable String userId, @PathVariable String userName, Model model){
+        model.addAttribute("userId", userId);
+        model.addAttribute("userName", userName);
         return "auth-templates/auth-create-new-password";
     }
-    @PostMapping("/{userId}/{userName}/set-new-password")
+    @PostMapping("/set-new-password")
     public String changePassword(
-            @ModelAttribute ForgotDto forgotDto,
-            @PathVariable String userId, @PathVariable String userName){
-        userService.forgotPassword(forgotDto);
-        return "redirect:auth/login";
+            @RequestParam String newPassword,
+            @RequestParam UUID userId,
+            @RequestParam String userName){
+        userService.forgotPassword(userName,userId,newPassword);
+        return "auth-templates/auth-login-basic";
     }
 
     @GetMapping("/logout")
@@ -138,8 +140,4 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/message")
-    public String message(){
-        return "auth-templates/auth-verification-password";
-    }
 }

@@ -52,9 +52,9 @@ public class MailServiceImpl  implements MailService{
         UserEntity user = userRepository.findByEmail(email).orElseThrow(()->new DataNotFoundException("User not found"));
         String address = "http://localhost:8082/auth/"+user.getId().toString()+"/"+user.getName()+"/set-new-password";
         String msgHtml = forgotPasswordTemplate();
-        msgHtml.replace("{{email_address}}", address);
-        msgHtml.replace("{{support_email}}", sender);
-        msgHtml.replace("{{user_email}}", user.getEmail());
+        msgHtml=msgHtml.replace("{{email_address}}", address);
+        msgHtml=msgHtml.replace("{{support_email}}", sender);
+        msgHtml=msgHtml.replace("{{user_email}}", user.getEmail());
         messageHelper.setTo(user.getEmail());
         messageHelper.setFrom(sender,"Hotelier");//sender
         messageHelper.setSubject("Forgot Your Password? Let's Get You Back In!");//subject
