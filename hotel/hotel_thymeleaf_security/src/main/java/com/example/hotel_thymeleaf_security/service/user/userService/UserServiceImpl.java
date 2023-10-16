@@ -1,17 +1,18 @@
 package com.example.hotel_thymeleaf_security.service.user.userService;
 
 import com.example.hotel_thymeleaf_security.entity.dtos.AuthDto;
-import com.example.hotel_thymeleaf_security.entity.dtos.ForgotDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.UserDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
 import com.example.hotel_thymeleaf_security.entity.user.States;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.repository.userRepository.UserRepository;
-import com.example.hotel_thymeleaf_security.service.user.mailService.MailServiceImpl;
+import com.example.hotel_thymeleaf_security.service.mailService.MailServiceImpl;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -88,16 +89,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity login(AuthDto auth) {
-        try{
-        UserEntity userEntity = userRepository.findByEmail(auth.getEmail())
-                .orElseThrow(() -> new DataNotFoundException("user not found"));
-        if (passwordEncoder.matches(auth.getPassword(), userEntity.getPassword())) {
+        UserEntity userEntity = getByEmail(auth.getUsername());
+        if(passwordEncoder.matches(auth.getPassword(), userEntity.getPassword())){
             return userEntity;
-        }}catch (DataNotFoundException e){
-            System.out.println("Login password or email uncorrect");
-            return null;
-        }
-        return null;
+        }return null;
     }
 
     @Override
@@ -107,11 +102,14 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserEntity forgotPassword(ForgotDto forgotDto) {
-        UserEntity userEntity = getByEmail(forgotDto.getEmail());
-        userEntity.setPassword(forgotDto.getNewPassword());
-        userEntity.setUpdatedDate(LocalDateTime.now());
-        return userRepository.save(userEntity);
+    public UserEntity forgotPassword(String username, UUID userId, String newPassword) {
+        UserEntity userEntity = getById(userId);
+        if(userEntity.getName().equals(username)){
+            userEntity.setPassword(passwordEncoder.encode(newPassword));
+            userEntity.setUpdatedDate(LocalDateTime.now());
+            return userRepository.save(userEntity);
+        }
+        return null;
     }
 
     @Override
@@ -158,5 +156,10 @@ public class UserServiceImpl implements UserService {
             }
         }
         return false;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return getByEmail(username);
     }
 }

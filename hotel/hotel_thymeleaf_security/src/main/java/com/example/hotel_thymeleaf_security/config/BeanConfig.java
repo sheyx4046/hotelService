@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class BeanConfig {
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();

@@ -1,7 +1,7 @@
 package com.example.hotel_thymeleaf_security.config;
 
 
-import com.example.hotel_thymeleaf_security.service.AuthService;
+import com.example.hotel_thymeleaf_security.service.user.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,27 +19,58 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final String[] WHITE_LIST = {"/auth/**", "/", "/login.html","/hotel/**"};
+    private final String[]  RESOURSES = {"/resources/**",
+            "/static/**",
+            "/css/**",
+            "/js/**",
+            "images",
+            "/**"};
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers(WHITE_LIST).permitAll()
-                .requestMatchers("/resources/**",
-                        "/static/**",
-                        "/css/**",
-                        "/js/**",
-                        "images",
-                        "/**").permitAll()
-                .anyRequest().authenticated()
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        return http.csrf().disable()
+//                .authorizeHttpRequests()
+//                .requestMatchers(WHITE_LIST).permitAll()
+//                .requestMatchers("/resources/**",
+//                        "/static/**",
+//                        "/css/**",
+//                        "/js/**",
+//                        "images",
+//                        "/**").permitAll()
+//                .anyRequest().authenticated()
 //                .and()
 //                .formLogin()
 //                .loginPage("/auth/login")
 //                .defaultSuccessUrl("/menu")
-                .and()
-                .build();
+//                .and()
+//                .build();
+//    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers(RESOURSES).permitAll()
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .formLogin((form) -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/auth/login")
+                        .failureUrl("/auth/error-page.html")
+                        .defaultSuccessUrl("/menu")
+                        .permitAll()
+                )
+                .logout((logout) -> logout
+                        .logoutUrl("/auth/logout")
+                        .logoutSuccessUrl("/auth/login")
+                        .permitAll())
+                .exceptionHandling().accessDeniedPage("/access-denied");
+        return http.build();
     }
 
     @Bean
