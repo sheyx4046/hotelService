@@ -1,4 +1,4 @@
-package com.example.hotel_thymeleaf_security.service.user.mailService;
+package com.example.hotel_thymeleaf_security.service.mailService;
 
 import com.example.hotel_thymeleaf_security.entity.dtos.MailDto;
 import com.example.hotel_thymeleaf_security.entity.mail.MailEntity;

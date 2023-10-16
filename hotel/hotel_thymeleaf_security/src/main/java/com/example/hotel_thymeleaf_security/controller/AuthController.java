@@ -4,14 +4,19 @@ import com.example.hotel_thymeleaf_security.entity.dtos.AuthDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
 import com.example.hotel_thymeleaf_security.entity.user.States;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
+import com.example.hotel_thymeleaf_security.service.user.auth.AuthService;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
@@ -21,6 +26,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
+    private final AuthenticationManager authenticateManager;
+    private final AuthService authService;
     @GetMapping("/login")
     public String loginPage(Model model) {
         model.addAttribute("msg","OK");
@@ -31,17 +38,25 @@ public class AuthController {
     public String login(
             @ModelAttribute AuthDto authDto, HttpServletResponse response,
             Model model
-    ) {
+    ) throws MessagingException, UnsupportedEncodingException {
         UserEntity user = userService.login(authDto);
-        if(user!=null && user.getState().equals(States.ACTIVE)) {
-            Cookie cookie = new Cookie("userId", user.getId().toString());
-            cookie.setPath("/");
-            response.addCookie(cookie);
-            model.addAttribute("error", "OK");
-            model.addAttribute("user", user);
-            return "menu";
+        if(user!=null) {
+            if(user.getState().equals(States.ACTIVE)){
+                Authentication authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+                Authentication authentication = authenticateManager.authenticate(authenticationToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                Cookie cookie = new Cookie("userId", user.getId().toString());
+                cookie.setPath("/");
+                cookie.setMaxAge(3600*5);
+                response.addCookie(cookie);
+                model.addAttribute("error", "OK");
+                return "menu";} else if (user.getState().equals(States.UNVERIFIED)) {
+                model.addAttribute("email", user.getEmail());
+                userService.newVerifyCode(user.getEmail());
+                return "auth-templates/auth-verification-password";
+            }
         }
-        model.addAttribute("msg","BAD");
+        model.addAttribute("error","BAD");
         return "auth-templates/auth-login-basic";
     }
 
@@ -91,7 +106,7 @@ public class AuthController {
             Model model
     ) throws MessagingException, UnsupportedEncodingException {
         userService.newVerifyCode(email);
-        model.addAttribute("userEntity",userService.getByEmail(email));
+        model.addAttribute("email",userService.getByEmail(email).getEmail());
         return "auth-templates/auth-verification-password";
     }
 
@@ -138,6 +153,12 @@ public class AuthController {
         } else {
             return "cook";
         }
+    }
+
+    @GetMapping("/error-page.html")
+    public String errorPageLogin(Model model){
+        model.addAttribute("error", "BAD");
+        return "auth-templates/auth-login-basic";
     }
 
 }

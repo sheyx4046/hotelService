@@ -13,8 +13,15 @@ spring:
     url: jdbc:postgresql://localhost:5432/hotel_service
     driver-class-name: org.postgresql.Driver
   thymeleaf:
+    mode: HTML
+    cache: false
     prefix: classpath:/templates/
     suffix: .html
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+      cache: false
+    enabled: true
   jpa:
     hibernate:
       ddl-auto: update
@@ -34,4 +41,3 @@ spring:
             enable: true
     resources:
       static-locations: classpath:/static/
-
