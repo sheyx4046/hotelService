@@ -28,6 +28,10 @@ public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticateManager;
     private final AuthService authService;
+    @GetMapping
+    public String login(){
+        return "redirect:/auth/login";
+    }
     @GetMapping("/login")
     public String loginPage(Model model) {
         model.addAttribute("msg","OK");
@@ -116,9 +120,30 @@ public class AuthController {
     }
     @PostMapping("/forgotPassword")
     public String forgotPassword(@RequestParam("email") String email, Model model) throws MessagingException, UnsupportedEncodingException {
+        UserEntity user = userService.getByEmail(email);
+        if(user==null){
+            model.addAttribute("error", "BAD");
+            return "auth-templates/auth-forgot-password-basic";
+            }
         model.addAttribute("email", userService.getByEmail(email).getEmail());
         userService.sendForgotPassword(email);
-        return "auth-templates/auth-verification-password";}
+        return "auth-templates/auth-forgot-password-message";
+    }
+
+    @GetMapping("{userEmail}/forgot-password-message")
+    public String sendNewForgotPassword(
+            @PathVariable String userEmail,
+            Model model
+    ) throws MessagingException, UnsupportedEncodingException {
+        UserEntity user = userService.getByEmail(userEmail);
+        if(user==null){
+            model.addAttribute("error", "BAD");
+            return "auth-templates/auth-forgot-password-basic";
+        }
+        model.addAttribute("email", userService.getByEmail(userEmail).getEmail());
+        userService.sendForgotPassword(userEmail);
+        return "auth-templates/auth-forgot-password-message";
+    }
 
     @GetMapping("/{userId}/{userName}/set-new-password")
     public String changePasswordPage(

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -97,7 +98,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(()-> new DataNotFoundException("User by email not found"));
+        Optional<UserEntity> byEmail = userRepository.findByEmail(email);
+        return byEmail.orElse(null);
     }
 
 
