@@ -59,7 +59,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-                        .loginPage("/login")
+                        .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
                         .failureUrl("/auth/error-page.html")
                         .defaultSuccessUrl("/menu")

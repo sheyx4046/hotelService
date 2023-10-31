@@ -32,7 +32,7 @@ public class HotelController {
         String ownerValue = CookieValue.getValue("userId", request);
         Long owner = Long.parseLong(ownerValue);
         System.out.println(owner);
-        hotelService.save(hotelRequestDto,owner);
+        hotelService.create(hotelRequestDto);
         model.addAttribute("message","hotel successfully added");
         return "admin";
     }

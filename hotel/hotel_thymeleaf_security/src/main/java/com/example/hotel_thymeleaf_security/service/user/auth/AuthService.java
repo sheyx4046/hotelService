@@ -18,10 +18,10 @@ public class AuthService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(()-> new DataNotFoundException("User not found by email"));
-    }
+        @Override
+        public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+            return userRepository.findByEmail(email).orElseThrow(()-> new DataNotFoundException("User not found by email"));
+        }
 
     public void login(String username, String password) {
         UserDetails userDetails = loadUserByUsername(username);

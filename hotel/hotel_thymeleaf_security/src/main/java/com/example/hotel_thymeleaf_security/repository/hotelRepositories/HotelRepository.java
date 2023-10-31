@@ -9,12 +9,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface HotelRepository extends JpaRepository<HotelEntity, Long> {
+public interface HotelRepository extends JpaRepository<HotelEntity, UUID> {
     Optional<HotelEntity> findHotelEntityByName(String name);
+
+    List<HotelEntity> findByNameContaining(String nameOfHotel);
 
     @Query("SELECT h FROM hotels h " +
             "JOIN h.city c " +
@@ -23,8 +26,7 @@ public interface HotelRepository extends JpaRepository<HotelEntity, Long> {
             "AND h.petFriendly = :petFriendly " +
             "AND h.priceRangeMin >= :minPrice " +
             "AND h.priceRangeMax <= :maxPrice " +
-            "AND c.name = :cityName " +
-            "AND c.country.nameCountry = :countryName")
+            "AND h.city = :cityName ")
     Page<HotelEntity> findHotelsWithFilters(
             @Param("parking") boolean parking,
             @Param("available") boolean available,
@@ -32,8 +34,6 @@ public interface HotelRepository extends JpaRepository<HotelEntity, Long> {
             @Param("minPrice") double minPrice,
             @Param("maxPrice") double maxPrice,
             @Param("cityName") String cityName,
-            @Param("countryName") String countryName,
             Pageable pageable);
-
 
 }

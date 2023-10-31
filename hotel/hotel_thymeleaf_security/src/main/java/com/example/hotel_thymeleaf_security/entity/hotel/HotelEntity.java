@@ -3,8 +3,6 @@ package com.example.hotel_thymeleaf_security.entity.hotel;
 
 import com.example.hotel_thymeleaf_security.entity.BaseEntity;
 import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.*;
-import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.region.City;
-import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,9 +20,7 @@ public class HotelEntity extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
+    private String city;
 
     @ManyToMany
     @JoinTable(

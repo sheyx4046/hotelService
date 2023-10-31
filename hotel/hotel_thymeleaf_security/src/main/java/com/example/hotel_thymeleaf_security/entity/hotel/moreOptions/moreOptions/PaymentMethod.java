@@ -18,7 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PaymentMethod extends BaseEntity {
+public class
+PaymentMethod extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String name;
     @JsonIgnore

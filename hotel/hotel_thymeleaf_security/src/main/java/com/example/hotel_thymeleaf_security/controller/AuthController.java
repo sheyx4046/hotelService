@@ -11,14 +11,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.util.UUID;
 
 @Controller
@@ -38,6 +36,10 @@ public class AuthController {
         return "auth-templates/auth-login-basic";
     }
 
+    @GetMapping("/whoami")
+    public String whoami(Principal principal){
+        return "user";
+    }
     @PostMapping("/login")
     public String login(
             @ModelAttribute AuthDto authDto, HttpServletResponse response,
@@ -46,9 +48,9 @@ public class AuthController {
         UserEntity user = userService.login(authDto);
         if(user!=null) {
             if(user.getState().equals(States.ACTIVE)){
-                Authentication authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-                Authentication authentication = authenticateManager.authenticate(authenticationToken);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+//                Authentication authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+//                Authentication authentication = authenticateManager.authenticate(authenticationToken);
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
                 Cookie cookie = new Cookie("userId", user.getId().toString());
                 cookie.setPath("/");
                 cookie.setMaxAge(3600*5);
