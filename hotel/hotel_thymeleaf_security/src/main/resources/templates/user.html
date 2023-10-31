@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Page </title>
+    <title>User Info</title>
 </head>
 <body>
-<!--<h1 sec:authentication="principal.username"></h1>-->
-<h1>salom user</h1>
+<h1>User Information</h1>
+<p>Username: <span th:text="${#authentication.name}"></span></p>
+<p>Is Authenticated: <span th:text="${#authentication.authenticated}"></span></p>
+<!-- You can access other user details as needed -->
 </body>
 </html>
