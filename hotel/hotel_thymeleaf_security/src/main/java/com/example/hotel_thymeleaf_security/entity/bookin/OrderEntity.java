@@ -4,14 +4,12 @@ import com.example.hotel_thymeleaf_security.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Entity
-@Table(name = "orders")
+@Entity(name = "orders")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
