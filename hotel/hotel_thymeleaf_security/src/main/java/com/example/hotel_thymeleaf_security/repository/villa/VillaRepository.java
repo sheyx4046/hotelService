@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface VillaRepository extends JpaRepository<VillaRentEntity, UUID> {
     Optional<List<VillaRentEntity>> findByCity(String city);
+    Optional<VillaRentEntity> findByNameAndOwnerId(String villageName, UUID ownerId);
 }

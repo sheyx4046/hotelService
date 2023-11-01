@@ -1,7 +1,6 @@
 package com.example.hotel_thymeleaf_security.repository.booking;
 
 
-import com.example.hotel_thymeleaf_security.entity.BookingStatus;
 import com.example.hotel_thymeleaf_security.entity.bookin.OrderEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +18,9 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID> {
 
     Page<OrderEntity> findAllByUserId(UUID userId, Pageable pageable);
 //    Optional<List<OrderEntity>>findAllByRoomId(UUID roomId, Pageable pageable);
-    @Query(value = "select o from OrderEntity o where o.bookingStatus = 'BOOKED' OR o.roomId = :roomId")
-    Optional<List<OrderEntity>>findOrderEntitiesByBookingStatusAndRoomId( @Param(value = "roomId") UUID roomId);
+    @Query(value = "select o from orders o where o.bookingStatus = 'BOOKED' OR o.roomId = :roomId")
+    Optional<List<OrderEntity>>findOrderEntitiesByBookingStatusRoomId(@Param(value = "roomId") UUID roomId);
 
-    List<OrderEntity> findByStatus(com.example.hotel_thymeleaf_security.entity.bookin.BookingStatus status);
+    List<OrderEntity> findByBookingStatus(com.example.hotel_thymeleaf_security.entity.bookin.BookingStatus bookingStatus);
 }
 

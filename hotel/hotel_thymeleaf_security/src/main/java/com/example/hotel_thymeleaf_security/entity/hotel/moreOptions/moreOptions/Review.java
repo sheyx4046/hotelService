@@ -1,6 +1,6 @@
 package com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions;
 
-import com.example.hotel_thymeleaf_security.entity.hotel.HotelEntity;
+import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -20,8 +20,8 @@ public class Review extends BaseEntity {
     private String username;
     private int rating;
     @ManyToOne
-    @JoinColumn(name = "hotel_id")
-    private HotelEntity hotel;
+    @JoinColumn(name = "village_id") // Links this review to a specific villa rent entity
+    private VillaRentEntity hotel;
     @Column(length = 1000)
     private String comment;
 }

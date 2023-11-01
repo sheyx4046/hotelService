@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Hotel</title>
+    <title>User ID Example</title>
 </head>
 <body>
-<form action="/hotel/add" method="post">
-    <input type="text" name="name" placeholder="name">
-    <input type="text" name="address" placeholder="address">
-    <input type="text" name="website" placeholder="website" >
-    <button> add </button>
-</form>
+<p th:text="${#authentication.getPrincipal().username}">Username: <span></span></p>
+<p th:text="${#authentication.getPrincipal().authorities}">Authorities: <span></span></p>
+<p th:text="${#authentication.getPrincipal().id}">User ID: <span></span></p>
+<h1 th:text="${user}"></h1>
 </body>
 </html>
