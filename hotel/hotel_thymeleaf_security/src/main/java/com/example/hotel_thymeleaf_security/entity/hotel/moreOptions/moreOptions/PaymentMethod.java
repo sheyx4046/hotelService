@@ -1,6 +1,6 @@
 package com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions;
 
-import com.example.hotel_thymeleaf_security.entity.hotel.HotelEntity;
+import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,11 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class
-PaymentMethod extends BaseEntity {
+public class PaymentMethod extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String name;
     @JsonIgnore
     @ManyToMany(mappedBy = "paymentOptions")
-    private List<HotelEntity> hotel;
+    private List<VillaRentEntity> hotel;
 }

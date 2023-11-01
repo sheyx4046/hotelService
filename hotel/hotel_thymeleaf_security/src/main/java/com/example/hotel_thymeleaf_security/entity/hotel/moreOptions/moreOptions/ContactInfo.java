@@ -13,6 +13,6 @@ import lombok.Setter;
 @Setter
 public class ContactInfo extends BaseEntity {
     private String phoneNumber=null, email=null, instagram=null,
-            facebook=null, youtube=null, twitter=null, telegram=null,
+            facebook=null, youtube=null, telegram=null,
             google_map_location=null;
 }

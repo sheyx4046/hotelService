@@ -1,8 +1,7 @@
 package com.example.hotel_thymeleaf_security.entity.villa;
 import com.example.hotel_thymeleaf_security.entity.BaseEntity;
-import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.ContactInfo;
-import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.PaymentMethod;
-import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.RoomAmenity;
+import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +27,7 @@ public class VillaRentEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "room_amenties_id")
     )
     private List<RoomAmenity> roomAmenities;
+
     @Column(length = 1000000 )
     private String description;
 
@@ -36,8 +36,20 @@ public class VillaRentEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "hotel_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
     private List<PaymentMethod> paymentOptions;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_info_id")
     private ContactInfo contactInfo;
+
+    @ManyToMany
+    @JoinTable(name = "images_of_village",
+                joinColumns = @JoinColumn(name = "village_Id"),
+                inverseJoinColumns = @JoinColumn(name = "image_id"))
+    private List<FileEntity> images;
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+    private List<Review> reviews;
+
+    @JsonIgnore
     private UUID ownerId;
 }

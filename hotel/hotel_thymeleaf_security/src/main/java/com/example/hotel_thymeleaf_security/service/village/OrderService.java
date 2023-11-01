@@ -1,16 +1,13 @@
-package com.example.hotel_thymeleaf_security.service.hotel;
+package com.example.hotel_thymeleaf_security.service.village;
 
 
-import com.example.hotel_thymeleaf_security.entity.BookingStatus;
 import com.example.hotel_thymeleaf_security.entity.bookin.OrderEntity;
 import com.example.hotel_thymeleaf_security.entity.dtos.BookingDto;
-import com.example.hotel_thymeleaf_security.entity.hotel.HotelEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.exception.OrdersException;
 import com.example.hotel_thymeleaf_security.repository.booking.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -32,7 +29,7 @@ public class OrderService {
 
     private final ModelMapper modelMapper;
     private final OrderRepository orderRepository;
-    @Value("${services.room-url}")
+//    @Value("${services.room-url}")
     public String roomUrl ;
 
 public List<OrderEntity>UserBookingsHistory(Pageable pageable, UUID userId){
@@ -41,7 +38,7 @@ return orderRepository.findAllByUserId(userId,pageable).getContent();
 }
 
     public List<LocalDate> DaysOff(UUID villaId) {
-        List<OrderEntity> orderEntities = orderRepository.findOrderEntitiesByBookingStatusAndRoomId(villaId).orElseThrow(() -> new DataNotFoundException("Booking not found"));
+        List<OrderEntity> orderEntities = orderRepository.findOrderEntitiesByBookingStatusRoomId(villaId).orElseThrow(() -> new DataNotFoundException("Booking not found"));
         LocalDate today = LocalDate.now();
         List<LocalDate> thirtyDays = new ArrayList<>();
 
@@ -116,7 +113,7 @@ return orderRepository.findAllByUserId(userId,pageable).getContent();
  }
     @Scheduled(fixedRate = 86400000)
     public void statusUpdate(){
-      List<OrderEntity> bookedOrders = orderRepository.findByStatus(BOOKED);
+      List<OrderEntity> bookedOrders = orderRepository.findByBookingStatus(BOOKED);
         for (OrderEntity orders:bookedOrders
              ) {
             if (LocalDate.now().isAfter(orders.getEndDay())) {

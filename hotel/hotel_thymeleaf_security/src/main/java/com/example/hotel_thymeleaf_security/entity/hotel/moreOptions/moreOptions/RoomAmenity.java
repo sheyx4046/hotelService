@@ -1,6 +1,6 @@
 package com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions;
 
-import com.example.hotel_thymeleaf_security.entity.hotel.HotelEntity;
+import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +22,6 @@ public class RoomAmenity extends BaseEntity {
 
     @JsonIgnore(value = true)
     @ManyToMany(mappedBy = "roomAmenities")
-    private List<HotelEntity> hotelEntities;
+    private List<VillaRentEntity> hotelEntities;
 
 }

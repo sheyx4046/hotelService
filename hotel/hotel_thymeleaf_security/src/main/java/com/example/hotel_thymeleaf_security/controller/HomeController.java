@@ -1,17 +1,20 @@
 package com.example.hotel_thymeleaf_security.controller;
 
-import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.security.Principal;
 
 @Controller
 @PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN', 'USER')")
 public class HomeController {
 
     @GetMapping("/test")
-    public String home() {
-        throw new DataNotFoundException("hello");
+    public String home(Model model, Principal principal) {
+        model.addAttribute("user", principal.getName());
+        return "hotel";
     }
 
     @GetMapping("/user")
