@@ -12,20 +12,38 @@ import java.security.Principal;
 public class HomeController {
 
     @GetMapping("/test")
-    public String home(Model model, Principal principal) {
+    public String test(Model model, Principal principal) {
         model.addAttribute("user", principal.getName());
         return "hotel";
     }
 
-    @GetMapping("/user")
-    public String hs() {
-        return "user";
+    @GetMapping("/home")
+    public String homePage() {
+        return "villagePages/index";
     }
 
-    @GetMapping("/menu")
-    public String menu() {
-        return "menu";
+    @GetMapping("/find")
+    public String findPage() {
+        return "villagePages/find";
     }
+
+    @GetMapping("/contact")
+    public String contactPage() {
+        return "villagePages/contact";
+    }
+
+    @GetMapping("/booking")
+    public String bookingPage() {
+        return "villagePages/booking";
+    }
+
+    @GetMapping("/about")
+    public String aboutPage() {
+        return "villagePages/about";
+    }
+
+
+
 //    @GetMapping("/user")
 //    public String userPage(){
 //        return "user";
