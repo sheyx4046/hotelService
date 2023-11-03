@@ -10,6 +10,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,11 +41,26 @@ public class AuthController {
     public String whoami(Principal principal){
         return "user";
     }
+
+//    @PostMapping("/login")
+//    public String login(@ModelAttribute AuthDto authDto, HttpServletResponse response,
+//            Model model){
+//        UserEntity user = userService.login(authDto);
+//        Cookie cookie = new Cookie("userId", user.getId().toString());
+//                cookie.setPath("/");
+//                cookie.setMaxAge(3600*5);
+//                response.addCookie(cookie);
+//        model.addAttribute("user", user);
+//                return "menu";
+//    }
+
+
     @PostMapping("/login")
     public String login(
             @ModelAttribute AuthDto authDto, HttpServletResponse response,
             Model model
-    ) throws MessagingException, UnsupportedEncodingException {
+    )
+            throws MessagingException, UnsupportedEncodingException {
         UserEntity user = userService.login(authDto);
         if(user!=null) {
             if(user.getState().equals(States.ACTIVE)){

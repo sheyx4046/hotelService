@@ -62,7 +62,7 @@ public class SecurityConfig {
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
                         .failureUrl("/auth/error-page.html")
-                        .defaultSuccessUrl("/menu")
+                        .defaultSuccessUrl("/index")
                         .permitAll()
                 )
                 .logout((logout) -> logout
