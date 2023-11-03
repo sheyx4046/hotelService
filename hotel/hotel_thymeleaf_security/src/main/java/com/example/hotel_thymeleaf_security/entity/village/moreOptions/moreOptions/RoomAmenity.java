@@ -1,4 +1,4 @@
-package com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions;
+package com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions;
 
 import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,6 +1,6 @@
 package com.example.hotel_thymeleaf_security.entity.villa;
 import com.example.hotel_thymeleaf_security.entity.BaseEntity;
-import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.*;
+import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

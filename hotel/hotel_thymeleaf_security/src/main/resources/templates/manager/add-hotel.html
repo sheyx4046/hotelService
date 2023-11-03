@@ -10,10 +10,10 @@
     <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
     <meta name="author" content="PIXINVENT">
     <title>Hospital Dashboard - Modern Admin - Clean Bootstrap 4 Dashboard HTML Template + Bitcoin Dashboard</title>
-    <link rel="apple-touch-icon" href="../../../assets/img/favicon/favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="../../../assets/img/favicon/favicon.ico">
+    <link rel="apple-touch-icon" th:href="@{/css/assets/img/favicon/favicon.ico}">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/css/assets/img/favicon/favicon.ico}">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/vendors.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/daterangepicker.css}">
@@ -68,7 +68,7 @@
             <div class="navbar-header">
                 <ul class="nav navbar-nav flex-row">
                     <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
-                    <li class="nav-item"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="modern admin logo" src="../../../assets/img/favicon/favicon.ico">
+                    <li class="nav-item"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="modern admin logo" th:src="@{/css/assets/img/favicon/favicon.ico}">
                             <h3 class="brand-text">Hotelier</h3>
                         </a></li>
                 </ul>
@@ -76,6 +76,7 @@
             <div class="navbar-container content">
                 <div class="collapse navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav mr-auto float-left">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
                         <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
                         <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand" href="#"><i class="ficon ft-maximize"></i></a></li>
                         <li class="dropdown nav-item mega-dropdown d-none d-lg-block"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Hotelier</a>
