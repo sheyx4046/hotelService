@@ -3,9 +3,11 @@ package com.example.hotel_thymeleaf_security.service.village;
 
 import com.example.hotel_thymeleaf_security.entity.bookin.OrderEntity;
 import com.example.hotel_thymeleaf_security.entity.dtos.BookingDto;
+import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.exception.OrdersException;
 import com.example.hotel_thymeleaf_security.repository.booking.OrderRepository;
+import com.example.hotel_thymeleaf_security.repository.villa.VillaRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import javax.naming.NoPermissionException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import java.util.UUID;
 
 import static com.example.hotel_thymeleaf_security.entity.bookin.BookingStatus.BOOKED;
@@ -29,8 +32,8 @@ public class OrderService {
 
     private final ModelMapper modelMapper;
     private final OrderRepository orderRepository;
+    private final VillaRepository villaRepository;
 //    @Value("${services.room-url}")
-    public String roomUrl ;
 
 public List<OrderEntity>UserBookingsHistory(Pageable pageable, UUID userId){
 
@@ -123,5 +126,20 @@ return orderRepository.findAllByUserId(userId,pageable).getContent();
     }
 
 
+    public List<VillaRentEntity> getAll() {
+    return villaRepository.findAll();
+    }
+
+    public List<VillaRentEntity> findByCityAndDate(String city, LocalDate starDate, LocalDate endDate) {
+    List<LocalDate> datesBooking = getDatesBetween(starDate,endDate);
+        List<VillaRentEntity> byCity = villaRepository.findByCity(city).orElseThrow(()->new DataNotFoundException("villas no this city"));
+        List<VillaRentEntity>villaRentEntities = new ArrayList<>();
+        for (VillaRentEntity villa: byCity) {
+            if (findCommonDates(datesBooking,DaysOff(villa.getId())).isEmpty())
+                villaRentEntities.add(villa);
+
+        }
+        return villaRentEntities;
+    }
 
 }
