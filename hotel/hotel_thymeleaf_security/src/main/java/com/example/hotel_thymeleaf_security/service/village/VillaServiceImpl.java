@@ -1,13 +1,15 @@
 package com.example.hotel_thymeleaf_security.service.village;
 
 import com.example.hotel_thymeleaf_security.entity.dtos.VillageResponseDto;
-import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.ContactInfo;
-import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.FileEntity;
-import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.RoomAmenity;
+import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.ContactInfo;
+import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.FileEntity;
+import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.PaymentMethod;
+import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.RoomAmenity;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.ContactInfoRepository;
+import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.PaymentMethodRepository;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.RoomAmenityRepository;
 import com.example.hotel_thymeleaf_security.repository.userRepository.UserRepository;
 import com.example.hotel_thymeleaf_security.repository.villa.VillaRepository;
@@ -31,8 +33,10 @@ public class VillaServiceImpl implements VillageService {
     private final UserService userService;
     private final ContactInfoRepository contactInfoRepository;
     private final RoomAmenityRepository roomAmenityRepository;
+    private final FileService fileService;
     private final OrderService orderService;
     private final ModelMapper modelMapper;
+    private final PaymentMethodRepository methodRepository;
     private List<VillaRentEntity> findByCity(String city ){
         List<VillaRentEntity> villas = villaRepository.findByCity(city).orElseThrow(()->new DataNotFoundException("our villas are not available in the city you entered, please enter another city"));
       return villas;
@@ -89,27 +93,59 @@ public class VillaServiceImpl implements VillageService {
             villaRent.setRoomAmenities(
                     getAndSaveRA(dto.getRoomAmenities())
             );
-            villaRent.setImages(
-                    saveImage(dto.getGeneralImage(), dto.getOtherImage())
+            villaRent.setPaymentOptions(
+                    savePaymentMethods(dto.isCash(), dto.isCreditCard())
             );
+//            villaRent.setImages(
+//                    saveImage(dto.getGeneralImage(), dto.getOtherImage())
+//            );
+            return villaRepository.save(villaRent);
         }
         return null;
     }
 
+    private List<PaymentMethod> savePaymentMethods(boolean cash, boolean creditCard) {
+        List<PaymentMethod> list = new ArrayList<>();
+        if(cash){
+            Optional<PaymentMethod> cash1 = methodRepository.findPaymentMethodByName("Cash");
+            if (cash1.isEmpty()){
+                PaymentMethod paymentMethod = new PaymentMethod();
+                paymentMethod.setName("Cash");
+                list.add(methodRepository.save(paymentMethod));
+            }else {
+                list.add(cash1.orElseThrow(()-> new DataNotFoundException("Cash could not add")));
+            }
+        }
+        if(creditCard){
+            Optional<PaymentMethod> creditCard1 = methodRepository.findPaymentMethodByName("Credit Card");
+            if (creditCard1.isEmpty()){
+                PaymentMethod paymentMethod = new PaymentMethod();
+                paymentMethod.setName("Credit Card");
+                list.add(methodRepository.save(paymentMethod));
+            }else {
+                list.add(creditCard1.orElseThrow(()-> new DataNotFoundException("Credit Card could not add")));
+            }
+        }
+        return list;
+    }
+
     private List<FileEntity> saveImage(MultipartFile generalImage, MultipartFile otherImage) {
-        return null; //TODO save Image
+        List<FileEntity> images = new ArrayList<>();
+        images.add(fileService.create(generalImage));
+        images.add(fileService.create(otherImage));
+        return images;
     }
 
     private List<RoomAmenity> getAndSaveRA(String roomAmenities) {
         List<RoomAmenity> list = new ArrayList<>();
         for (String amenity : roomAmenities.split(", |,")) {
-            Optional<RoomAmenity> roomAmenity = roomAmenityRepository.findRoomAmenitiesByAmenity(amenity);
-            if(roomAmenity.isEmpty()){
+            RoomAmenity roomAmenity = roomAmenityRepository.findRoomAmenitiesByAmenity(amenity);
+            if(roomAmenity==null){
                 RoomAmenity roomAmenity1 = new RoomAmenity();
                 roomAmenity1.setAmenity(amenity);
                 list.add(roomAmenityRepository.save(roomAmenity1));
             }
-            list.add(roomAmenity.orElseThrow(() -> new DataNotFoundException("Could not add")));
+            list.add(roomAmenity);
         }
         return list;
     }

@@ -1,6 +1,6 @@
 package com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository;
 
-import com.example.hotel_thymeleaf_security.entity.hotel.moreOptions.moreOptions.PaymentMethod;
+import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.PaymentMethod;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

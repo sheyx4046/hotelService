@@ -14,7 +14,7 @@ public class VillageResponseDto {
     private String name, city, roomAmenities, description, phoneNumber, email,
             instagram, facebook, youtube, telegram, googleMap;
     private double price;
-    private boolean creditCard=false, cash=false;
+    private boolean creditCard, cash;
     private int roomAmount;
     private MultipartFile generalImage, otherImage;
 }
