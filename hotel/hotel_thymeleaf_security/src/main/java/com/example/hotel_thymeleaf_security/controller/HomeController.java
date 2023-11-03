@@ -3,8 +3,6 @@ package com.example.hotel_thymeleaf_security.controller;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.security.Principal;
 
 @Controller
-@PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN', 'USER')")
 @RequiredArgsConstructor
 public class HomeController {
     private final UserService userService;
@@ -23,7 +20,7 @@ public class HomeController {
         return "hotel";
     }
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String homePage(
             Principal principal
     ) {
@@ -37,7 +34,7 @@ public class HomeController {
 
         UserEntity user = userService.getByEmail(principal.getName());
         switch (user.getRole()){
-            case USER -> {return "redirect:/home";}
+            case USER -> {return "redirect:/";}
             case ADMIN, SUPER_ADMIN -> {return "redirect:/admin";}
             case MANAGER -> {return "redirect:/manager";}
         }
