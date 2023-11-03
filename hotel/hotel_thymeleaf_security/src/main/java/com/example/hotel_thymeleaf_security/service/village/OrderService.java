@@ -87,18 +87,20 @@ return orderRepository.findAllByUserId(userId,pageable).getContent();
 
         return commonDates;
     }
+
+
     public OrderEntity addOrder(BookingDto bookingDto){
-      List<LocalDate>bookingDays = getDatesBetween(bookingDto.startDay,bookingDto.endDay);
-      List<LocalDate>openDayRooms = DaysOff(bookingDto.villaId);
-      List<LocalDate>commonDates = findCommonDates(bookingDays,openDayRooms);
-      if (commonDates.isEmpty()) {
-          OrderEntity map = modelMapper.map(bookingDto, OrderEntity.class);
-          map.setBookingStatus(BOOKED);
-          OrderEntity save = orderRepository.save(map);
-          return save;
-      }
-      throw new OrdersException("Try again in the villa you have already booked or choose another villa");
-     }
+  List<LocalDate>bookingDays = getDatesBetween(bookingDto.startDay,bookingDto.endDay);
+  List<LocalDate>openDayRooms = DaysOff(bookingDto.villaId);
+  List<LocalDate>commonDates = findCommonDates(bookingDays,openDayRooms);
+  if (commonDates.isEmpty()) {
+      OrderEntity map = modelMapper.map(bookingDto, OrderEntity.class);
+      map.setBookingStatus(BOOKED);
+      OrderEntity save = orderRepository.save(map);
+      return save;
+  }
+  throw new OrdersException("Try again in the villa you have already booked or choose another villa");
+ }
  public String deleteOrder(UUID orderId, UUID userId){
      OrderEntity byId = orderRepository.findById(orderId).orElseThrow(
              ()->new DataNotFoundException("order not found"));

@@ -37,26 +37,7 @@ public class VillaServiceImpl implements VillageService {
     private final OrderService orderService;
     private final ModelMapper modelMapper;
     private final PaymentMethodRepository methodRepository;
-    private List<VillaRentEntity> findByCity(String city ){
-        List<VillaRentEntity> villas = villaRepository.findByCity(city).orElseThrow(()->new DataNotFoundException("our villas are not available in the city you entered, please enter another city"));
-      return villas;
-    }
-    private List<VillaRentEntity>findByCityAndDate(String city, LocalDate startDate,LocalDate endDate){
-        List<LocalDate>bookingDays = orderService.getDatesBetween(startDate,endDate);
-        List<VillaRentEntity> byCity = findByCity(city);
-        List<VillaRentEntity>byDate  =new ArrayList();
-        for (VillaRentEntity villa : byCity) {
-            List<LocalDate> openDays = orderService.DaysOff(villa.getId());
-            List<LocalDate> commonDates = orderService.findCommonDates(bookingDays, openDays);
-            if(commonDates.isEmpty()){
-                byDate.add(villa);
-            }
-        }
-        if(byDate.isEmpty()){
-            throw new DataNotFoundException("My main villas are not available in the city you entered on the date you entered. Please enter another city or time");
-        }
-        return byDate;
-    }
+
 
     @Override
     public VillaRentEntity create(VillageResponseDto villageResponseDto) {
@@ -71,8 +52,8 @@ public class VillaServiceImpl implements VillageService {
 
     @Override
     public VillaRentEntity update(VillageResponseDto villageResponseDto, UUID id) {
+        VillaRentEntity byId = villaRepository.findById(id).orElseThrow(()-> new DataNotFoundException("villa not found"));
         return null;
-//        TODO update
     }
 
     @Override
@@ -159,4 +140,5 @@ public class VillaServiceImpl implements VillageService {
         UserEntity userEntity = userService.getByEmail(ownerEmail);
         return villaRepository.findByNameAndOwnerId(dto.getName(), userEntity.getId()).isEmpty();
     }
+
 }
