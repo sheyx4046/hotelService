@@ -120,22 +120,22 @@
             <div class="container">
                 <div class="bg-white shadow" style="padding: 25px 25px;">
                     <div class="row g-2">
+                        <form action="/findVilla" method="post" enctype="application/x-www-form-urlencoded">
                         <div class="col-md-12">
                             <div class="row g-2">
                                 <div class="col-md-4">
                                     <div class="date" id="date1" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input"
-                                            placeholder="Check in" data-target="#date1" data-toggle="datetimepicker" />
+                                        <input type="text" value="" name="from" class="form-control datetimepicker-input" placeholder="Check in" data-target="#date1" data-toggle="datetimepicker" />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="date" id="date2" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" placeholder="Check out" data-target="#date2" data-toggle="datetimepicker"/>
+                                        <input type="text" name="to" value="" class="form-control datetimepicker-input" placeholder="Check out" data-target="#date2" data-toggle="datetimepicker"/>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <select class="form-select" id="location1" name="city">
-                                        <option selected>Select City</option>
+                                        <option selected value="">Select City</option>
                                         <option value="Tashkent">Tashkent</option>
                                         <option value="Tashkent region">Tashkent region</option>
                                         <option value="Sirdarya">Sirdarya</option>
@@ -154,19 +154,20 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="price" id="price1">
-                                        <input type="text" class="form-control" placeholder="Min Price"/>
+                                        <input type="text"  class="form-control" name="minPrice" placeholder="Min Price"/>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="price" id="price2">
-                                        <input type="text" class="form-control" placeholder="Max Price"/>
+                                        <input type="text" class="form-control" name="maxPrice" placeholder="Max Price"/>
                                     </div>
                                 </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-primary w-100">Submit</button>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary w-100" type="submit">Submit</button>
+                            </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        </form>
             </div>
         </div>
         <!-- Booking End -->
