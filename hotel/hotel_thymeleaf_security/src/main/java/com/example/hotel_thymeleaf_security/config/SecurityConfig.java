@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final String[] WHITE_LIST = {"/auth/**", "/", "/login.html","/hotel/**"};
+    private final String[] WHITE_LIST = {"/auth/**", "/", "/login", "/hotel/**", "/manager"};
     private final String[]  RESOURSES = {"/resources/**",
             "/static/**",
             "/css/**",

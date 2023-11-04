@@ -22,7 +22,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String homePage(
-            Principal principal
     ) {
         return "villagePages/index";
     }
@@ -31,14 +30,15 @@ public class HomeController {
     public String registeredPage(
             Principal principal
     ){
-
+        try{
         UserEntity user = userService.getByEmail(principal.getName());
         switch (user.getRole()){
-            case USER -> {return "redirect:/";}
             case ADMIN, SUPER_ADMIN -> {return "redirect:/admin";}
             case MANAGER -> {return "redirect:/manager";}
+            default -> {return "redirect:/";}
+        }}catch (NullPointerException e){
+            return "redirect:/";
         }
-        return "redirect:/auth/login";
     }
 
     @GetMapping("/find")
