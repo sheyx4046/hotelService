@@ -13,5 +13,5 @@ public interface VillaRepository extends JpaRepository<VillaRentEntity, UUID> {
     Optional<List<VillaRentEntity>> findByCity(String city);
     Optional<VillaRentEntity> findByNameAndOwnerId(String villageName, UUID ownerId);
     Page<VillaRentEntity> findAllByOrderByCreatedDate(Pageable pageable);
-    Page<VillaRentEntity> findAllByOwnerIdOrderByCreatedDate(UUID ownerId, Pageable pageable);
+    List<VillaRentEntity> findVillaRentEntitiesByOwnerIdOrderByCreatedDate(UUID ownerId);
 }

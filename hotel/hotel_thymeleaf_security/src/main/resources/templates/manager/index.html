@@ -106,18 +106,19 @@
                         </li>
                     </ul>
                 </li>
+                <div th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER-ADMIN')}">
                 <li class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>
                 <li class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>
                     <ul  class="menu-content">
-                        <li><a class="menu-item" href="#"><i></i><span>Users</span></a>
+                        <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>
                         </li>
-                        <li><a class="menu-item" href="#"><i></i><span>Create User</span></a>
+                        <li><a class="menu-item" href="/admin/"><i></i><span>Create User</span></a>
                         </li>
                         <li><a class="menu-item" href="#"><i></i><span>Edit User</span></a>
                         </li>
                     </ul>
                 </li>
-
+                </div>
             </ul>
             </li>
             </ul>

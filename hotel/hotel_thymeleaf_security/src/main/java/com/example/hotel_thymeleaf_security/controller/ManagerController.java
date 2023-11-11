@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -39,7 +40,7 @@ public class ManagerController {
         return "redirect:/manager";
     }
 
-    @GetMapping("/getVillagesOwner")
+    @GetMapping("/getVillages")
     public String getOwnerVillages(
             Model model,
             @RequestParam("page") Optional<Integer> page,
@@ -48,7 +49,7 @@ public class ManagerController {
     ) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
-        Page<VillaRentEntity> villas = villageService.getAllPage(PageRequest.of(currentPage - 1, pageSize));
+        Page<VillaRentEntity> villas = villageService.getVillageByOwnerEmail(PageRequest.of(currentPage - 1, pageSize), principal.getName());
         model.addAttribute("villas", villas);
         int totalPages = villas.getTotalPages();
         if (totalPages > 0) {
@@ -60,22 +61,26 @@ public class ManagerController {
         return "manager/hotel-list";
     }
 
-    @GetMapping("/getAllVillages")
-    public String getAllVillages(Model model,
-                                 @RequestParam("page") Optional<Integer> page,
-                                 @RequestParam("size") Optional<Integer> size
-    ) {
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(10);
-        Page<VillaRentEntity> villas = villageService.getAllPage(PageRequest.of(currentPage - 1, pageSize));
-        model.addAttribute("villas", villas);
-        int totalPages = villas.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-        return "manager/hotel-list";
+    @GetMapping("/{villaId}/edit")
+    public String villageEditPage(Model model,
+                                @PathVariable UUID villaId,
+                                Principal principal){
+        model.addAttribute("village", villageService.getById(villaId));
+        return "manager/edit";
+    }
+
+    @PostMapping("/{villaId}/edit")
+    public String villageEditPost(@PathVariable UUID villaId,
+                                  @ModelAttribute VillageResponseDto villageResponseDto,
+                                  Principal principal){
+        villageService.update(villageResponseDto, villaId);
+        return "manager/villages";
+    }
+
+    @DeleteMapping("/{villaId}/delete")
+    public String villageDelete(@PathVariable UUID villaId,
+                                Principal principal){
+        villageService.deleteByIdAndUser(villaId, principal.getName());
+        return "redirect:/manager/getVillages";
     }
 }

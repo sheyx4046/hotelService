@@ -8,6 +8,7 @@ import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptio
 import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.PaymentMethod;
 import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.RoomAmenity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
+import com.example.hotel_thymeleaf_security.exception.UserAccessException;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.ContactInfoRepository;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.PaymentMethodRepository;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.RoomAmenityRepository;
@@ -108,20 +109,44 @@ public class VillaServiceImpl implements VillageService {
     public Page<VillaRentEntity> getVillageByOwnerEmail(Pageable pageable, String email) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
+        UUID owner = userService.getByEmail(email).getId();
+        if(!email.isEmpty()){
+            List<VillaRentEntity> all = villaRepository.findVillaRentEntitiesByOwnerIdOrderByCreatedDate(owner);
 
-        List<VillaRentEntity> all = villaRepository.findAll();
+            int startItem = currentPage * pageSize;
+            List<VillaRentEntity> list;
 
-        int startItem = currentPage * pageSize;
-        List<VillaRentEntity> list;
+            if (startItem >= all.size()) {
+                list = Collections.emptyList();
+            } else {
+                int toIndex = Math.min(startItem + pageSize, all.size());
+                list = all.subList(startItem, toIndex);
+            }
 
-        if (startItem >= all.size()) {
-            list = Collections.emptyList();
-        } else {
-            int toIndex = Math.min(startItem + pageSize, all.size());
-            list = all.subList(startItem, toIndex);
+            return new PageImpl<>(list, pageable, all.size());}
+        return null;
+    }
+
+    @Override
+    public void deleteByIdAndUser(UUID villaId, String deleter) {
+        UserEntity userEntity = userService.getByEmail(deleter);
+        VillaRentEntity byId = getById(villaId);
+        switch (userEntity.getRole()){
+            case SUPER_ADMIN -> {
+                deleteById(villaId);
+            }
+            case MANAGER -> {
+                if(villaRepository.findByNameAndOwnerId(byId.getName(), userEntity.getId()).isPresent()){
+                    deleteById(villaId);
+                }
+                else {
+                    throw new UserAccessException("You cannot deleted");
+                }
+            }
+            default -> {
+                throw new UserAccessException("You cannot deleted");
+            }
         }
-
-        return new PageImpl<>(list, pageable, all.size());
     }
 
     private List<PaymentMethod> savePaymentMethods(boolean cash, boolean creditCard) {

@@ -7,6 +7,8 @@ import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.service.BaseService;
 import jakarta.mail.MessagingException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.UnsupportedEncodingException;
@@ -22,4 +24,6 @@ public interface UserService extends BaseService<UserEntity, UserRequestDto>, Us
     UserEntity update(UserDto userDto,  UUID userId);
     Boolean verifyCode(UUID userId);
     Boolean newVerifyCode(String email) throws MessagingException, UnsupportedEncodingException;
+
+    Page<UserEntity> getAllPage(Pageable pageable);
 }

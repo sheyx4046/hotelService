@@ -11,6 +11,9 @@ import com.example.hotel_thymeleaf_security.service.mailService.MailServiceImpl;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -145,6 +150,26 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         mailService.sendMessageToUser(user.getEmail());
         return true;
+    }
+
+    @Override
+    public Page<UserEntity> getAllPage(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+
+        List<UserEntity> all = userRepository.findAll();
+
+        int startItem = currentPage * pageSize;
+        List<UserEntity> list;
+
+        if (startItem >= all.size()) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, all.size());
+            list = all.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, pageable, all.size());
     }
 
     private Boolean checkState(String email){
