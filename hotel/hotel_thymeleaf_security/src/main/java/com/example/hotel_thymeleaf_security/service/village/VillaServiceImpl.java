@@ -1,12 +1,12 @@
 package com.example.hotel_thymeleaf_security.service.village;
 
 import com.example.hotel_thymeleaf_security.entity.dtos.VillageResponseDto;
+import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
+import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.ContactInfo;
 import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.FileEntity;
 import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.PaymentMethod;
 import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.RoomAmenity;
-import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
-import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.ContactInfoRepository;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.PaymentMethodRepository;
@@ -16,14 +16,13 @@ import com.example.hotel_thymeleaf_security.repository.villa.VillaRepository;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -83,6 +82,46 @@ public class VillaServiceImpl implements VillageService {
             return villaRepository.save(villaRent);
         }
         return null;
+    }
+
+    @Override
+    public Page<VillaRentEntity> getAllPage(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+
+        List<VillaRentEntity> all = villaRepository.findAll();
+
+        int startItem = currentPage * pageSize;
+        List<VillaRentEntity> list;
+
+        if (startItem >= all.size()) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, all.size());
+            list = all.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, pageable, all.size());
+    }
+
+    @Override
+    public Page<VillaRentEntity> getVillageByOwnerEmail(Pageable pageable, String email) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+
+        List<VillaRentEntity> all = villaRepository.findAll();
+
+        int startItem = currentPage * pageSize;
+        List<VillaRentEntity> list;
+
+        if (startItem >= all.size()) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, all.size());
+            list = all.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, pageable, all.size());
     }
 
     private List<PaymentMethod> savePaymentMethods(boolean cash, boolean creditCard) {

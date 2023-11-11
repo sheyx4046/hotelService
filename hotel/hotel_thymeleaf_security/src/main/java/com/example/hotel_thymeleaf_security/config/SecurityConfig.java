@@ -18,35 +18,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final String[] WHITE_LIST = {"/auth/**", "/", "/login", "/hotel/**", "/manager"};
+    private final String[] WHITE_LIST = {"/auth/**", "/", "/login", "/hotel/**", "/manager/**"};
     private final String[]  RESOURSES = {"/resources/**",
             "/static/**",
             "/css/**",
             "/js/**",
-            "images",
+            "/images/**",
             "/**"};
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http.csrf().disable()
-//                .authorizeHttpRequests()
-//                .requestMatchers(WHITE_LIST).permitAll()
-//                .requestMatchers("/resources/**",
-//                        "/static/**",
-//                        "/css/**",
-//                        "/js/**",
-//                        "images",
-//                        "/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/auth/login")
-//                .defaultSuccessUrl("/menu")
-//                .and()
-//                .build();
-//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
