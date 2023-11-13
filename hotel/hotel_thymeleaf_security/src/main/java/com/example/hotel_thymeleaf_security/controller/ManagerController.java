@@ -2,6 +2,7 @@ package com.example.hotel_thymeleaf_security.controller;
 
 import com.example.hotel_thymeleaf_security.entity.dtos.VillageResponseDto;
 import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
+import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
 import com.example.hotel_thymeleaf_security.service.village.VillageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,16 +24,17 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class ManagerController {
     private final VillageService villageService;
+    private final UserService userService;
     @GetMapping()
     public String managerDashboard(){
         return "manager/index";
     }
-    @GetMapping("/add/hotel")
+    @GetMapping("/add/village")
     public String addVillagePage(){
-        return "manager/add-hotel";
+        return "manager/add";
     }
 
-    @PostMapping("/add/hotel")
+    @PostMapping("/add/village")
     public String addHotel(@ModelAttribute VillageResponseDto dto,
                            Principal principal,
                            Model model){
@@ -57,8 +59,17 @@ public class ManagerController {
                     .boxed()
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
+            model.addAttribute("user", userService);
         }
-        return "manager/hotel-list";
+        return "manager/list";
+    }
+
+    @GetMapping("/edit")
+    public String getDefaultEditPage(
+            Principal principal
+    ){
+        VillaRentEntity lastVillage = villageService.getLastVillage(principal.getName());
+        return "redirect:/manager/"+lastVillage.getId().toString()+"/edit";
     }
 
     @GetMapping("/{villaId}/edit")

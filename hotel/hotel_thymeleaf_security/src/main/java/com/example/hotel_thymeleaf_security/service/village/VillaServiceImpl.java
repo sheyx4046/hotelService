@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -52,7 +53,35 @@ public class VillaServiceImpl implements VillageService {
 
     @Override
     public VillaRentEntity update(VillageResponseDto villageResponseDto, UUID id) {
-        VillaRentEntity byId = villaRepository.findById(id).orElseThrow(()-> new DataNotFoundException("villa not found"));
+        return null;
+    }
+
+    @Override
+    public VillaRentEntity update(VillageResponseDto villageResponseDto, UUID id, String ownerEmail) {
+        UserEntity userEntity = userService.getByEmail(ownerEmail);
+        if(checkOfVillage(villageResponseDto, ownerEmail)){
+            VillaRentEntity villaRent = getById(id);
+            villaRent.setName(villageResponseDto.getName());
+            villaRent.setDescription(villageResponseDto.getDescription());
+            villaRent.setPrice(villageResponseDto.getPrice());
+            villaRent.setRoomAmount(villageResponseDto.getRoomAmount());
+            villaRent.setOwnerId(userEntity.getId());
+            villaRent.setContactInfo(
+                    getAndSaveContactInfo(villageResponseDto.getEmail(),villageResponseDto.getInstagram(),
+                            villageResponseDto.getFacebook(), villageResponseDto.getPhoneNumber(), villageResponseDto.getTelegram(),
+                            villageResponseDto.getYoutube(), villageResponseDto.getGoogleMap()));
+            villaRent.setRoomAmenities(
+                    getAndSaveRA(villageResponseDto.getRoomAmenities())
+            );
+            villaRent.setPaymentOptions(
+                    savePaymentMethods(villageResponseDto.isCash(), villageResponseDto.isCreditCard())
+            );
+//            villaRent.setImages(
+//                    saveImage(dto.getGeneralImage(), dto.getOtherImage())
+//            );
+            villaRent.setUpdatedDate(LocalDateTime.now());
+            return villaRepository.save(villaRent);
+        }
         return null;
     }
 
@@ -109,22 +138,35 @@ public class VillaServiceImpl implements VillageService {
     public Page<VillaRentEntity> getVillageByOwnerEmail(Pageable pageable, String email) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
-        UUID owner = userService.getByEmail(email).getId();
-        if(!email.isEmpty()){
-            List<VillaRentEntity> all = villaRepository.findVillaRentEntitiesByOwnerIdOrderByCreatedDate(owner);
-
-            int startItem = currentPage * pageSize;
-            List<VillaRentEntity> list;
-
-            if (startItem >= all.size()) {
-                list = Collections.emptyList();
-            } else {
-                int toIndex = Math.min(startItem + pageSize, all.size());
-                list = all.subList(startItem, toIndex);
+        UserEntity userEntity = userService.getByEmail(email);
+        switch (userEntity.getRole()){
+            case ADMIN, SUPER_ADMIN ->{
+                List<VillaRentEntity> all = villaRepository.findAll();
+                int startItem = currentPage * pageSize;
+                List<VillaRentEntity> list;
+                if (startItem >= all.size()) {
+                    list = Collections.emptyList();
+                } else {
+                    int toIndex = Math.min(startItem + pageSize, all.size());
+                    list = all.subList(startItem, toIndex);
+                }
+                return new PageImpl<>(list, pageable, all.size());
             }
-
-            return new PageImpl<>(list, pageable, all.size());}
-        return null;
+            case MANAGER -> {
+                List<VillaRentEntity> all = villaRepository.findVillaRentEntitiesByOwnerIdOrderByCreatedDate(userEntity.getId());
+                int startItem = currentPage * pageSize;
+                List<VillaRentEntity> list;
+                if (startItem >= all.size()) {
+                    list = Collections.emptyList();
+                } else {
+                    int toIndex = Math.min(startItem + pageSize, all.size());
+                    list = all.subList(startItem, toIndex);
+                }
+                return new PageImpl<>(list, pageable, all.size());
+            }
+            default -> {
+                return null;}
+        }
     }
 
     @Override
@@ -146,6 +188,29 @@ public class VillaServiceImpl implements VillageService {
             default -> {
                 throw new UserAccessException("You cannot deleted");
             }
+        }
+    }
+
+    @Override
+    public List<VillaRentEntity> getAllByOwner(String owner) {
+        UserEntity userEntity = userService.getByEmail(owner);
+        return villaRepository.findVillaRentEntitiesByOwnerId(userEntity.getId());
+    }
+
+    @Override
+    public VillaRentEntity getLastVillage(String owner) {
+        UserEntity userEntity = userService.getByEmail(owner);
+        switch (userEntity.getRole()){
+            case ADMIN, SUPER_ADMIN -> {
+                List<VillaRentEntity> all = villaRepository.findAll();
+                return all.get(all.size()-1);
+            }
+            case MANAGER -> {
+                List<VillaRentEntity> allByOwner = getAllByOwner(owner);
+                return allByOwner.get(allByOwner.size()-1);
+            }
+            default -> {
+                return null;}
         }
     }
 

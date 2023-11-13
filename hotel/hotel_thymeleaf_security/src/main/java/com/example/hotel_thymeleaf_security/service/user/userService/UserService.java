@@ -26,4 +26,6 @@ public interface UserService extends BaseService<UserEntity, UserRequestDto>, Us
     Boolean newVerifyCode(String email) throws MessagingException, UnsupportedEncodingException;
 
     Page<UserEntity> getAllPage(Pageable pageable);
+
+    UserEntity getLastUser();
 }

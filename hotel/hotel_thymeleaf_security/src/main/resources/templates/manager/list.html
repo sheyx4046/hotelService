@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta name="description" content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
+  <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
+  <meta name="author" content="PIXINVENT">
+  <title>Edit Village</title>
+  <link rel="apple-touch-icon" th:href="@{/css/assets/img/favicon/favicon.ico}">
+  <link rel="shortcut icon" type="image/x-icon" th:href="@{/css/assets/img/favicon/favicon.ico}">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+
+  <!-- BEGIN: Vendor CSS-->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/vendors.min.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/daterangepicker.css}">
+  <link rel="stylesheet" th:href="@{/icon/1.3.0/css/line-awesome.min.css}">
+  <link rel="stylesheet" th:href="@{/icon/1.3.0/css/vendors.min.css}">
+  <!-- END: Vendor CSS-->
+
+  <!-- BEGIN: Theme CSS-->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/bootstrap.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/bootstrap-extended.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/colors.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/components.css}">
+  <!-- END: Theme CSS-->
+
+  <!-- BEGIN: Page CSS-->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/vertical-menu.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/palette-gradient.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/wizard.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/daterange.css}">
+  <!-- END: Page CSS-->
+
+
+  <!-- BEGIN: Vendor JS-->
+  <script th:src="@{/css/assets/js/vendors.min.js}"></script>
+  <!-- BEGIN Vendor JS-->
+
+  <!-- BEGIN: Page Vendor JS-->
+  <script th:src="@{/css/assets/js/jquery.steps.min.js}"></script>
+  <script th:src="@{/css/assets/js/moment-with-locales.min.js}"></script>
+  <script th:src="@{/css/assets/js/daterangepicker.js}"></script>
+  <script th:src="@{/css/assets/js/jquery.validate.min.js}"></script>
+  <!-- END: Page Vendor JS-->
+
+  <!-- BEGIN: Theme JS-->
+  <script th:src="@{/css/assets/js/app-menu.js}"></script>
+  <script th:src="@{/css/assets/js/app.js}"></script>
+  <!-- END: Theme JS-->
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
+
+<!-- BEGIN: Header-->
+<nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light bg-info navbar-shadow">
+  <div class="navbar-wrapper">
+    <div class="navbar-header">
+      <ul class="nav navbar-nav flex-row">
+        <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
+        <li class="nav-item"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="modern admin logo" th:src="@{/css/assets/img/favicon/favicon.ico}">
+          <h3 class="brand-text">Villageier</h3>
+        </a></li>
+      </ul>
+    </div>
+    <div class="navbar-container content">
+      <div class="collapse navbar-collapse" id="navbar-mobile">
+        <ul class="nav navbar-nav mr-auto float-left">
+          <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
+          <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand" href="#"><i class="ficon ft-maximize"></i></a></li>
+          <li class="dropdown nav-item mega-dropdown d-none d-lg-block"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Villageier</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- END: Header-->
+
+<!-- BEGIN: Main Menu-->
+
+<div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
+  <div class="main-menu-content">
+    <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+      <li><a href="/manager"><i class="la la-home"></i><span class="menu-title" data-i18n="Dashboard Hospital">Dashboard Village</span></a>
+      </li>
+      <li class=" navigation-header"><span data-i18n="Villages">Villages</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Villages"></i>
+      <li class=" nav-item"><a href="#"><i class="la la-Village"></i><span class="menu-title" data-i18n="Villages">Villages</span></a>
+        <ul class="menu-content">
+          <li  class="active"><a class="menu-item" href="/manager/getVillages"><i></i><span>My Villages</span></a>
+          </li>
+          <li><a class="menu-item" href="/manager/add/village"><i></i><span>Add Village</span></a>
+          </li>
+          <li><a class="menu-item" href="/manager/edit"><i></i><span>Edit Village</span></a>
+          </li>
+        </ul>
+      </li>
+      <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>
+      <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>
+        <ul  class="menu-content">
+          <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>
+          </li>
+          <li><a class="menu-item" href="/admin/add"><i></i><span>Create User</span></a>
+          </li>
+          <li><a class="menu-item" href="/admin/edit"><i></i><span>Edit User</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    </li>
+    </ul>
+  </div>
+</div>
+
+<!-- END: Main Menu-->
+
+
+<!-- BEGIN: Content-->
+<div class="app-content content">
+  <div class="content-overlay"></div>
+  <div class="content-wrapper">
+    <div class="content-header row">
+      <div class="content-header-left col-md-6 col-12 mb-2">
+        <h3 class="content-header-title">Villages</h3>
+        <div class="row breadcrumbs-top">
+          <div class="breadcrumb-wrapper col-12">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a>
+              </li>
+              <li class="breadcrumb-item active"> Villages
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-body">
+      <!-- Villa Info cards -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Villages</h4>
+              <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+              <div class="heading-elements">
+                <ul class="list-inline mb-0">
+                  <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                  <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="card-content collapse show">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th scope="col">Created</th>
+                      <th scope="col">Owner</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">City</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Room amount</th>
+                      <th scope="col">Edit/Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="villa:${villas}">
+                      <td th:text="${#temporals.format(villa.createdDate, 'dd.MM.yyyy')}"></td>
+                      <th scope="row" th:text="${user.getById(villa.getOwnerId()).getEmail()}"></th>
+                      <td th:text="${villa.name}"></td>
+                      <td th:text="${villa.city}"></td>
+                      <td th:text="${villa.price}"></td>
+                      <td th:text="${villa.roomAmount}"></td>
+                      <!--                      <td th:text="${}"></td>-->
+                      <td>
+                        <div class="container-a"> <button type="button" class="btn btn-icon btn-success btn-sm"><i class="la la-edit"></i></button>
+
+                          <button type="button" class="btn btn-icon btn-danger  btn-sm"><i class="la la-remove"></i></button>
+                        </div>
+
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <!-- Add pagination controls -->
+                  <div class="text-center">
+                    <nav th:if="${villas.totalPages > 1}" aria-label="Page navigation">
+                      <ul class="pagination justify-content-center">
+                        <li th:if="${villas.hasPrevious()}">
+                          <a class="page-link" th:href="@{/manager/getAllVillages(size=${villas.size}, page=${villas.number})}">Previous</a>
+                        </li>
+                        <div th:each="pageNumber : ${pageNumbers}">
+                          <li th:class="${pageNumber == (villas.getNumber() + 1)} ? 'page-item active' : 'page-item'">
+                            <a class="page-link" th:href="@{/manager/getAllVillages(size=${villas.size}, page=${pageNumber})}" th:text="${pageNumber}"></a>
+                          </li>
+                        </div>
+                        <li th:if="${villas.getNumber() + 1 < villas.totalPages}" class="page-item">
+                          <a class="page-link" th:href="@{/manager/getAllVillages(size=${villas.size}, page=${villas.number + 2})}">Next</a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END: Content-->
+
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+</body>
+<!-- END: Body-->
+
+</html>

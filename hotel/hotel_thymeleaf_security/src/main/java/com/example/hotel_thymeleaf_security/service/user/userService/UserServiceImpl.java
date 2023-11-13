@@ -172,6 +172,12 @@ public class UserServiceImpl implements UserService {
         return new PageImpl<>(list, pageable, all.size());
     }
 
+    @Override
+    public UserEntity getLastUser() {
+        List<UserEntity> all = userRepository.findAll();
+        return all.get(all.size()-1);
+    }
+
     private Boolean checkState(String email){
         UserEntity userEntity = getByEmail(email);
         switch (userEntity.getState()){

@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" th:href="@{/css/assets/img/favicon/favicon.ico}">
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/css/assets/img/favicon/favicon.ico}">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/vendors.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/daterangepicker.css}">
@@ -93,37 +93,35 @@
 
 
 
+
     <!-- BEGIN: Main Menu-->
     <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class><a href="index.html"><i class="la la-home"></i><span class="menu-title" data-i18n="Dashboard Hospital">Dashboard Hospital</span></a>
+                <li><a href="/manager"><i class="la la-home"></i><span class="menu-title" data-i18n="Dashboard Village">Manager Dashboard</span></a>
                 </li>
-                <li class=" navigation-header"><span data-i18n="Hotels">Hotels</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Hotels"></i>
-                    <!-- Hotel nav  -->
-                <li class=" nav-item"><a href="#"><i class="la la-hotel"></i><span class="menu-title" data-i18n="Hotels">Hotels</span></a>
+                <li class=" navigation-header"><span data-i18n="Villages">Villages</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Villages"></i>
+                <li class=" nav-item"><a href="#"><i class="la la-hotel"></i><span class="menu-title" data-i18n="Villages">Villages</span></a>
                     <ul class="menu-content">
-                        <li><a class="menu-item" href="/manager/getAllVillages/0"><i></i><span>My Hotels</span></a>
+                        <li><a class="menu-item" href="/manager/getVillages"><i></i><span>My Villages</span></a>
                         </li>
-                        <li class="active"><a class="menu-item" href="add-hotel.html"><i></i><span>Add Hotel</span></a>
+                        <li  class="active"><a class="menu-item" href="/manager/add/village"><i></i><span>Add Village</span></a>
                         </li>
-                        <li><a class="menu-item" href="aaa-edit-hotel.html"><i></i><span>Edit Hotel</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- User nav -->
-                <li class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>
-                <li class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>
-                    <ul  class="menu-content">
-                        <li><a class="menu-item" href="#"><i></i><span>Users</span></a>
-                        </li>
-                        <li><a class="menu-item" href="#"><i></i><span>Create User</span></a>
-                        </li>
-                        <li><a class="menu-item" href="#"><i></i><span>Edit User</span></a>
+                        <li><a class="menu-item" href="/manager/edit"><i></i><span>Edit Village</span></a>
                         </li>
                     </ul>
                 </li>
-                </li>
+<!--                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>-->
+<!--                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>-->
+<!--                    <ul  class="menu-content">-->
+<!--                        <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>-->
+<!--                        </li>-->
+<!--                        <li><a class="menu-item" href="/admin/add"><i></i><span>Create User</span></a>-->
+<!--                        </li>-->
+<!--                        <li><a class="menu-item" href="/admin/edit"><i></i><span>Edit User</span></a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </li>-->
             </ul>
         </div>
     </div>
@@ -140,9 +138,7 @@
                     <div class="row breadcrumbs-top">
                         <div class="breadcrumb-wrapper col-12">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a>
-                                </li>
-                                <li class="breadcrumb-item"><a href="#">Page</a>
+                                <li class="breadcrumb-item"><a href="/manager">Home</a>
                                 </li>
                                 <li class="breadcrumb-item active">Add
                                 </li>

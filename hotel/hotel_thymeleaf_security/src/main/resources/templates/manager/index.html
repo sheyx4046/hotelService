@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
     <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
-    <meta name="author" content="PIXINVENT">
+    <meta name="author" content="KShukhrat">
     <title>VillaRent</title>
     <link rel="apple-touch-icon" th:href="@{/css/assets/img/favicon/favicon.ico}">
-    <link rel="shortcut icon" type="image/x-icon" href="../../../assets/img/favicon/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/css/assets/img/favicon/favicon.ico}">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
@@ -30,7 +30,7 @@
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/vertical-menu.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/palette-gradient.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/hospital.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/assets/css/Village.css}">
 <!--    <link rel=”stylesheet” type="text/css" th:href=”@{/icon/fontawesome-free-6.4.2-web/css/fontawesome.min.css}”>-->
     <!-- END: Page CSS-->
 
@@ -39,7 +39,7 @@
     <!-- END: Custom CSS-->
 
     <!-- BEGIN: Vendor JS-->
-    <script th:src="@{/css/assets/js/vendors2.min.js}"></script>
+    <script th:src="@{/css/assets/js/vendors.min.js}"></script>
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
@@ -67,7 +67,7 @@
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
-                <li class="nav-item"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="modern admin logo" src="../../../assets/img/favicon/favicon.ico">
+                <li class="nav-item"><a class="navbar-brand" href="/manager"><img class="brand-logo" alt="modern admin logo" th:src="@{/css/assets/img/favicon/favicon.ico}">
                     <h3 class="brand-text">VillaRent</h3>
                 </a></li>
             </ul>
@@ -93,34 +93,30 @@
     <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-<!--                <li class="active"><a href="index.html"><i class="la la-home"></i><span class="menu-title" data-i18n="Dashboard Hospital">Dashboard Hospital</span></a>-->
-<!--                </li>-->
-                <li class=" navigation-header"><span data-i18n="Hotels">Hotels</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Hotels"></i>
-                <li class=" nav-item"><a href="#"><i class="la la-hotel"></i><span class="menu-title" data-i18n="Hotels">Hotels</span></a>
+                <li class="active"><a href="/manager"><i class="la la-home"></i><span class="menu-title" data-i18n="Dashboard Village">Manager Dashboard</span></a>
+                </li>
+                <li class=" navigation-header"><span data-i18n="Villages">Villages</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Villages"></i>
+                <li class=" nav-item"><a href="#"><i class="la la-hotel"></i><span class="menu-title" data-i18n="Villages">Villages</span></a>
                     <ul class="menu-content">
-                        <li  class="active"><a class="menu-item" href=""><i></i><span>My Hotels</span></a>
+                        <li><a class="menu-item" href="/manager/getVillages"><i></i><span>My Villages</span></a>
                         </li>
-                        <li><a class="menu-item" href="/manager/add/hotel"><i></i><span>Add Hotel</span></a>
+                        <li><a class="menu-item" href="/manager/add/village"><i></i><span>Add Village</span></a>
                         </li>
-                        <li><a class="menu-item" href="#"><i></i><span>Edit Hotel</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <div th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER-ADMIN')}">
-                <li class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>
-                <li class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>
-                    <ul  class="menu-content">
-                        <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>
-                        </li>
-                        <li><a class="menu-item" href="/admin/"><i></i><span>Create User</span></a>
-                        </li>
-                        <li><a class="menu-item" href="#"><i></i><span>Edit User</span></a>
+                        <li><a class="menu-item" href="/manager/edit"><i></i><span>Edit Village</span></a>
                         </li>
                     </ul>
                 </li>
-                </div>
-            </ul>
-            </li>
+<!--                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>-->
+<!--                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>-->
+<!--                    <ul  class="menu-content">-->
+<!--                        <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>-->
+<!--                        </li>-->
+<!--                        <li><a class="menu-item" href="/admin/add"><i></i><span>Create User</span></a>-->
+<!--                        </li>-->
+<!--                        <li><a class="menu-item" href="/admin/edit"><i></i><span>Edit User</span></a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </li>-->
             </ul>
         </div>
     </div>
@@ -134,7 +130,7 @@
             <div class="content-header row">
             </div>
             <div class="content-body">
-                <!-- Hospital Info cards -->
+                <!-- Village Info cards -->
                 <div class="row">
                     <div class="col-xl-3 col-lg-6 col-md-6 col-12">
                         <div class="card pull-up">
@@ -228,7 +224,7 @@
                                                     <div class="designation text-light font-small-2">Dentist</div>
                                                 </td>
                                                 <td class="text-right border-top-0">
-                                                    <a href="hospital-book-appointment.html" class="btn btn-sm btn-outline-success">Book Appointment</a>
+                                                    <a href="Village-book-appointment.html" class="btn btn-sm btn-outline-success">Book Appointment</a>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -242,7 +238,7 @@
                                                     <div class="designation text-light font-small-2">Dentist</div>
                                                 </td>
                                                 <td class="text-right border-top-0 ">
-                                                    <a href="hospital-book-appointment.html" class="btn btn-sm btn-outline-success">Book Appointment</a>
+                                                    <a href="Village-book-appointment.html" class="btn btn-sm btn-outline-success">Book Appointment</a>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -256,7 +252,7 @@
                                                     <div class="designation text-light font-small-2">Dentist</div>
                                                 </td>
                                                 <td class="text-right">
-                                                    <a href="hospital-book-appointment.html" class="btn btn-sm btn-outline-success">Book Appointment</a>
+                                                    <a href="Village-book-appointment.html" class="btn btn-sm btn-outline-success">Book Appointment</a>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -270,7 +266,7 @@
                                                     <div class="designation text-light font-small-2">Dentist</div>
                                                 </td>
                                                 <td class="text-right">
-                                                    <a href="hospital-book-appointment.html" class="btn btn-sm btn-outline-success">Book Appointment</a>
+                                                    <a href="Village-book-appointment.html" class="btn btn-sm btn-outline-success">Book Appointment</a>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -284,7 +280,7 @@
                                                     <div class="designation text-light font-small-2">Dentist</div>
                                                 </td>
                                                 <td class="text-right border-bottom-0 ">
-                                                    <a href="hospital-book-appointment.html" class="btn btn-sm btn-outline-success">Book Appointment</a>
+                                                    <a href="Village-book-appointment.html" class="btn btn-sm btn-outline-success">Book Appointment</a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -300,7 +296,7 @@
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
-                                        <li><a class="btn btn-sm btn-danger box-shadow-2 round btn-min-width pull-right" href="hospital-book-appointment.html" target="_blank">View all</a></li>
+                                        <li><a class="btn btn-sm btn-danger box-shadow-2 round btn-min-width pull-right" href="Village-book-appointment.html" target="_blank">View all</a></li>
                                     </ul>
                                 </div>
                             </div>
