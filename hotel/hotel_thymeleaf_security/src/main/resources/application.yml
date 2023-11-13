@@ -5,8 +5,16 @@ server:
     whitelabel:
       enabled: false
 
+file:
+  upload-dir: src/main/resources/uploads
 
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 10KB
+      max-file-size: 1000MB
+      max-request-size: 1500MB
   datasource:
     username: postgres
     password: 1
@@ -20,7 +28,6 @@ spring:
     encoding: UTF-8
     servlet:
       content-type: text/html
-      cache: false
     enabled: true
   jpa:
     hibernate:

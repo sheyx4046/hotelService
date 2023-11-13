@@ -37,7 +37,10 @@ public class OrderController {
     public String villaAllPage(
             Model model
     ){
-//        model.addAttribute("villas",orderService.getAll());
+//        model.addAttribute("villas",vil())
+//
+//        ;
+
         return "villagePages/find";
     }
 }

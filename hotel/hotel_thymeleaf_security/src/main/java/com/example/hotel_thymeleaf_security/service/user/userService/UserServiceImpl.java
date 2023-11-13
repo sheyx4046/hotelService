@@ -3,6 +3,7 @@ package com.example.hotel_thymeleaf_security.service.user.userService;
 import com.example.hotel_thymeleaf_security.entity.dtos.AuthDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.UserDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
+import com.example.hotel_thymeleaf_security.entity.user.Role;
 import com.example.hotel_thymeleaf_security.entity.user.States;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
@@ -11,6 +12,9 @@ import com.example.hotel_thymeleaf_security.service.mailService.MailServiceImpl;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +23,8 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -145,6 +151,53 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         mailService.sendMessageToUser(user.getEmail());
         return true;
+    }
+
+    @Override
+    public Page<UserEntity> getAllPage(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+
+        List<UserEntity> all = userRepository.findAll();
+
+        int startItem = currentPage * pageSize;
+        List<UserEntity> list;
+
+        if (startItem >= all.size()) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, all.size());
+            list = all.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, pageable, all.size());
+    }
+
+    @Override
+    public UserEntity getLastUser() {
+        List<UserEntity> all = userRepository.findAll();
+        return all.get(all.size()-1);
+    }
+
+    @Override
+    public UserEntity saveByAdmin(UserRequestDto userRequestDto, String name) {
+        UserEntity admin = getByEmail(name);
+        switch (admin.getRole()){
+            case ADMIN -> {
+                if(userRequestDto.getRoles()== Role.SUPER_ADMIN || userRequestDto.getRoles() ==Role.ADMIN){
+                    return null;
+                } else if (userRequestDto.getRoles()== Role.MANAGER || userRequestDto.getRoles() ==Role.USER) {
+                    return create(userRequestDto);
+                }
+            }
+            case SUPER_ADMIN -> {
+                return create(userRequestDto);
+            }
+            default -> {
+                return null;
+            }
+        }
+        return null;
     }
 
     private Boolean checkState(String email){
