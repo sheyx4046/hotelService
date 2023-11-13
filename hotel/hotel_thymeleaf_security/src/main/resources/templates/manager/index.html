@@ -106,17 +106,17 @@
                         </li>
                     </ul>
                 </li>
-<!--                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>-->
-<!--                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>-->
-<!--                    <ul  class="menu-content">-->
-<!--                        <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>-->
-<!--                        </li>-->
-<!--                        <li><a class="menu-item" href="/admin/add"><i></i><span>Create User</span></a>-->
-<!--                        </li>-->
-<!--                        <li><a class="menu-item" href="/admin/edit"><i></i><span>Edit User</span></a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </li>-->
+                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>
+                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>
+                    <ul  class="menu-content">
+                        <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>
+                        </li>
+                        <li><a class="menu-item" href="/admin/add"><i></i><span>Create User</span></a>
+                        </li>
+                        <li><a class="menu-item" href="/admin/edit"><i></i><span>Edit User</span></a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>

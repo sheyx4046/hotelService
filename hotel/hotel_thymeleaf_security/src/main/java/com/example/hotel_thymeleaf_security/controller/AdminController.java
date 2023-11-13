@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-@PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+//@PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
 public class AdminController {
     private final UserService userService;
 
@@ -48,14 +48,14 @@ public class AdminController {
                         .collect(Collectors.toList());
                 model.addAttribute("pageNumbers", pageNumbers);
             }
-            return "admin";
+            return "admin/users";
         }
 
 
     @GetMapping("/edit")
     public String editRedirect(){
         UserEntity lastUser = userService.getLastUser();
-        return "redirect:/admin"+lastUser.getId().toString()+"/edit";
+        return "redirect:/admin/"+lastUser.getId().toString()+"/edit";
     }
 
     @PostMapping("/{userId}/edit")
@@ -76,12 +76,24 @@ public class AdminController {
     @PreAuthorize(value = "hasRole('SUPER_ADMIN')")
     public String deleteUser(@PathVariable UUID userId){
         userService.deleteById(userId);
-        return "admin";
+        return "/admin";
     }
 
     @GetMapping("/add")
     public String addUserPage(){
-        return "admin/add-user";
+        return "admin/add";
+    }
+
+    @PostMapping("/add")
+    public String addUser(Model model,
+                          @ModelAttribute UserRequestDto userRequestDto,
+                          Principal principal){
+
+        UserEntity user = userService.saveByAdmin(userRequestDto, principal.getName());
+        if (user==null){
+            return "redirect:/admin/add";
+        }else{
+        return "redirect:/admin";}
     }
 
 }

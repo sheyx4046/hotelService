@@ -3,6 +3,7 @@ package com.example.hotel_thymeleaf_security.service.user.userService;
 import com.example.hotel_thymeleaf_security.entity.dtos.AuthDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.UserDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
+import com.example.hotel_thymeleaf_security.entity.user.Role;
 import com.example.hotel_thymeleaf_security.entity.user.States;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
@@ -176,6 +177,27 @@ public class UserServiceImpl implements UserService {
     public UserEntity getLastUser() {
         List<UserEntity> all = userRepository.findAll();
         return all.get(all.size()-1);
+    }
+
+    @Override
+    public UserEntity saveByAdmin(UserRequestDto userRequestDto, String name) {
+        UserEntity admin = getByEmail(name);
+        switch (admin.getRole()){
+            case ADMIN -> {
+                if(userRequestDto.getRoles()== Role.SUPER_ADMIN || userRequestDto.getRoles() ==Role.ADMIN){
+                    return null;
+                } else if (userRequestDto.getRoles()== Role.MANAGER || userRequestDto.getRoles() ==Role.USER) {
+                    return create(userRequestDto);
+                }
+            }
+            case SUPER_ADMIN -> {
+                return create(userRequestDto);
+            }
+            default -> {
+                return null;
+            }
+        }
+        return null;
     }
 
     private Boolean checkState(String email){

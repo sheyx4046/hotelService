@@ -85,7 +85,7 @@ public class ManagerController {
                                   @ModelAttribute VillageResponseDto villageResponseDto,
                                   Principal principal){
         villageService.update(villageResponseDto, villaId);
-        return "manager/villages";
+        return "manager/edit";
     }
 
     @DeleteMapping("/{villaId}/delete")

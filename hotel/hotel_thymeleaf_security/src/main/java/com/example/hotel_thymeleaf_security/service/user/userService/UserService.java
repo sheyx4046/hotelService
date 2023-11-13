@@ -28,4 +28,6 @@ public interface UserService extends BaseService<UserEntity, UserRequestDto>, Us
     Page<UserEntity> getAllPage(Pageable pageable);
 
     UserEntity getLastUser();
+
+    UserEntity saveByAdmin(UserRequestDto userRequestDto, String name);
 }

@@ -9,7 +9,7 @@
   <meta name="description" content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
   <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
   <meta name="author" content="PIXINVENT">
-  <title>Edit Village</title>
+  <title>Villages</title>
   <link rel="apple-touch-icon" th:href="@{/css/assets/img/favicon/favicon.ico}">
   <link rel="shortcut icon" type="image/x-icon" th:href="@{/css/assets/img/favicon/favicon.ico}">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
@@ -65,8 +65,8 @@
     <div class="navbar-header">
       <ul class="nav navbar-nav flex-row">
         <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
-        <li class="nav-item"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="modern admin logo" th:src="@{/css/assets/img/favicon/favicon.ico}">
-          <h3 class="brand-text">Villageier</h3>
+        <li class="nav-item"><a class="navbar-brand" href="/manager"><img class="brand-logo" alt="modern admin logo" th:src="@{/css/assets/img/favicon/favicon.ico}">
+          <h3 class="brand-text">VillaRent</h3>
         </a></li>
       </ul>
     </div>
@@ -75,7 +75,7 @@
         <ul class="nav navbar-nav mr-auto float-left">
           <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
           <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand" href="#"><i class="ficon ft-maximize"></i></a></li>
-          <li class="dropdown nav-item mega-dropdown d-none d-lg-block"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Villageier</a>
+          <li class="dropdown nav-item mega-dropdown d-none d-lg-block"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">VillaRent</a>
           </li>
         </ul>
       </div>
@@ -114,8 +114,6 @@
         </ul>
       </li>
     </ul>
-    </li>
-    </ul>
   </div>
 </div>
 
@@ -132,7 +130,7 @@
         <div class="row breadcrumbs-top">
           <div class="breadcrumb-wrapper col-12">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.html">Home</a>
+              <li class="breadcrumb-item"><a href="/manager">Home</a>
               </li>
               <li class="breadcrumb-item active"> Villages
               </li>
@@ -179,11 +177,10 @@
                       <td th:text="${villa.city}"></td>
                       <td th:text="${villa.price}"></td>
                       <td th:text="${villa.roomAmount}"></td>
-                      <!--                      <td th:text="${}"></td>-->
                       <td>
-                        <div class="container-a"> <button type="button" class="btn btn-icon btn-success btn-sm"><i class="la la-edit"></i></button>
+                        <div class="container-a"><a th:href="'/manager/'+${villa.id}+'/edit'"><button type="button" class="btn btn-icon btn-success btn-sm"><i class="la la-edit"></i></button></a>
 
-                          <button type="button" class="btn btn-icon btn-danger  btn-sm"><i class="la la-remove"></i></button>
+                          <a th:href="'/manager/'+${villa.id}+'/delete'" th:if="${ #authorization.expression('isAuthenticated()') and (#strings.contains(#authentication.principal.authorities,'SUPER_ADMIN') or #strings.contains(#authentication.principal.authorities,'MANAGER'))}"><button type="button" class="btn btn-icon btn-danger  btn-sm"><i class="la la-remove"></i></button></a>
                         </div>
 
                       </td>
