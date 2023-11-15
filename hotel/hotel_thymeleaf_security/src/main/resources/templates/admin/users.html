@@ -161,9 +161,9 @@
                                                     <td th:text="${user.role}">Admin</td>
                                                     <td th:text="${user.state}">@mdo</td>
                                                     <td>
-                                                        <div class="container-a"><a th:href="'/manager/'+${user.id}+'/edit'"><button type="button" class="btn btn-icon btn-success btn-sm"><i class="la la-edit"></i></button></a>
+                                                        <div class="container-a"><a th:href="'/admin/'+${user.id}+'/edit'"><button type="button" class="btn btn-icon btn-success btn-sm"><i class="la la-edit"></i></button></a>
 
-                                                            <a th:href="'/manager/'+${user.id}+'/delete'" th:if="${ #authorization.expression('isAuthenticated()') and (#strings.contains(#authentication.principal.authorities,'SUPER_ADMIN') or #strings.contains(#authentication.principal.authorities,'MANAGER'))}"><button type="button" class="btn btn-icon btn-danger  btn-sm"><i class="la la-remove"></i></button></a>
+                                                            <a th:href="'/admin/'+${user.id}+'/delete'" th:if="${ #authorization.expression('isAuthenticated()') and (#strings.contains(#authentication.principal.authorities,'SUPER_ADMIN') or #strings.contains(#authentication.principal.authorities,'MANAGER'))}"><button type="button" class="btn btn-icon btn-danger  btn-sm"><i class="la la-remove"></i></button></a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -175,15 +175,15 @@
                                             <nav th:if="${users.totalPages > 1}" aria-label="Page navigation">
                                                 <ul class="pagination justify-content-center">
                                                     <li th:if="${users.hasPrevious()}">
-                                                        <a class="page-link" th:href="@{/manager/getAllVillages(size=${users.size}, page=${users.number})}">Previous</a>
+                                                        <a class="page-link" th:href="@{/admin/users-list(size=${users.size}, page=${users.number})}">Previous</a>
                                                     </li>
                                                     <div th:each="pageNumber : ${pageNumbers}">
                                                         <li th:class="${pageNumber == (users.getNumber() + 1)} ? 'page-item active' : 'page-item'">
-                                                            <a class="page-link" th:href="@{/manager/getAllVillages(size=${users.size}, page=${pageNumber})}" th:text="${pageNumber}"></a>
+                                                            <a class="page-link" th:href="@{/admin/users-list(size=${users.size}, page=${pageNumber})}" th:text="${pageNumber}"></a>
                                                         </li>
                                                     </div>
                                                     <li th:if="${users.getNumber() + 1 < users.totalPages}" class="page-item">
-                                                        <a class="page-link" th:href="@{/manager/getAllVillages(size=${users.size}, page=${users.number + 2})}">Next</a>
+                                                        <a class="page-link" th:href="@{/admin/users-list(size=${users.size}, page=${users.number + 2})}">Next</a>
                                                     </li>
                                                 </ul>
                                             </nav>

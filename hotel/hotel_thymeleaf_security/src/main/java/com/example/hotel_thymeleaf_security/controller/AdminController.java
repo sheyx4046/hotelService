@@ -1,5 +1,6 @@
 package com.example.hotel_thymeleaf_security.controller;
 
+import com.example.hotel_thymeleaf_security.entity.dtos.UserDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
@@ -38,7 +39,7 @@ public class AdminController {
         Principal principal
     ) {
             int currentPage = page.orElse(1);
-            int pageSize = size.orElse(10);
+            int pageSize = size.orElse(2);
             Page<UserEntity> users = userService.getAllPage(PageRequest.of(currentPage - 1, pageSize));
             model.addAttribute("users", users);
             int totalPages = users.getTotalPages();
@@ -60,9 +61,9 @@ public class AdminController {
 
     @PostMapping("/{userId}/edit")
     public String editPagePost(Model model,
-                           @ModelAttribute UserRequestDto userInfo, @PathVariable UUID userId){
+                               @ModelAttribute UserDto userInfo, @PathVariable UUID userId){
         userService.update(userInfo, userId);
-        return "admin";
+        return "redirect:/admin";
     }
 
     @GetMapping("/{userId}/edit")
@@ -72,7 +73,7 @@ public class AdminController {
         return "admin/edit";
     }
 
-    @DeleteMapping("/{userId}/delete")
+    @GetMapping("/{userId}/delete")
     @PreAuthorize(value = "hasRole('SUPER_ADMIN')")
     public String deleteUser(@PathVariable UUID userId){
         userService.deleteById(userId);

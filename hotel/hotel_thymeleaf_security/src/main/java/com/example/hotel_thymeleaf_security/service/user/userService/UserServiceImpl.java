@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -123,9 +124,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity update(UserDto userDto, UUID userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("User_ID not found"));
+        if(!userDto.getPassword().equals(user.getPassword())){
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
         user.setState(userDto.getState());
         user.setRole(userDto.getRoles());
         user.setUpdatedDate(LocalDateTime.now());
@@ -200,6 +203,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+
     private Boolean checkState(String email){
         UserEntity userEntity = getByEmail(email);
         switch (userEntity.getState()){
@@ -216,5 +220,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return getByEmail(username);
+    }
+
+    private UserEntity registered(Principal principal){
+         return getByEmail(principal.getName());
     }
 }

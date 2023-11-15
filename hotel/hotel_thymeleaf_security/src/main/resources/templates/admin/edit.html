@@ -103,17 +103,23 @@
                     </li>
                 </ul>
             </li>
-            <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>
-            <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>
-                <ul  class="menu-content">
-                    <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>
-                    </li>
-                    <li><a class="menu-item" href="/admin/add"><i></i><span>Create User</span></a>
-                    </li>
-                    <li class="active"><a class="menu-item" href="/admin/edit"><i></i><span>Edit User</span></a>
-                    </li>
+            <li th:if="${#authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities, 'ADMIN') or #strings.contains(#authentication.principal.authorities, 'SUPER_ADMIN')}" class="navigation-header">
+                <span data-i18n="Users">Users</span>
+                <i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>
+            </li>
+            <li th:if="${#authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities, 'ADMIN') or #strings.contains(#authentication.principal.authorities, 'SUPER_ADMIN')}" class="nav-item">
+                <a href="#">
+                    <i class="la la-users"></i>
+                    <span class="menu-title" data-i18n="Users">Users</span>
+                </a>
+                <ul class="menu-content">
+                    <!-- Submenu items -->
+                    <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a></li>
+                    <li><a class="menu-item" href="/admin/add"><i></i><span>Create User</span></a></li>
+                    <li class="active"><a class="menu-item" href="/admin/edit"><i></i><span>Edit User</span></a></li>
                 </ul>
             </li>
+
         </ul>
     </div>
 </div>
@@ -143,7 +149,7 @@
                             </div>
                             <div class="card-content collpase show">
                                 <div class="card-body">
-                                    <form class="form form-horizontal form-bordered">
+                                    <form class="form form-horizontal form-bordered" method="post" action="">
                                         <div class="form-body">
                                             <h4 class="form-section"><i class="la la-eye"></i> Edit User</h4>
                                             <div class="row">
@@ -177,12 +183,12 @@
                                                     <div class="form-group row last mx-auto">
                                                         <label class="col-md-3 label-control" for="projectinput4">Role</label>
                                                         <div class="col-md-9">
-                                                            <select id="projectinput4" name="Role" class="form-control">
-                                                                <option value="" th:selected="${user.role == ''}" >Role</option>
-                                                                <option value="USER" th:selected="${user.role == 'USER'}">USER</option>
-                                                                <option value="MANAGER" th:selected="${user.role == 'MANAGER'}">MANAGER</option>
-                                                                <option value="ADMIN" th:selected="${user.role == 'ADMIN'}">ADMIN</option>
-                                                                <option value="SUPER-ADMIN" th:selected="${user.role == 'SUPER-ADMIN'}">SUPER-ADMIN</option>
+                                                            <select id="projectinput4" name="roles" class="form-control">
+                                                                <option value="" th:selected="${user.role.toString() == ''}">Role</option>
+                                                                <option value="USER" th:selected="${user.role.toString() == 'USER'}">USER</option>
+                                                                <option value="MANAGER" th:selected="${user.role.toString() == 'MANAGER'}">MANAGER</option>
+                                                                <option value="ADMIN" th:selected="${user.role.toString() == 'ADMIN'}">ADMIN</option>
+                                                                <option value="SUPER_ADMIN" th:selected="${user.role.toString() == 'SUPER_ADMIN'}">SUPER-ADMIN</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -191,11 +197,11 @@
                                                     <div class="form-group row last mx-auto">
                                                         <label class="col-md-3 label-control" for="projectinput5">Status</label>
                                                         <div class="col-md-9">
-                                                            <select id="projectinput5" name="Status" class="form-control">
-                                                                <option value="" th:selected="${user.state==''}" disabled="">Status</option>
-                                                                <option value="ACTIVE" th:selected="${user.state=='ACTIVE'}">ACTIVE</option>
-                                                                <option value="BLOCKED" th:selected="${user.state=='BLOCKED'}">BLOCKED</option>
-                                                                <option value="UNVERIFIED" th:selected="${user.state=='UNVERIFIED'}">UNVERIFIED</option>
+                                                            <select id="projectinput5" name="state" class="form-control">
+                                                                <option value="" th:selected="${user.state.toString()==' '}">Status</option>
+                                                                <option value="ACTIVE" th:selected="${user.state.toString()=='ACTIVE'}">ACTIVE</option>
+                                                                <option value="BLOCKED" th:selected="${user.state.toString()=='BLOCKED'}">BLOCKED</option>
+                                                                <option value="UNVERIFIED" th:selected="${user.state.toString()=='UNVERIFIED'}">UNVERIFIED</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -210,7 +216,7 @@
                                             </button>
                                             </a>
                                             <button type="submit" class="btn btn-primary">
-                                                <i class="la la-check-square-o"></i> Create
+                                                <i class="la la-check-square-o"></i> Save
                                             </button>
                                         </div>
                                     </form>
