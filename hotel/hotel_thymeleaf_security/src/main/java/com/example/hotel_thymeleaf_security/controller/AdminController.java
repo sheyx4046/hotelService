@@ -39,7 +39,7 @@ public class AdminController {
         Principal principal
     ) {
             int currentPage = page.orElse(1);
-            int pageSize = size.orElse(2);
+            int pageSize = size.orElse(10);
             Page<UserEntity> users = userService.getAllPage(PageRequest.of(currentPage - 1, pageSize));
             model.addAttribute("users", users);
             int totalPages = users.getTotalPages();
@@ -62,8 +62,10 @@ public class AdminController {
     @PostMapping("/{userId}/edit")
     public String editPagePost(Model model,
                                @ModelAttribute UserDto userInfo, @PathVariable UUID userId){
-        userService.update(userInfo, userId);
-        return "redirect:/admin";
+        UserEntity update = userService.update(userInfo, userId);
+        if(update==null){
+        return "redirect:/admin/"+userId.toString()+"/edit";}
+        return "redirect:/admin/users-list";
     }
 
     @GetMapping("/{userId}/edit")
@@ -94,7 +96,7 @@ public class AdminController {
         if (user==null){
             return "redirect:/admin/add";
         }else{
-        return "redirect:/admin";}
+        return "redirect:/admin/users-list";}
     }
 
 }

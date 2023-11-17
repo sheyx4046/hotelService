@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -169,6 +170,16 @@ public class VillaServiceImpl implements VillageService {
         }
     }
 
+    public String getAmenitiesAsString(UUID hotelId, boolean getAll){
+        List<RoomAmenity> villaRentEntity = getById(hotelId).getRoomAmenities();
+        if(getAll && !villaRentEntity.isEmpty()) {
+            return villaRentEntity.stream().map(RoomAmenity::getAmenity)
+                    .collect(Collectors.joining(", "));
+        }else
+        {
+            return "";
+        }
+    }
     @Override
     public void deleteByIdAndUser(UUID villaId, String deleter) {
         UserEntity userEntity = userService.getByEmail(deleter);
@@ -195,6 +206,15 @@ public class VillaServiceImpl implements VillageService {
     public List<VillaRentEntity> getAllByOwner(String owner) {
         UserEntity userEntity = userService.getByEmail(owner);
         return villaRepository.findVillaRentEntitiesByOwnerId(userEntity.getId());
+    }
+
+    @Override
+    public List<String> getPaymentMethods(UUID villageID) {
+        List<String> list1 =new ArrayList<>();
+        for (PaymentMethod paymentMethod: getById(villageID).getPaymentOptions()) {
+            list1.add(paymentMethod.getName());
+        }
+        return list1;
     }
 
     @Override

@@ -123,7 +123,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity update(UserDto userDto, UUID userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("User_ID not found"));
+        UserEntity user = getById(userId);
+        try{
         if(!userDto.getPassword().equals(user.getPassword())){
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
@@ -133,6 +134,10 @@ public class UserServiceImpl implements UserService {
         user.setRole(userDto.getRoles());
         user.setUpdatedDate(LocalDateTime.now());
         return userRepository.save(user);
+        } catch (Exception e){
+            System.out.println("UserUpdating Exception: "+e);
+            return null;
+        }
     }
 
     @Override
@@ -183,6 +188,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return getByEmail(username);
+    }
+
+    @Override
     public UserEntity saveByAdmin(UserRequestDto userRequestDto, String name) {
         UserEntity admin = getByEmail(name);
         switch (admin.getRole()){
@@ -217,10 +227,6 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return getByEmail(username);
-    }
 
     private UserEntity registered(Principal principal){
          return getByEmail(principal.getName());
