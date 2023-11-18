@@ -114,8 +114,6 @@
                     </ul>
                 </li>
             </ul>
-            </li>
-            </ul>
         </div>
     </div>
 
@@ -194,7 +192,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="emailAddress1">Room Amenities :</label>
-                                                        <input type="text" name="roomAmenities" th:value="${village.roomAmenities}" class="form-control" placeholder="wi-fi, tv, Individual Climate Control ..." id="emailAddress1" required>
+                                                        <input type="text" name="roomAmenities" th:value="${villageService.getAmenitiesAsString(village.id, true)}" class="form-control" placeholder="wi-fi, tv, Individual Climate Control ..." id="emailAddress1" required>
                                                     </div>
                                                 </div>
 
@@ -231,7 +229,7 @@
                                                     <div class="form-group">
                                                         <div class="c-inputs-stacked">
                                                             <div class="d-inline-block custom-control custom-checkbox">
-                                                                <input type="checkbox" name="creditCard" class="custom-control-input" id="credit_card" th:checked="${village.paymentOptions != null and village.paymentOptions.contains('Credit Card')}">
+                                                                <input type="checkbox" name="creditCard" class="custom-control-input" id="credit_card" th:checked="${village.paymentOptions != null and villageService.getPaymentMethods(village.id).contains('Credit Card')}">
                                                                 <label class="custom-control-label" for="credit_card">Card</label>
                                                             </div>
                                                         </div>
@@ -241,7 +239,7 @@
                                                     <div class="form-group">
                                                         <div class="c-inputs-stacked">
                                                             <div class="d-inline-block custom-control custom-checkbox">
-                                                                <input type="checkbox" name="cash" class="custom-control-input" id="Digital_Wallets" th:checked="${village.paymentOptions != null and (village.paymentOptions.contains('Cash') or village.paymentOptions.contains('Cash on Delivery'))}">
+                                                                <input type="checkbox" name="cash" class="custom-control-input" id="Digital_Wallets" th:checked="${village.paymentOptions != null and villageService.getPaymentMethods(village.id).contains('Cash')}">
                                                                 <label class="custom-control-label" for="Digital_Wallets">Cash</label>
                                                             </div>
                                                         </div>
@@ -276,6 +274,9 @@
                                                         <label for="Telegram">Telegram :</label>
                                                         <input type="url"  th:value="${village.getContactInfo().getTelegram()}" name="telegram" class="form-control" id="Telegram">
                                                     </div>
+                                                </div>
+                                                <div th:each="amenity:${village.getRoomAmenities()}">
+                                                    <h1 th:value="amenity.name"></h1>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>General image :</label>

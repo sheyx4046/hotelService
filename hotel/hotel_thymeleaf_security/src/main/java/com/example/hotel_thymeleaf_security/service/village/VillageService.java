@@ -17,5 +17,6 @@ public interface VillageService extends BaseService<VillaRentEntity, VillageResp
     Page<VillaRentEntity> getVillageByOwnerEmail(Pageable pageable, String email);
     void deleteByIdAndUser(UUID villaId, String deleter);
     List<VillaRentEntity> getAllByOwner(String owner);
+    List<String> getPaymentMethods(UUID villageID);
     VillaRentEntity getLastVillage(String name);
 }

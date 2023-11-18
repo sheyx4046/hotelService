@@ -7,6 +7,7 @@ import com.example.hotel_thymeleaf_security.service.village.VillageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,9 @@ import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/manager")
-//@PreAuthorize(value = "hasRole('ADMIN') or hasRole('MANAGER') or hasRole('SUPER_ADMIN')")
+@PreAuthorize(value = "hasRole('ADMIN') or hasRole('MANAGER') or hasRole('SUPER_ADMIN')")
 @RequiredArgsConstructor
-public class ManagerController {
+class ManagerController {
     private final VillageService villageService;
     private final UserService userService;
     @GetMapping()
@@ -77,6 +78,7 @@ public class ManagerController {
                                 @PathVariable UUID villaId,
                                 Principal principal){
         model.addAttribute("village", villageService.getById(villaId));
+        model.addAttribute("villageService", villageService);
         return "manager/edit";
     }
 
