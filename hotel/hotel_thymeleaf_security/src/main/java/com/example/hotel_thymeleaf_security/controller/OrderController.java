@@ -1,6 +1,6 @@
 package com.example.hotel_thymeleaf_security.controller;
 
-import com.example.hotel_thymeleaf_security.entity.bookin.OrderEntity;
+import com.example.hotel_thymeleaf_security.entity.booking.OrderEntity;
 import com.example.hotel_thymeleaf_security.entity.dtos.BookingDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.FindDto;
 import com.example.hotel_thymeleaf_security.service.village.OrderService;

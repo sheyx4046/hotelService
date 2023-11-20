@@ -1,7 +1,10 @@
 package com.example.hotel_thymeleaf_security.controller;
 
+import com.example.hotel_thymeleaf_security.entity.dtos.FormDto;
+import com.example.hotel_thymeleaf_security.entity.form.Form;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
+import com.example.hotel_thymeleaf_security.service.user.form.FormService;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
 import com.example.hotel_thymeleaf_security.service.village.VillageService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
@@ -23,6 +28,7 @@ import java.util.stream.IntStream;
 public class HomeController {
     private final UserService userService;
     private final VillageService villageService;
+    private final FormService formService;
 
     @GetMapping("/test")
     public String test(Model model, Principal principal) {
@@ -93,8 +99,12 @@ public class HomeController {
 
 
 
-//    @GetMapping("/user")
-//    public String userPage(){
-//        return "user";
-//    }
+    @PostMapping("/form")
+    public String userPage(@ModelAttribute FormDto form,
+                           Model model
+    ){
+        formService.create(form);
+        model.addAttribute("msg", "OK");
+        return "redirect:/home";
+    }
 }

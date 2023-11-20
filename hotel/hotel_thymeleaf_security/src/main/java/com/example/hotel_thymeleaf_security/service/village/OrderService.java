@@ -1,7 +1,7 @@
 package com.example.hotel_thymeleaf_security.service.village;
 
 
-import com.example.hotel_thymeleaf_security.entity.bookin.OrderEntity;
+import com.example.hotel_thymeleaf_security.entity.booking.OrderEntity;
 import com.example.hotel_thymeleaf_security.entity.dtos.BookingDto;
 import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
@@ -21,8 +21,8 @@ import java.util.List;
 
 import java.util.UUID;
 
-import static com.example.hotel_thymeleaf_security.entity.bookin.BookingStatus.BOOKED;
-import static com.example.hotel_thymeleaf_security.entity.bookin.BookingStatus.FINISHED;
+import static com.example.hotel_thymeleaf_security.entity.booking.BookingStatus.BOOKED;
+import static com.example.hotel_thymeleaf_security.entity.booking.BookingStatus.FINISHED;
 
 
 @Service

@@ -1,4 +1,4 @@
-package com.example.hotel_thymeleaf_security.entity.bookin;
+package com.example.hotel_thymeleaf_security.entity.booking;
 
 import com.example.hotel_thymeleaf_security.entity.BaseEntity;
 import jakarta.persistence.Entity;
