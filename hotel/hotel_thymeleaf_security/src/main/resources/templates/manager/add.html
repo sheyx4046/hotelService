@@ -95,13 +95,14 @@
 
 
     <!-- BEGIN: Main Menu-->
+
     <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li><a href="/manager"><i class="la la-home"></i><span class="menu-title" data-i18n="Dashboard Village">Manager Dashboard</span></a>
+                <li><a href="/manager"><i class="la la-home"></i><span class="menu-title" data-i18n="Dashboard Hospital">Dashboard Village</span></a>
                 </li>
                 <li class=" navigation-header"><span data-i18n="Villages">Villages</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Villages"></i>
-                <li class=" nav-item"><a href="#"><i class="la la-hotel"></i><span class="menu-title" data-i18n="Villages">Villages</span></a>
+                <li class=" nav-item"><a href="#"><i class="la la-Village"></i><span class="menu-title" data-i18n="Villages">Villages</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="/manager/getVillages"><i></i><span>My Villages</span></a>
                         </li>
@@ -111,20 +112,21 @@
                         </li>
                     </ul>
                 </li>
-<!--                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>-->
-<!--                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>-->
-<!--                    <ul  class="menu-content">-->
-<!--                        <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>-->
-<!--                        </li>-->
-<!--                        <li><a class="menu-item" href="/admin/add"><i></i><span>Create User</span></a>-->
-<!--                        </li>-->
-<!--                        <li><a class="menu-item" href="/admin/edit"><i></i><span>Edit User</span></a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </li>-->
+                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>
+                <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>
+                    <ul  class="menu-content">
+                        <li><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>
+                        </li>
+                        <li><a class="menu-item" href="/admin/add"><i></i><span>Create User</span></a>
+                        </li>
+                        <li><a class="menu-item" href="/admin/edit"><i></i><span>Edit User</span></a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
+
     <!-- END: Main Menu-->
 
 
