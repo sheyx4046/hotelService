@@ -209,24 +209,20 @@
 
                 <!-- Pagination-start -->
                 <div class="d-flex justify-content-center mt-4">
-                    <nav aria-label="Page navigation example">
+                    <nav  th:if="${villas.totalPages > 1}" aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
+                            <li th:if="${villas.hasPrevious()}" class="page-item">
+                                <a class="page-link" th:href="@{/find(size=${villas.size}, page=${villas.number})}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item accordion-body">...</li>
-                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item accordion-body">...</li>
-                            <li class="page-item"><a class="page-link" href="#">10</a></li>
-                            <li class="page-item"><a class="page-link" href="#">11</a></li>
-                            <!-- Add more pages as needed -->
-
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
+                            <div  th:each="pageNumber : ${pageNumbers}">
+                                <li th:class="${pageNumber == (villas.getNumber() + 1)} ? 'page-item active' : 'page-item'">
+                                    <a class="page-link"  th:href="@{/find(size=${villas.size}, page=${pageNumber})}" th:text="${pageNumber}"></a>
+                                </li>
+                            </div>
+                            <li th:if="${villas.getNumber() + 1 < villas.totalPages}"  class="page-item">
+                                <a class="page-link" th:href="@{/find(size=${villas.size}, page=${villas.number + 2})}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
