@@ -119,7 +119,7 @@
             <div class="container">
                 <div class="bg-white shadow" style="padding: 25px 25px;">
                     <div class="row g-2">
-                        <form action="/findVilla" method="post" enctype="application/x-www-form-urlencoded">
+                        <form action="" method="get" enctype="application/x-www-form-urlencoded">
                         <div class="col-md-12">
                             <div class="row g-2">
                                 <div class="col-md-4">
@@ -183,7 +183,7 @@
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" th:each="villa: ${villas}">
                         <div class="room-item shadow rounded overflow-hidden">
                             <div class="position-relative">
-                                <img class="img-fluid" src="../../static/css/villageAssets/img/room-1.jpg" alt="">
+                                <img class="img-fluid" th:src="${fileService.getGeneralPhoto(villa.getId())}" alt="">
                                 <small class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4" th:text="'$'+${villa.price}+'/Night'"></small>
                             </div>
                             <div class="p-4 mt-2">

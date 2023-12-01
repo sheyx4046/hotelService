@@ -1,11 +1,11 @@
 package com.example.hotel_thymeleaf_security.controller;
 
 import com.example.hotel_thymeleaf_security.entity.dtos.FormDto;
-import com.example.hotel_thymeleaf_security.entity.form.Form;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.service.user.form.FormService;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
+import com.example.hotel_thymeleaf_security.service.village.FileService;
 import com.example.hotel_thymeleaf_security.service.village.VillageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,6 +29,7 @@ public class HomeController {
     private final UserService userService;
     private final VillageService villageService;
     private final FormService formService;
+    private final FileService fileService;
 
     @GetMapping("/test")
     public String test(Model model, Principal principal) {
@@ -65,6 +66,11 @@ public class HomeController {
     @GetMapping("/find")
     public String findPage(
             Model model,
+            @RequestParam(required = false) String from,
+            @RequestParam(required = false) String to,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String minPrice,
+            @RequestParam(required = false) String maxPrice,
             @RequestParam("page")Optional<Integer> page,
             @RequestParam("size")Optional<Integer> size
             ) {
@@ -79,6 +85,7 @@ public class HomeController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+        model.addAttribute("fileService", fileService);
         return "villagePages/find";
     }
 

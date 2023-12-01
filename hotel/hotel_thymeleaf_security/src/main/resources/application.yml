@@ -6,8 +6,7 @@ server:
       enabled: false
 
 file:
-  upload-dir: src/main/resources/uploads
-
+  upload-dir: hotel/hotel_thymeleaf_security/src/main/resources/uploads
 spring:
   servlet:
     multipart:

@@ -18,15 +18,11 @@ import java.util.UUID;
 public class OrderEntity extends BaseEntity {
     private UUID userId;
     private UUID hotelId;
-
     public UUID roomId;
-
     private Double price;
     private LocalDate startDay;
     private LocalDate endDay;
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
-
-
 
 }

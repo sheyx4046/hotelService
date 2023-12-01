@@ -107,9 +107,9 @@ public class VillaServiceImpl implements VillageService {
             villaRent.setPaymentOptions(
                     savePaymentMethods(dto.isCash(), dto.isCreditCard())
             );
-//            villaRent.setImages(
-//                    saveImage(dto.getGeneralImage(), dto.getOtherImage())
-//            );
+            villaRent.setImages(
+                    saveImage(dto.getGeneralImage(), dto.getOtherImage())
+            );
             return villaRepository.save(villaRent);
         }
         return null;

@@ -1,8 +1,10 @@
 package com.example.hotel_thymeleaf_security.service.village;
 
+import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.FileEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.FileUploadRepository;
+import com.example.hotel_thymeleaf_security.repository.villa.VillaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,13 +25,15 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService{
+    private final VillaRepository villaRepository;
 
     private final Path fileLocation;
     @Value("${file.upload-dir}")
     private String fileUploadDir;
     private final FileUploadRepository fileUploadRepository;
     @Autowired
-    public FileServiceImpl(@Value("${file.upload-dir}") String fileUploadDir, FileUploadRepository fileUploadRepository) {
+    public FileServiceImpl(VillageService villageService, VillaRepository villaRepository, @Value("${file.upload-dir}") String fileUploadDir, FileUploadRepository fileUploadRepository) {
+        this.villaRepository = villaRepository;
         this.fileLocation = Paths.get(fileUploadDir)
                 .toAbsolutePath().normalize();
         this.fileUploadRepository = fileUploadRepository;
@@ -85,5 +89,11 @@ public class FileServiceImpl implements FileService{
     @Override
     public void deleteById(UUID id) {
         fileUploadRepository.deleteById(id);
+    }
+
+    @Override
+    public Path getGeneralPhoto(UUID hotelId) {
+        VillaRentEntity rentEntity = villaRepository.findById(hotelId).orElseThrow(()-> new DataNotFoundException("Hotel not found"));
+        return Path.of(rentEntity.getImages().get(0).getFileUrl());
     }
 }
