@@ -77,9 +77,9 @@ public class VillaServiceImpl implements VillageService {
             villaRent.setPaymentOptions(
                     savePaymentMethods(villageResponseDto.isCash(), villageResponseDto.isCreditCard())
             );
-//            villaRent.setImages(
-//                    saveImage(dto.getGeneralImage(), dto.getOtherImage())
-//            );
+            villaRent.setImages(
+                    saveImage(villageResponseDto.getGeneralImage(), villageResponseDto.getOtherImage())
+            );
             villaRent.setUpdatedDate(LocalDateTime.now());
             return villaRepository.save(villaRent);
         }
@@ -232,6 +232,17 @@ public class VillaServiceImpl implements VillageService {
             default -> {
                 return null;}
         }
+    }
+
+    @Override
+    public String getLocation(UUID villageId) {
+        VillaRentEntity villaRent = getById(villageId);
+        return villaRent.getContactInfo().getGoogle_map_location();
+    }
+
+    @Override
+    public ContactInfo getContactInfo(UUID villageId) {
+        return getById(villageId).getContactInfo();
     }
 
     private List<PaymentMethod> savePaymentMethods(boolean cash, boolean creditCard) {

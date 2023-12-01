@@ -104,8 +104,6 @@ public class HomeController {
         return "villagePages/about";
     }
 
-
-
     @PostMapping("/form")
     public String userPage(@ModelAttribute FormDto form,
                            Model model

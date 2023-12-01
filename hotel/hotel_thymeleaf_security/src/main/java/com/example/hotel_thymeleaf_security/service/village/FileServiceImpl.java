@@ -32,7 +32,7 @@ public class FileServiceImpl implements FileService{
     private String fileUploadDir;
     private final FileUploadRepository fileUploadRepository;
     @Autowired
-    public FileServiceImpl(VillageService villageService, VillaRepository villaRepository, @Value("${file.upload-dir}") String fileUploadDir, FileUploadRepository fileUploadRepository) {
+    public FileServiceImpl(VillaRepository villaRepository, @Value("${file.upload-dir}") String fileUploadDir, FileUploadRepository fileUploadRepository) {
         this.villaRepository = villaRepository;
         this.fileLocation = Paths.get(fileUploadDir)
                 .toAbsolutePath().normalize();

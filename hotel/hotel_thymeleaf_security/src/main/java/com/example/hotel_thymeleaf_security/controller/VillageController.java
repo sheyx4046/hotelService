@@ -1,12 +1,13 @@
 package com.example.hotel_thymeleaf_security.controller;
 
+import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.service.village.VillageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
@@ -15,17 +16,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class VillageController {
     private final VillageService villageService;
-    @GetMapping("/{villaId}/info")
-    public String getVillagePage(
-            Model model,
-            @PathVariable UUID villaId
-            ){
-        model.addAttribute("villa", villageService.getById(villaId));
-        return "/";
+    @GetMapping()
+    public String aboutVilla(
+            @RequestParam("village") UUID village,
+            Model model
+    ){
+        VillaRentEntity villaRentEntity = villageService.getById(village);
+        model.addAttribute("villa", villaRentEntity);
+        model.addAttribute("service", villageService);
+        return "villagePages/villa";
     }
 
-    @GetMapping("")
-    public String getVillagesPage(){
-        return "/";
-    }
 }

@@ -182,9 +182,13 @@
                 <div class="row g-4">
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" th:each="villa: ${villas}">
                         <div class="room-item shadow rounded overflow-hidden">
-                            <div class="position-relative">
-                                <img class="img-fluid" th:src="${fileService.getGeneralPhoto(villa.getId())}" alt="">
-                                <small class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4" th:text="'$'+${villa.price}+'/Night'"></small>
+                            <div class="room-item shadow rounded overflow-hidden" th:if="${villa.price != null}">
+                                <div class="position-relative">
+                                    <th:block th:if="${fileService.getGeneralPhoto(villa.getId()) != null}">
+                                        <img class="img-fluid" th:src="${fileService.getGeneralPhoto(villa.getId())}" alt="">
+                                    </th:block>
+                                    <small class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4" th:text="'$'+${villa.price}+'/Night'"></small>
+                                </div>
                             </div>
                             <div class="p-4 mt-2">
                                 <div class="d-flex justify-content-between mb-3">
@@ -195,7 +199,7 @@
                                 </div>
                                 <p class="text-body mb-3" th:text="${villa.description}"></p>
                                 <div class="d-flex justify-content-between">
-                                    <a class="btn btn-sm btn-primary rounded py-2 px-4" th:href="'/village/'+${villa.id}+'/info'">View Detail</a>
+                                    <a class="btn btn-sm btn-primary rounded py-2 px-4" th:href="@{/village(village=${villa.getId()})}">View Detail</a>
                                     <a class="btn btn-sm btn-dark rounded py-2 px-4" th:href="'/booking/'+${villa.id}+'/book'">Book Now</a>
                                 </div>
                             </div>
