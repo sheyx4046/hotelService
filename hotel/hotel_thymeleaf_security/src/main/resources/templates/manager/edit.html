@@ -158,7 +158,7 @@
                                 <div class="card-content collapse show">
                                     <div class="card-body">
                                         <!-- Hotel add form -->
-                                        <form action="/manager/edit" class="number-tab-steps wizard-circle" method="post" enctype="multipart/form-data">
+                                        <form th:action="'/manager/'+${village.id}+'/edit'" class="number-tab-steps wizard-circle" method="post" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">

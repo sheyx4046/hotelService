@@ -63,7 +63,7 @@ public class FileServiceImpl implements FileService{
             throw new RuntimeException("Failed to save the file: " + originalFileName, e);
         }
 
-        String downloadUrl = "/download/" + uniqueFileName;
+        String downloadUrl = "/uploads/" + uniqueFileName;
         String fileUrl = fileLocation.resolve(uniqueFileName).toString();
         double fileSizeInKB = (double) file.getSize() / 1024;
 
@@ -94,6 +94,6 @@ public class FileServiceImpl implements FileService{
     @Override
     public Path getGeneralPhoto(UUID hotelId) {
         VillaRentEntity rentEntity = villaRepository.findById(hotelId).orElseThrow(()-> new DataNotFoundException("Hotel not found"));
-        return Path.of(rentEntity.getImages().get(0).getFileUrl());
+        return Path.of(rentEntity.getImages().get(0).getDownloadUrl());
     }
 }

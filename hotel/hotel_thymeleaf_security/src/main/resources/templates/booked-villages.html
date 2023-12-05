@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booked Villages</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Custom styles */
+    .icon-button {
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .pagination {
+      justify-content: center;
+    }
+  </style>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+</head>
+<body>
+
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Booked Villages</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <!-- Table header -->
+      <thead>
+        <tr>
+          <th>№</th>
+          <th>Name of Village</th>
+          <th>Date From</th>
+          <th>Date To</th>
+          <th>Status</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Village A</td>
+          <td>2023-12-01</td>
+          <td>2023-12-05</td>
+          <td>Booked</td>
+          <td><i class="fas fa-edit icon-button text-primary"></i></td>
+          <td><i class="fas fa-trash-alt icon-button text-danger"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+</body>
+</html>
