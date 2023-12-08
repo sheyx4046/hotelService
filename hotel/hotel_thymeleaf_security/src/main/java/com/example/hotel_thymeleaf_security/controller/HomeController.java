@@ -10,6 +10,7 @@ import com.example.hotel_thymeleaf_security.service.village.VillageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,10 @@ public class HomeController {
 
     @GetMapping("/")
     public String indexPage(
+            Model model
     ) {
+        Pageable pageable = PageRequest.of(0, 3);
+        model.addAttribute("villages", villageService.getAllPage(pageable).getContent());
         return "villagePages/index";
     }
 

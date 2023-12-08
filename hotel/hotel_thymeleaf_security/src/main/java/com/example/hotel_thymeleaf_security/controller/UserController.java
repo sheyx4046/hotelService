@@ -1,18 +1,27 @@
 package com.example.hotel_thymeleaf_security.controller;
 
+import com.example.hotel_thymeleaf_security.entity.booking.OrderEntity;
 import com.example.hotel_thymeleaf_security.entity.dtos.NewPasswordDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.UserDetailsDto;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
+import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
 import com.example.hotel_thymeleaf_security.service.village.OrderService;
+import com.example.hotel_thymeleaf_security.service.village.OrderServiceImpl;
 import com.example.hotel_thymeleaf_security.service.village.VillageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
@@ -45,11 +54,26 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @GetMapping("/booked")
+    @GetMapping("/ordered")
     public String getVillageListPage(
             Principal principal,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size")Optional<Integer> size,
             Model model
     ){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(6);
+//        Page<OrderEntity> order = orderService.getByOrderedPage(PageRequest.of(currentPage - 1, pageSize), principal.getName());
+        Page<OrderEntity> order = orderService.getAllPage(PageRequest.of(currentPage - 1, pageSize));
+        model.addAttribute("userOrder", order);
+        int totalPages = order.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+            model.addAttribute("villa", villageService);
+        }
         return "user/booked-villages";
     }
 
