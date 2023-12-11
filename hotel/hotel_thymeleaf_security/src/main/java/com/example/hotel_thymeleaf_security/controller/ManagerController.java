@@ -86,11 +86,11 @@ class ManagerController {
     public String villageEditPost(@PathVariable UUID villaId,
                                   @ModelAttribute VillageResponseDto villageResponseDto,
                                   Principal principal){
-        villageService.update(villageResponseDto, villaId);
+        villageService.update(villageResponseDto, villaId, principal.getName());
         return "manager/edit";
     }
 
-    @DeleteMapping("/{villaId}/delete")
+    @GetMapping("/{villaId}/delete")
     public String villageDelete(@PathVariable UUID villaId,
                                 Principal principal){
         villageService.deleteByIdAndUser(villaId, principal.getName());

@@ -12,4 +12,5 @@ import lombok.*;
 @Builder
 public class Form extends BaseEntity {
     private String userName, email, subject, message;
+    private FormStatus formStatus;
 }

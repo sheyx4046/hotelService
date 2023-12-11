@@ -16,10 +16,10 @@ import java.util.UUID;
 @Repository
 public interface OrderRepository extends JpaRepository<OrderEntity, UUID> {
 
-    Page<OrderEntity> findAllByUserId(UUID userId, Pageable pageable);
+    List<OrderEntity> findAllByUserId(UUID userId);
 //    Optional<List<OrderEntity>>findAllByRoomId(UUID roomId, Pageable pageable);
-    @Query(value = "select o from orders o where o.bookingStatus = 'BOOKED' OR o.roomId = :roomId")
-    Optional<List<OrderEntity>>findOrderEntitiesByBookingStatusRoomId(@Param(value = "roomId") UUID roomId);
+//    @Query(value = "select o from orders o where o.bookingStatus = 'BOOKED' OR o.roomId = :roomId")
+//    Optional<List<OrderEntity>>findOrderEntitiesByBookingStatusRoomId(@Param(value = "roomId") UUID roomId);
 
     List<OrderEntity> findByBookingStatus(com.example.hotel_thymeleaf_security.entity.booking.BookingStatus bookingStatus);
 }

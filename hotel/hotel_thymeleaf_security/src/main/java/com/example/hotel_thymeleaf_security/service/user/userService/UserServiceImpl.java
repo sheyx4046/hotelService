@@ -1,12 +1,15 @@
 package com.example.hotel_thymeleaf_security.service.user.userService;
 
 import com.example.hotel_thymeleaf_security.entity.dtos.AuthDto;
+import com.example.hotel_thymeleaf_security.entity.dtos.NewPasswordDto;
+import com.example.hotel_thymeleaf_security.entity.dtos.UserDetailsDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.UserDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
 import com.example.hotel_thymeleaf_security.entity.user.Role;
 import com.example.hotel_thymeleaf_security.entity.user.States;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
+import com.example.hotel_thymeleaf_security.exception.UniqueObjectException;
 import com.example.hotel_thymeleaf_security.repository.userRepository.UserRepository;
 import com.example.hotel_thymeleaf_security.service.mailService.MailServiceImpl;
 import jakarta.mail.MessagingException;
@@ -122,6 +125,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity forgotPassword(String username, UUID userId, NewPasswordDto newPassword) {
+        UserEntity user = getById(userId);
+        if((user.getEmail().equals(username) && user.getId().equals(userId) &&
+                (newPassword.getNewPassword1().equals(newPassword.getNewPassword2()) && checkPassword(newPassword.getPassword(), userId)))){
+                user.setPassword(passwordEncoder.encode(newPassword.getNewPassword2()));
+                user.setUpdatedDate(LocalDateTime.now());
+                return userRepository.save(user);
+        }
+        return null;
+    }
+
+    @Override
     public UserEntity update(UserDto userDto, UUID userId) {
         UserEntity user = getById(userId);
         try{
@@ -213,6 +228,20 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public UserEntity update(UserDetailsDto userDto, UUID userId) {
+        UserEntity byEmail = getById(userId);
+        if(userRepository.findByEmail(userDto.getEmail()).isEmpty() ){
+            byEmail.setEmail(userDto.getEmail());
+            byEmail.setUsername(userDto.getUsername());
+            return userRepository.save(byEmail);
+        } else if (byEmail.getEmail().equals(userDto.getEmail())){
+            byEmail.setName(userDto.getUsername());
+            return userRepository.save(byEmail);
+        }
+        return null;
+    }
+
 
     private Boolean checkState(String email){
         UserEntity userEntity = getByEmail(email);
@@ -223,6 +252,14 @@ public class UserServiceImpl implements UserService {
             case UNVERIFIED -> {
                 return false;
             }
+        }
+        return false;
+    }
+
+    private Boolean checkPassword(String password, UUID userId){
+        UserEntity user = getById(userId);
+        if(passwordEncoder.matches(password, user.getPassword())){
+            return true;
         }
         return false;
     }

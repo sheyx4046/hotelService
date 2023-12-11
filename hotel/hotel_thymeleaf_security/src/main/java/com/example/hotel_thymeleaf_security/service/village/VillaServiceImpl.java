@@ -36,7 +36,7 @@ public class VillaServiceImpl implements VillageService {
     private final ContactInfoRepository contactInfoRepository;
     private final RoomAmenityRepository roomAmenityRepository;
     private final FileService fileService;
-    private final OrderService orderService;
+    private final OrderServiceImpl orderServiceImpl;
     private final ModelMapper modelMapper;
     private final PaymentMethodRepository methodRepository;
 

@@ -6,7 +6,7 @@ server:
       enabled: false
 
 file:
-  upload-dir: hotel/hotel_thymeleaf_security/src/main/resources/uploads
+  upload-dir: hotel/hotel_thymeleaf_security/src/main/resources/static/uploads
 spring:
   servlet:
     multipart:
@@ -15,9 +15,9 @@ spring:
       max-file-size: 1000MB
       max-request-size: 1500MB
   datasource:
-    username: postgres
-    password: 1
-    url: jdbc:postgresql://localhost:5432/hotel_service
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:1}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432}/${DB_NAME:hotel_service}
     driver-class-name: org.postgresql.Driver
   thymeleaf:
     mode: HTML

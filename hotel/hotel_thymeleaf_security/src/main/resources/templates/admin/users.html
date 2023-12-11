@@ -60,64 +60,12 @@
 <body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
 
 <!-- BEGIN: Header-->
-<nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light bg-info navbar-shadow">
-    <div class="navbar-wrapper">
-        <div class="navbar-header">
-            <ul class="nav navbar-nav flex-row">
-                <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
-                <li class="nav-item"><a class="navbar-brand" href="/manager"><img class="brand-logo" alt="modern admin logo" th:src="@{/css/assets/img/favicon/favicon.ico}">
-                    <h3 class="brand-text">VillaRent</h3>
-                </a></li>
-            </ul>
-        </div>
-        <div class="navbar-container content">
-            <div class="collapse navbar-collapse" id="navbar-mobile">
-                <ul class="nav navbar-nav mr-auto float-left">
-                    <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
-                    <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand" href="#"><i class="ficon ft-maximize"></i></a></li>
-                    <li class="dropdown nav-item mega-dropdown d-none d-lg-block"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">VillaRent</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</nav>
+<div th:replace="admin/dashboard-fragment :: header"></div>
 <!-- END: Header-->
 
 
 <!-- BEGIN: Main Menu-->
-
-<div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
-    <div class="main-menu-content">
-        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li><a href="/manager"><i class="la la-home"></i><span class="menu-title" data-i18n="Dashboard Hospital">Dashboard Village</span></a>
-            </li>
-            <li class=" navigation-header"><span data-i18n="Villages">Villages</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Villages"></i>
-            <li class=" nav-item"><a href="#"><i class="la la-Village"></i><span class="menu-title" data-i18n="Villages">Villages</span></a>
-                <ul class="menu-content">
-                    <li><a class="menu-item" href="/manager/getVillages"><i></i><span>My Villages</span></a>
-                    </li>
-                    <li><a class="menu-item" href="/manager/add/village"><i></i><span>Add Village</span></a>
-                    </li>
-                    <li><a class="menu-item" href="/manager/edit"><i></i><span>Edit Village</span></a>
-                    </li>
-                </ul>
-            </li>
-            <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>
-            <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title" data-i18n="Users">Users</span></a>
-                <ul  class="menu-content">
-                    <li class="active"><a class="menu-item" href="/admin/users-list"><i></i><span>Users</span></a>
-                    </li>
-                    <li ><a class="menu-item" href="/admin/add"><i></i><span>Create User</span></a>
-                    </li>
-                    <li><a class="menu-item" href="/admin/edit"><i></i><span>Edit User</span></a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-</div>
-
+<div th:replace="admin/dashboard-fragment :: menu(activeItem='users')"></div>
 <!-- END: Main Menu-->
 
     <!-- BEGIN: Content-->
