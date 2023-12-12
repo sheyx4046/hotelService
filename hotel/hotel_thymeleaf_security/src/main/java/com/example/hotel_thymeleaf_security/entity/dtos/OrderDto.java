@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 public class OrderDto {
     private UUID userId;
-    private UUID hotelId;
+    private UUID villaId;
     private Double price;
     private LocalDate startDay;
     private LocalDate endDay;

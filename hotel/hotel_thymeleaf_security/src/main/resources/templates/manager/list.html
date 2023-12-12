@@ -60,12 +60,12 @@
 <body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
 
 <!-- BEGIN: Header-->
-<div th:replace="admin/dashboard-fragment :: header"></div>
+<div th:replace="~{admin/dashboard-fragment :: header}"></div>
 <!-- END: Header-->
 
 
 <!-- BEGIN: Main Menu-->
-<div th:replace="admin/dashboard-fragment :: menu(activeItem='villages')"></div>
+<div th:replace="~{admin/dashboard-fragment :: menu(activeItem='villages')}"></div>
 <!-- END: Main Menu-->
 
 
@@ -114,7 +114,7 @@
                       <th scope="col">Name</th>
                       <th scope="col">City</th>
                       <th scope="col">Price</th>
-                      <th scope="col">Room amount</th>
+                      <th scope="col">Room Status</th>
                       <th scope="col">Edit/Delete</th>
                     </tr>
                     </thead>

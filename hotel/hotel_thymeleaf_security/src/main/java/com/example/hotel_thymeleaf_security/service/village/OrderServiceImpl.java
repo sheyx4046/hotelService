@@ -2,12 +2,9 @@ package com.example.hotel_thymeleaf_security.service.village;
 
 
 import com.example.hotel_thymeleaf_security.entity.booking.OrderEntity;
-import com.example.hotel_thymeleaf_security.entity.dtos.BookingDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.OrderDto;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
-import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
-import com.example.hotel_thymeleaf_security.exception.OrdersException;
 import com.example.hotel_thymeleaf_security.repository.booking.OrderRepository;
 import com.example.hotel_thymeleaf_security.repository.villa.VillaRepository;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
@@ -145,7 +142,7 @@ return orderRepository.findAllByUserId(userId);
         OrderEntity byId = orderRepository.findById(orderId).orElseThrow(
                 ()->new DataNotFoundException("order not found"));
         if (byId.getUserId() == userId){
-            deleteById(byId.getHotelId());
+            deleteById(byId.getVillaId());
         }
         throw new NoPermissionException("you are not allowed...");
     }
@@ -193,7 +190,9 @@ return orderRepository.findAllByUserId(userId);
 
     @Override
     public OrderEntity create(OrderDto orderDto) {
-        return null;
+        OrderEntity map = modelMapper.map(orderDto, OrderEntity.class);
+        map.setBookingStatus(BOOKED);
+        return orderRepository.save(map);
     }
 
     @Override
