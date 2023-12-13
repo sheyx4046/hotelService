@@ -57,37 +57,6 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @GetMapping("/ordered")
-    public String getVillageListPage(
-            Principal principal,
-            @RequestParam("page") Optional<Integer> page,
-            @RequestParam("size")Optional<Integer> size,
-            Model model
-    ){
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(6);
-        Page<OrderEntity> order = orderService.getByOrderedPage(PageRequest.of(currentPage - 1, pageSize), principal.getName());
-//        Page<OrderEntity> order = orderService.getAllPage(PageRequest.of(currentPage - 1, pageSize));
-        model.addAttribute("userOrder", order);
-        int totalPages = order.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-            model.addAttribute("villa", villageService);
-        }
-        return "user/booked-villages";
-    }
-
-    @GetMapping("/ordered/delete")
-    public String deleteVillage(Principal principal,
-                                @RequestParam UUID villaId
-                                ) throws NoPermissionException {
-        orderService.delete(villaId, principal.getName());
-        return "redirect:/ordered";
-    }
-
     @GetMapping("/newPassword")
     public String getNewPasswordPage(){
         return "user/edit-new-password";

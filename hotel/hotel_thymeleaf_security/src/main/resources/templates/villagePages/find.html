@@ -155,7 +155,10 @@
                                 <div class="d-flex mb-3">
                                     <small class="border-end me-3 pe-3" th:text="${villa.roomAmount}+' Rooms'"><i class="fa fa-bed text-primary me-2"></i>3 Bed</small>
                                 </div>
-                                <p class="text-body mb-3" th:text="${#strings.substring(villa.description, 0, 50) + '...'}"></p>
+                                <p class="text-body mb-3" th:if="${#strings.length(villa.description) > 50}"
+                                   th:text="${#strings.substring(villa.description, 0, 50) + '...'}"></p>
+                                <p class="text-body mb-3" th:unless="${#strings.length(villa.description) > 50}"
+                                   th:text="${villa.description}"></p>
                                 <div class="d-flex justify-content-between">
                                     <a class="btn btn-sm btn-primary rounded py-2 px-4" th:href="@{/village(village=${villa.getId()})}">View Detail</a>
                                     <a class="btn btn-sm btn-dark rounded py-2 px-4" th:href="'/booking/'+${villa.id}+'/book'">Book Now</a>

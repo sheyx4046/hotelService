@@ -68,10 +68,10 @@
                     <aside class="col-sm-5 border-right">
                         <article class="gallery-wrap">
                             <div class="img-big-wrap">
-                                <div> <a href="#"><img class="img-fluid" src="../admin dashboar/assets/images/gallery/1.jpg"></a></div>
+                                <div th:if="${fileService.getGeneralPhoto(villa.getId()) != null}"> <a href="#"><img class="img-fluid" th:src="${fileService.getGeneralPhoto(villa.getId())}" alt="img"></a></div>
                             </div> <!-- slider-product.// -->
                             <div class="img-small-wrap">
-                                <div class="item-gallery"> <img src="../admin dashboar/assets/images/gallery/1.jpg"> </div>
+                                <div class="item-gallery" th:if="${fileService.getGeneralPhoto(villa.getId()) != null}"> <img th:src="${fileService.getGeneralPhoto(villa.getId())}" alt="img"> </div>
                             </div> <!-- slider-nav.// -->
                         </article> <!-- gallery-wrap .end// -->
                     </aside>
@@ -112,11 +112,11 @@
                                     <dl class="param param-inline">
                                         <dt>Social sites: </dt>
                                         <dd>
-                                            <a th:if="${service.getContactInfo(villa.id).getFacebook()}" th:href="${service.getContactInfo(villa.id).getFacebook()}"><i class="fab fa-facebook fa-2x"></i></a>
-                                            <a th:if="${service.getContactInfo(villa.id).getTelegram()}" th:href="${service.getContactInfo(villa.id).getTelegram()}"><i class="fab fa-telegram  fa-2x"></i></a>
-                                            <a th:if="${service.getContactInfo(villa.id).getInstagram()}" th:href="${service.getContactInfo(villa.id).getInstagram()}"><i class="fab fa-instagram  fa-2x"></i></a>
-                                            <a th:if="${service.getContactInfo(villa.id).getEmail()}" th:href="${service.getContactInfo(villa.id).getEmail()}"><i class="fab fa-house-flood-water-circle-arrow-right fa-2x"></i></a>
-                                            <a th:if="${service.getContactInfo(villa.id).getYoutube()}" th:href="${service.getContactInfo(villa.id).getYoutube()}"><i class="fab fa-house-flood-water-circle-arrow-right fa-2x"></i></a>
+                                            <a th:if="${!service.getContactInfo(villa.id).getFacebook().isEmpty()}" th:href="${service.getContactInfo(villa.id).getFacebook()}"><i class="fab fa-facebook fa-2x"></i></a>
+                                            <a th:if="${!service.getContactInfo(villa.id).getTelegram().isEmpty()}" th:href="${service.getContactInfo(villa.id).getTelegram()}"><i class="fab fa-telegram  fa-2x"></i></a>
+                                            <a th:if="${!service.getContactInfo(villa.id).getInstagram().isEmpty()}" th:href="${service.getContactInfo(villa.id).getInstagram()}"><i class="fab fa-instagram  fa-2x"></i></a>
+                                            <a th:if="${!service.getContactInfo(villa.id).getEmail().isEmpty()}" th:href="${service.getContactInfo(villa.id).getEmail()}"><i class="fab fa-house-flood-water-circle-arrow-right fa-2x"></i></a>
+                                            <a th:if="${!service.getContactInfo(villa.id).getYoutube().isEmpty()}" th:href="${service.getContactInfo(villa.id).getYoutube()}"><i class="fab fa-house-flood-water-circle-arrow-right fa-2x"></i></a>
                                             <!-- Add more social icons as needed -->
                                         </dd>
                                     </dl>  <!-- item-property .// -->
