@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface UserService extends BaseService<UserEntity, UserRequestDto>, UserDetailsService {
@@ -37,6 +39,8 @@ public interface UserService extends BaseService<UserEntity, UserRequestDto>, Us
     UserEntity saveByAdmin(UserRequestDto userRequestDto, String name);
 
     UserEntity update(UserDetailsDto userDto, UUID userId);
+
+    Map<String, Integer> status_length();
 
 
 }

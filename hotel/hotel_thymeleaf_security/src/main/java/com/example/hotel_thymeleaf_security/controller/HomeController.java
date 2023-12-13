@@ -49,6 +49,7 @@ public class HomeController {
     ) {
         Pageable pageable = PageRequest.of(0, 3);
         model.addAttribute("villages", villageService.getAllPage(pageable).getContent());
+        model.addAttribute("status", userService.status_length());
         return "villagePages/index";
     }
 
@@ -104,7 +105,10 @@ public class HomeController {
     }
 
     @GetMapping("/about")
-    public String aboutPage() {
+    public String aboutPage(
+            Model model
+    ) {
+        model.addAttribute("status", userService.status_length());
         return "villagePages/about";
     }
 

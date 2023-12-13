@@ -11,6 +11,7 @@ import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.exception.UniqueObjectException;
 import com.example.hotel_thymeleaf_security.repository.userRepository.UserRepository;
+import com.example.hotel_thymeleaf_security.repository.villa.VillaRepository;
 import com.example.hotel_thymeleaf_security.service.mailService.MailServiceImpl;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -27,15 +28,14 @@ import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final VillaRepository villaRepository;
+
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final MailServiceImpl mailService;
@@ -240,6 +240,16 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(byEmail);
         }
         return null;
+    }
+
+    @Override
+    public Map<String, Integer>  status_length() {
+        Map<String, Integer> status = new HashMap<>();
+
+        status.put("users", userRepository.findAll().size());
+        status.put("villas", villaRepository.findAll().size());
+        status.put("managers", userRepository.countUserEntitiesByRole(Role.MANAGER));
+        return status;
     }
 
 
