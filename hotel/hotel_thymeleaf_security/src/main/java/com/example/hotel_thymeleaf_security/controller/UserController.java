@@ -17,9 +17,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.NoPermissionException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,6 +33,7 @@ public class UserController {
     private final UserService userService;
     private final VillageService villageService;
     private final OrderService orderService;
+
     @GetMapping()
     public String getUserDetailsPage(
             Principal principal,
@@ -63,8 +66,8 @@ public class UserController {
     ){
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(6);
-//        Page<OrderEntity> order = orderService.getByOrderedPage(PageRequest.of(currentPage - 1, pageSize), principal.getName());
-        Page<OrderEntity> order = orderService.getAllPage(PageRequest.of(currentPage - 1, pageSize));
+        Page<OrderEntity> order = orderService.getByOrderedPage(PageRequest.of(currentPage - 1, pageSize), principal.getName());
+//        Page<OrderEntity> order = orderService.getAllPage(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("userOrder", order);
         int totalPages = order.getTotalPages();
         if (totalPages > 0) {
@@ -77,13 +80,19 @@ public class UserController {
         return "user/booked-villages";
     }
 
+    @GetMapping("/ordered/delete")
+    public String deleteVillage(Principal principal,
+                                @RequestParam UUID villaId
+                                ) throws NoPermissionException {
+        orderService.delete(villaId, principal.getName());
+        return "redirect:/ordered";
+    }
+
     @GetMapping("/newPassword")
-    public String getNewPasswordPage(
-            Principal principal,
-            Model model
-    ){
+    public String getNewPasswordPage(){
         return "user/edit-new-password";
     }
+
     @PostMapping("/newPassword")
     public String postNewPasswordPage(
             Principal principal,

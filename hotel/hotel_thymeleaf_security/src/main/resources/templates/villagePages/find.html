@@ -73,7 +73,7 @@
         <!-- Page Header End -->
 
         <!-- Booking Start -->
-        <div class="container-fluid booking pb-5 wow fadeIn" data-wow-delay="0.1s" >
+        <div class="container-fluid booking pb-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container">
                 <div class="bg-white shadow" style="padding: 25px 25px;">
                     <div class="row g-2">
@@ -143,7 +143,7 @@
                             <div class="room-item shadow rounded overflow-hidden" th:if="${villa.price != null}">
                                 <div class="position-relative">
                                     <th:block th:if="${fileService.getGeneralPhoto(villa.getId()) != null}">
-                                        <img class="img-fluid" th:src="${fileService.getGeneralPhoto(villa.getId())}" alt="">
+                                        <img class="img-resize" th:src="${fileService.getGeneralPhoto(villa.getId())}" alt="">
                                     </th:block>
                                     <small class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4" th:text="'$'+${villa.price}+'/Night'"></small>
                                 </div>

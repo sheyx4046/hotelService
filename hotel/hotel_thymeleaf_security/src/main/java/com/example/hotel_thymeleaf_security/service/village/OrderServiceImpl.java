@@ -3,6 +3,7 @@ package com.example.hotel_thymeleaf_security.service.village;
 
 import com.example.hotel_thymeleaf_security.entity.booking.OrderEntity;
 import com.example.hotel_thymeleaf_security.entity.dtos.OrderDto;
+import com.example.hotel_thymeleaf_security.entity.user.Role;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.repository.booking.OrderRepository;
@@ -172,9 +173,8 @@ return orderRepository.findAllByUserId(userId);
         UserEntity userEntity = userService.getByEmail(user);
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
-
-        List<OrderEntity> all = orderRepository.findAllByUserId(userEntity.getId());
-
+        List<OrderEntity> all = userEntity.getRole().equals(Role.ADMIN) || userEntity.getRole().equals(Role.SUPER_ADMIN)?orderRepository.findAll()
+                                                        :orderRepository.findAllByUserId(userEntity.getId());
         int startItem = currentPage * pageSize;
         List<OrderEntity> list;
 
