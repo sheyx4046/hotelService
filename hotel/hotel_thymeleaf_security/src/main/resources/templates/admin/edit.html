@@ -118,7 +118,7 @@
                                                         <label class="col-md-3 label-control" for="userinput3">Name</label>
                                                         <div class="col-md-9">
                                                             <input th:value="${user.name}" type="text" id="userinput3" class="form-control border-primary" placeholder="Name" name="name">
-                                                        </div>
+                                                        </div>x
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -126,7 +126,7 @@
                                                         <label class="col-md-3 label-control" for="projectinput4">Role</label>
                                                         <div class="col-md-9">
                                                             <select id="projectinput4" name="roles" class="form-control">
-                                                                <option value="" th:selected="${user.role.toString() == ''}">Role</option>
+                                                                <option value="" disabled>Role</option>
                                                                 <option value="USER" th:selected="${user.role.toString() == 'USER'}">USER</option>
                                                                 <option value="MANAGER" th:selected="${user.role.toString() == 'MANAGER'}">MANAGER</option>
                                                                 <option value="ADMIN" th:selected="${user.role.toString() == 'ADMIN'}">ADMIN</option>
@@ -140,7 +140,7 @@
                                                         <label class="col-md-3 label-control" for="projectinput5">Status</label>
                                                         <div class="col-md-9">
                                                             <select id="projectinput5" name="state" class="form-control">
-                                                                <option value="" th:selected="${user.state.toString()==' '}">Status</option>
+                                                                <option value="" disabled>Status</option>
                                                                 <option value="ACTIVE" th:selected="${user.state.toString()=='ACTIVE'}">ACTIVE</option>
                                                                 <option value="BLOCKED" th:selected="${user.state.toString()=='BLOCKED'}">BLOCKED</option>
                                                                 <option value="UNVERIFIED" th:selected="${user.state.toString()=='UNVERIFIED'}">UNVERIFIED</option>

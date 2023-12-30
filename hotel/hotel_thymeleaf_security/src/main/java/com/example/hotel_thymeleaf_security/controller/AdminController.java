@@ -59,7 +59,7 @@ public class AdminController {
     @GetMapping("/edit")
     public String editRedirect(){
         UserEntity lastUser = userService.getLastUser();
-        return "redirect:/admin/" + lastUser.getId().toString() + "/edit";
+        return "redirect:/admin/%s/edit".formatted(lastUser.getId().toString());
     }
 
     @PostMapping("/{userId}/edit")
@@ -67,7 +67,7 @@ public class AdminController {
                                @ModelAttribute UserDto userInfo, @PathVariable UUID userId){
         UserEntity update = userService.update(userInfo, userId);
         if(update==null){
-        return "redirect:/admin/"+userId.toString()+"/edit";}
+            return "redirect:/admin/%s/edit".formatted(userId.toString());}
         return "redirect:/admin/users-list";
     }
 

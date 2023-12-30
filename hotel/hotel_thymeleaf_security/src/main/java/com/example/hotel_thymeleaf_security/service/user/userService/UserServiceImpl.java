@@ -8,11 +8,13 @@ import com.example.hotel_thymeleaf_security.entity.dtos.request.UserRequestDto;
 import com.example.hotel_thymeleaf_security.entity.user.Role;
 import com.example.hotel_thymeleaf_security.entity.user.States;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
+import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
-import com.example.hotel_thymeleaf_security.exception.UniqueObjectException;
 import com.example.hotel_thymeleaf_security.repository.userRepository.UserRepository;
 import com.example.hotel_thymeleaf_security.repository.villa.VillaRepository;
 import com.example.hotel_thymeleaf_security.service.mailService.MailServiceImpl;
+import com.example.hotel_thymeleaf_security.service.village.VillaServiceImpl;
+import com.example.hotel_thymeleaf_security.service.village.VillageService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -35,10 +37,10 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final VillaRepository villaRepository;
-
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final MailServiceImpl mailService;
+    private final VillaServiceImpl villageService;
 
     @Override
     public UserEntity create(UserRequestDto userRequestDto, Boolean sendMessage ) {
@@ -59,7 +61,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void sendForgotPassword(String email) throws MessagingException, UnsupportedEncodingException {
-        UserEntity userEntity = getByEmail(email);
         mailService.sendForgotPassword(email);
     }
 
@@ -252,6 +253,12 @@ public class UserServiceImpl implements UserService {
         return status;
     }
 
+    @Override
+    public Boolean isManagerOfVilla(String email, UUID villaId) {
+        UserEntity byEmail = getByEmail(email);
+        VillaRentEntity villaRent = villageService.getById(villaId);
+        return villaRent.getOwnerId().equals(byEmail.getId());
+    }
 
     private Boolean checkState(String email){
         UserEntity userEntity = getByEmail(email);
@@ -268,10 +275,7 @@ public class UserServiceImpl implements UserService {
 
     private Boolean checkPassword(String password, UUID userId){
         UserEntity user = getById(userId);
-        if(passwordEncoder.matches(password, user.getPassword())){
-            return true;
-        }
-        return false;
+        return passwordEncoder.matches(password, user.getPassword());
     }
 
 

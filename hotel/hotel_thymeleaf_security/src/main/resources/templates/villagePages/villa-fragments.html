@@ -26,7 +26,7 @@
                             <div class="navbar-nav mr-auto py-0">
                                 <a href="/" th:class="${currentPage == 'home' ? 'nav-item nav-link active' : 'nav-item nav-link'}">Home</a>
                                 <a href="/about" th:class="${currentPage == 'about' ? 'nav-item nav-link active' : 'nav-item nav-link'}">About</a>
-                                <a href="/booking" th:class="${currentPage == 'booking' ? 'nav-item nav-link active' : 'nav-item nav-link'}">Booking</a>
+                                <a href="/order" th:class="${currentPage == 'order' ? 'nav-item nav-link active' : 'nav-item nav-link'}">Booking</a>
                                 <a href="/find" th:class="${currentPage == 'find' ? 'nav-item nav-link active' : 'nav-item nav-link'}">Find</a>
                                 <a href="/contact" th:class="${currentPage == 'contact' ? 'nav-item nav-link active' : 'nav-item nav-link'}">Contact</a>
                                 <div th:if="${ !#authorization.expression('isAuthenticated()')}">
@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-md-6 col-lg-3">
                         <h6 class="section-title text-start text-primary text-uppercase mb-4">Contact</h6>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Beruniy 3A, Toshkent, UZB</p>
+                        <p class="mb-2"><i class    ="fa fa-map-marker-alt me-3"></i>Beruniy 3A, Toshkent, UZB</p>
                         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+998 99 457 71 50</p>
                         <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
                         <div class="d-flex pt-2">

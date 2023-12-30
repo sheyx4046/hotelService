@@ -38,9 +38,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final VillaRepository villaRepository;
     private final UserService userService;
-//    @Value("${services.room-url}")
 
-public List<OrderEntity>UserBookingsHistory(Pageable pageable, UUID userId){
+    public List<OrderEntity>UserBookingsHistory(Pageable pageable, UUID userId){
 
 return orderRepository.findAllByUserId(userId);
 }
@@ -139,13 +138,13 @@ return orderRepository.findAllByUserId(userId);
 
     @Override
     public void delete(UUID orderId, String userEmail) throws NoPermissionException {
-        UUID userId = userService.getByEmail(userEmail).getId();
+        UserEntity user = userService.getByEmail(userEmail);
         OrderEntity byId = orderRepository.findById(orderId).orElseThrow(
                 ()->new DataNotFoundException("order not found"));
-        if (byId.getUserId() == userId){
-            deleteById(byId.getVillaId());
-        }
-        throw new NoPermissionException("you are not allowed...");
+        if (byId.getUserId() == user.getId() || (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPER_ADMIN) || userService.isManagerOfVilla(user.getEmail(), byId.getVillaId()))){
+            deleteById(byId.getId());
+        }else{
+        throw new NoPermissionException("you are not allowed...");}
     }
 
     @Override
@@ -202,7 +201,9 @@ return orderRepository.findAllByUserId(userId);
 
     @Override
     public OrderEntity update(OrderDto orderDto, UUID id) {
-        return null;
+        OrderEntity map = modelMapper.map(orderDto, OrderEntity.class);
+        map.setId(id);
+        return orderRepository.save(map);
     }
 
     @Override

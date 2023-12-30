@@ -122,10 +122,20 @@
                                     </dl>  <!-- item-property .// -->
                                 </div> <!-- col.// -->
                             </div> <!-- row.// -->
-                            <hr>
-                            <div class="row">
-                                <a href="#" class="btn btn-lg btn-primary text-uppercase"> Book now </a>
-                            </div>
+                                    <!-- Start Date and End Date Input Fields in One Line -->
+                                    <form id="bookingForm" class="form-inline"  method="post" th:action="'/order/'+${villa.id}+'/ordering'">
+                                        <div class="form-group mr-sm-3 mb-2">
+                                            <label for="startDate" class="mr-2">Start Date:</label>
+                                            <input type="date" class="form-control" id="startDate" name="startDate" required>
+                                        </div>
+                                        <div class="form-group mr-sm-3 mb-2">
+                                            <label for="endDate" class="mr-2">End Date:</label>
+                                            <input type="date" class="form-control" id="endDate" name="endDate" required>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-lg text-uppercase">Book now</button>
+                                    </form>
+                            <!-- End of Start Date and End Date Input Fields -->
                         </article> <!-- card-body.// -->
                     </aside> <!-- col.// -->
                 </div> <!-- row.// -->

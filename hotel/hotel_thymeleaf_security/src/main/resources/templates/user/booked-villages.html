@@ -74,12 +74,12 @@
           <tbody>
           <tr th:each="order, orderStat:${userOrder}">
             <td th:text="${orderStat.count}"></td>
-            <td th:text="${villa.getById(order.getHotelId()).getName()}">Village A</td>
+            <td th:text="${villa.getById(order.getVillaId()).getName()}">Village A</td>
             <td th:text="${#temporals.format(order.getStartDay(), 'yyyy-dd-MM')}">2023-12-01</td>
             <td th:text="${#temporals.format(order.getEndDay(), 'yyyy-dd-MM')}">2023-12-05</td>
             <td th:text="${order.getBookingStatus()}">Booked</td>
-            <td><a th:href=""><i class="fas fa-edit icon-button text-primary"></i></a></td>
-            <td><a href=""><i class="fas fa-trash-alt icon-button text-danger"></i></a></td>
+            <td><a th:href="@{/village(village=${order.getVillaId()})}"><i class="fa fa-eye icon-button text-black" aria-hidden="true"></i></a></td>
+            <td><a th:href="@{/order/cancel(id=${order.getId()})}"><i class="fas fa-trash-alt icon-button text-danger"></i></a></td>
           </tr>
           </tbody>
         </table>

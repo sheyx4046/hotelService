@@ -18,7 +18,7 @@ import java.util.UUID;
 public class OrderEntity extends BaseEntity {
     private UUID userId;
     private UUID villaId;
-    private Double price;
+    private Double totalPrice;
     private LocalDate startDay;
     private LocalDate endDay;
     @Enumerated(EnumType.STRING)
