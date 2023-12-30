@@ -47,6 +47,9 @@
     <script th:src="@{/css/assets/js/jquery.validate.min.js}"></script>
     <!-- END: Page Vendor JS-->
 
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
     <!-- BEGIN: Theme JS-->
     <script th:src="@{/css/assets/js/app-menu.js}"></script>
     <script th:src="@{/css/assets/js/app.js}"></script>
@@ -54,9 +57,7 @@
 
 </head>
 <!-- END: Head-->
-
 <!-- BEGIN: Body-->
-
 <body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
 
 <!-- BEGIN: Header-->
@@ -73,9 +74,22 @@
         <div class="content-overlay"></div>
         <div class="content-wrapper">
             <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2">
+                    <h3 class="content-header-title">Users</h3>
+                    <div class="row breadcrumbs-top">
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/admin">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active"> Users
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="content-body">
-                <!-- Hospital Info cards -->
+                <!-- Users Info cards -->
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -106,18 +120,19 @@
                                                 <tr th:each="user:${users}">
                                                     <th scope="row" th:text="${user.getEmail()}"></th>
                                                     <td th:text="${user.name}"></td>
-                                                    <td th:text="${user.role}">Admin</td>
-                                                    <td th:text="${user.state}">@mdo</td>
+                                                    <td th:text="${user.role}"></td>
+                                                    <td th:text="${user.state}"></td>
                                                     <td>
-                                                        <div class="container-a"><a th:href="'/admin/'+${user.id}+'/edit'"><button type="button" class="btn btn-icon btn-success btn-sm"><i class="la la-edit"></i></button></a>
+                                                        <div class="container-a"><a th:href="'/admin/'+${user.id}+'/edit'">
+                                                            <button type="button" class="btn btn-icon btn-success btn-sm"> <i class="fas fa-edit fa-sm"></i> </button></a>
 
-                                                            <a th:href="'/admin/'+${user.id}+'/delete'" th:if="${ #authorization.expression('isAuthenticated()') and (#strings.contains(#authentication.principal.authorities,'SUPER_ADMIN') or #strings.contains(#authentication.principal.authorities,'MANAGER'))}"><button type="button" class="btn btn-icon btn-danger  btn-sm"><i class="la la-remove"></i></button></a>
+                                                            <a th:href="'/admin/'+${user.id}+'/delete'" th:if="${ #authorization.expression('isAuthenticated()') and (#strings.contains(#authentication.principal.authorities,'SUPER_ADMIN') or #strings.contains(#authentication.principal.authorities,'MANAGER'))}">
+                                                                <button type="button" class="btn btn-icon btn-danger  btn-sm"><i class="fas fa-trash-alt fa-sm"></i></button></a>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
-
                                         <!-- Add pagination controls -->
                                         <div class="text-center">
                                             <nav th:if="${users.totalPages > 1}" aria-label="Page navigation">
