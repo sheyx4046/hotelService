@@ -2,12 +2,10 @@ package com.example.hotel_thymeleaf_security.service.village;
 
 
 import com.example.hotel_thymeleaf_security.entity.booking.OrderEntity;
-import com.example.hotel_thymeleaf_security.entity.dtos.BookingDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.OrderDto;
+import com.example.hotel_thymeleaf_security.entity.user.Role;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
-import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
-import com.example.hotel_thymeleaf_security.exception.OrdersException;
 import com.example.hotel_thymeleaf_security.repository.booking.OrderRepository;
 import com.example.hotel_thymeleaf_security.repository.villa.VillaRepository;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
@@ -40,9 +38,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final VillaRepository villaRepository;
     private final UserService userService;
-//    @Value("${services.room-url}")
 
-public List<OrderEntity>UserBookingsHistory(Pageable pageable, UUID userId){
+    public List<OrderEntity>UserBookingsHistory(Pageable pageable, UUID userId){
 
 return orderRepository.findAllByUserId(userId);
 }
@@ -141,13 +138,13 @@ return orderRepository.findAllByUserId(userId);
 
     @Override
     public void delete(UUID orderId, String userEmail) throws NoPermissionException {
-        UUID userId = userService.getByEmail(userEmail).getId();
+        UserEntity user = userService.getByEmail(userEmail);
         OrderEntity byId = orderRepository.findById(orderId).orElseThrow(
                 ()->new DataNotFoundException("order not found"));
-        if (byId.getUserId() == userId){
-            deleteById(byId.getHotelId());
-        }
-        throw new NoPermissionException("you are not allowed...");
+        if (byId.getUserId() == user.getId() || (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPER_ADMIN) || userService.isManagerOfVilla(user.getEmail(), byId.getVillaId()))){
+            deleteById(byId.getId());
+        }else{
+        throw new NoPermissionException("you are not allowed...");}
     }
 
     @Override
@@ -175,9 +172,8 @@ return orderRepository.findAllByUserId(userId);
         UserEntity userEntity = userService.getByEmail(user);
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
-
-        List<OrderEntity> all = orderRepository.findAllByUserId(userEntity.getId());
-
+        List<OrderEntity> all = userEntity.getRole().equals(Role.ADMIN) || userEntity.getRole().equals(Role.SUPER_ADMIN)?orderRepository.findAll()
+                                                        :orderRepository.findAllByUserId(userEntity.getId());
         int startItem = currentPage * pageSize;
         List<OrderEntity> list;
 
@@ -193,7 +189,9 @@ return orderRepository.findAllByUserId(userId);
 
     @Override
     public OrderEntity create(OrderDto orderDto) {
-        return null;
+        OrderEntity map = modelMapper.map(orderDto, OrderEntity.class);
+        map.setBookingStatus(BOOKED);
+        return orderRepository.save(map);
     }
 
     @Override
@@ -203,7 +201,9 @@ return orderRepository.findAllByUserId(userId);
 
     @Override
     public OrderEntity update(OrderDto orderDto, UUID id) {
-        return null;
+        OrderEntity map = modelMapper.map(orderDto, OrderEntity.class);
+        map.setId(id);
+        return orderRepository.save(map);
     }
 
     @Override

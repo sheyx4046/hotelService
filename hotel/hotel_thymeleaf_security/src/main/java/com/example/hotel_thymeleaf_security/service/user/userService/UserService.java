@@ -11,10 +11,10 @@ import com.example.hotel_thymeleaf_security.service.BaseService;
 import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 import java.util.UUID;
 
 public interface UserService extends BaseService<UserEntity, UserRequestDto>, UserDetailsService {
@@ -38,5 +38,7 @@ public interface UserService extends BaseService<UserEntity, UserRequestDto>, Us
 
     UserEntity update(UserDetailsDto userDto, UUID userId);
 
+    Map<String, Integer> status_length();
 
+    Boolean isManagerOfVilla(String email, UUID villaId);
 }

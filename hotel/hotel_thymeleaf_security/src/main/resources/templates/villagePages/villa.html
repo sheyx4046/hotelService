@@ -57,42 +57,7 @@
     <!-- Spinner End -->
 
     <!-- Header Start -->
-    <div class="container-fluid bg-dark px-0">
-        <div class="row gx-0">
-            <div class="col-lg-3 bg-dark d-none d-lg-block">
-                <a href="/" class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-center">
-                    <h1 class="m-0 text-primary text-uppercase">VillaRent</h1>
-                </a>
-            </div>
-            <div class="col-lg-9">
-                <nav class="navbar navbar-expand-lg bg-dark navbar-dark p-3 p-lg-0">
-                    <a href="/" class="navbar-brand d-block d-lg-none">
-                        <h1 class="m-0 text-primary text-uppercase">VillaRent</h1>
-                    </a>
-                    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <div class="navbar-nav mr-auto py-0">
-                            <a href="/" class="nav-item nav-link active">Home</a>
-                            <a href="/about" class="nav-item nav-link">About</a>
-                            <a href="/booking" class="nav-item nav-link">Booking</a>
-                            <a href="/find" class="nav-item nav-link">Find</a>
-                            <a href="/contact" class="nav-item nav-link">Contact</a>
-                            <div th:if="${ !#authorization.expression('isAuthenticated()')}">
-                                <a href="/auth/login" class="nav-item nav-link">Login</a>
-                            </div>
-                            <div th:if="${ #authorization.expression('isAuthenticated()')}">
-                                <a href="/auth/logout" class="nav-item nav-link">Logout</a>
-                            </div>
-                            <a href="/auth/register" class="nav-item nav-link">Registration</a>
-                            <a href="/user" class="nav-item nav-link">User</a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>
+    <div th:replace="~{villagePages/villa-fragments :: header(currentPage='villa')}"></div>
     <!-- Header End -->
 
     <!--  Container start  -->
@@ -103,10 +68,10 @@
                     <aside class="col-sm-5 border-right">
                         <article class="gallery-wrap">
                             <div class="img-big-wrap">
-                                <div> <a href="#"><img class="img-fluid" src="../admin dashboar/assets/images/gallery/1.jpg"></a></div>
+                                <div th:if="${fileService.getGeneralPhoto(villa.getId()) != null}"> <a href="#"><img class="img-fluid" th:src="${fileService.getGeneralPhoto(villa.getId())}" alt="img"></a></div>
                             </div> <!-- slider-product.// -->
                             <div class="img-small-wrap">
-                                <div class="item-gallery"> <img src="../admin dashboar/assets/images/gallery/1.jpg"> </div>
+                                <div class="item-gallery" th:if="${fileService.getGeneralPhoto(villa.getId()) != null}"> <img th:src="${fileService.getGeneralPhoto(villa.getId())}" alt="img"> </div>
                             </div> <!-- slider-nav.// -->
                         </article> <!-- gallery-wrap .end// -->
                     </aside>
@@ -147,20 +112,30 @@
                                     <dl class="param param-inline">
                                         <dt>Social sites: </dt>
                                         <dd>
-                                            <a th:if="${service.getContactInfo(villa.id).getFacebook()}" th:href="${service.getContactInfo(villa.id).getFacebook()}"><i class="fab fa-facebook fa-2x"></i></a>
-                                            <a th:if="${service.getContactInfo(villa.id).getTelegram()}" th:href="${service.getContactInfo(villa.id).getTelegram()}"><i class="fab fa-telegram  fa-2x"></i></a>
-                                            <a th:if="${service.getContactInfo(villa.id).getInstagram()}" th:href="${service.getContactInfo(villa.id).getInstagram()}"><i class="fab fa-instagram  fa-2x"></i></a>
-                                            <a th:if="${service.getContactInfo(villa.id).getEmail()}" th:href="${service.getContactInfo(villa.id).getEmail()}"><i class="fab fa-house-flood-water-circle-arrow-right fa-2x"></i></a>
-                                            <a th:if="${service.getContactInfo(villa.id).getYoutube()}" th:href="${service.getContactInfo(villa.id).getYoutube()}"><i class="fab fa-house-flood-water-circle-arrow-right fa-2x"></i></a>
+                                            <a th:if="${!service.getContactInfo(villa.id).getFacebook().isEmpty()}" th:href="${service.getContactInfo(villa.id).getFacebook()}"><i class="fab fa-facebook fa-2x"></i></a>
+                                            <a th:if="${!service.getContactInfo(villa.id).getTelegram().isEmpty()}" th:href="${service.getContactInfo(villa.id).getTelegram()}"><i class="fab fa-telegram  fa-2x"></i></a>
+                                            <a th:if="${!service.getContactInfo(villa.id).getInstagram().isEmpty()}" th:href="${service.getContactInfo(villa.id).getInstagram()}"><i class="fab fa-instagram  fa-2x"></i></a>
+                                            <a th:if="${!service.getContactInfo(villa.id).getEmail().isEmpty()}" th:href="${service.getContactInfo(villa.id).getEmail()}"><i class="fab fa-house-flood-water-circle-arrow-right fa-2x"></i></a>
+                                            <a th:if="${!service.getContactInfo(villa.id).getYoutube().isEmpty()}" th:href="${service.getContactInfo(villa.id).getYoutube()}"><i class="fab fa-house-flood-water-circle-arrow-right fa-2x"></i></a>
                                             <!-- Add more social icons as needed -->
                                         </dd>
                                     </dl>  <!-- item-property .// -->
                                 </div> <!-- col.// -->
                             </div> <!-- row.// -->
-                            <hr>
-                            <div class="row">
-                                <a href="#" class="btn btn-lg btn-primary text-uppercase"> Book now </a>
-                            </div>
+                                    <!-- Start Date and End Date Input Fields in One Line -->
+                                    <form id="bookingForm" class="form-inline"  method="post" th:action="'/order/'+${villa.id}+'/ordering'">
+                                        <div class="form-group mr-sm-3 mb-2">
+                                            <label for="startDate" class="mr-2">Start Date:</label>
+                                            <input type="date" class="form-control" id="startDate" name="startDate" required>
+                                        </div>
+                                        <div class="form-group mr-sm-3 mb-2">
+                                            <label for="endDate" class="mr-2">End Date:</label>
+                                            <input type="date" class="form-control" id="endDate" name="endDate" required>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-lg text-uppercase">Book now</button>
+                                    </form>
+                            <!-- End of Start Date and End Date Input Fields -->
                         </article> <!-- card-body.// -->
                     </aside> <!-- col.// -->
                 </div> <!-- row.// -->
@@ -190,61 +165,7 @@
     </div>
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container pb-5">
-            <div class="row g-5">
-                <div class="col-md-6 col-lg-4">
-                    <div class="bg-primary rounded p-4">
-                        <a href="/"><h1 class="text-white text-uppercase mb-3">VillaRent</h1></a>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <h6 class="section-title text-start text-primary text-uppercase mb-4">Contact</h6>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Beruniy 3A, Toshkent, UZB</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+998 99 457 71 50</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-12">
-                    <div class="row gy-5 g-4">
-                        <div class="col-md-6">
-                            <h6 class="section-title text-start text-primary text-uppercase mb-4">Service</h6>
-                            <a class="btn btn-link" href="">About Us</a>
-                            <a class="btn btn-link" href="">Contact Us</a>
-                            <a class="btn btn-link" href="">Privacy Policy</a>
-                            <a class="btn btn-link" href="">Terms & Condition</a>
-                            <a class="btn btn-link" href="">Support</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">VillaRent</a>, All Right Reserved.
-
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://t.me/bilol011022">BILALXASAN</a>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <div class="footer-menu">
-                            <a href="">Home</a>
-                            <a href="">Cookies</a>
-                            <a href="">Help</a>
-                            <a href="">FQAs</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:replace="~{villagePages/villa-fragments :: footer}"></div>
     <!-- Footer End -->
 
 

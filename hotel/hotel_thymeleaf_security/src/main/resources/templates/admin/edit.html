@@ -60,12 +60,12 @@
 <body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
 
 <!-- BEGIN: Header-->
-<div th:replace="admin/dashboard-fragment :: header"></div>
+<div th:replace="~{admin/dashboard-fragment :: header}"></div>
 <!-- END: Header-->
 
 
 <!-- BEGIN: Main Menu-->
-<div th:replace="admin/dashboard-fragment :: menu(activeItem='edit_user')"></div>
+<div th:replace="~{admin/dashboard-fragment :: menu(activeItem='edit_user')}"></div>
 <!-- END: Main Menu-->
 
     <!-- BEGIN: Content-->
@@ -73,9 +73,22 @@
         <div class="content-overlay"></div>
         <div class="content-wrapper">
             <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2">
+                    <h3 class="content-header-title">Users</h3>
+                    <div class="row breadcrumbs-top">
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/admin">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active"> Edit User
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="content-body">
-                <!-- Hospital Info cards -->
+                <!-- Users - Edit -->
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -126,7 +139,7 @@
                                                         <label class="col-md-3 label-control" for="projectinput4">Role</label>
                                                         <div class="col-md-9">
                                                             <select id="projectinput4" name="roles" class="form-control">
-                                                                <option value="" th:selected="${user.role.toString() == ''}">Role</option>
+                                                                <option value="" disabled>Role</option>
                                                                 <option value="USER" th:selected="${user.role.toString() == 'USER'}">USER</option>
                                                                 <option value="MANAGER" th:selected="${user.role.toString() == 'MANAGER'}">MANAGER</option>
                                                                 <option value="ADMIN" th:selected="${user.role.toString() == 'ADMIN'}">ADMIN</option>
@@ -140,7 +153,7 @@
                                                         <label class="col-md-3 label-control" for="projectinput5">Status</label>
                                                         <div class="col-md-9">
                                                             <select id="projectinput5" name="state" class="form-control">
-                                                                <option value="" th:selected="${user.state.toString()==' '}">Status</option>
+                                                                <option value="" disabled>Status</option>
                                                                 <option value="ACTIVE" th:selected="${user.state.toString()=='ACTIVE'}">ACTIVE</option>
                                                                 <option value="BLOCKED" th:selected="${user.state.toString()=='BLOCKED'}">BLOCKED</option>
                                                                 <option value="UNVERIFIED" th:selected="${user.state.toString()=='UNVERIFIED'}">UNVERIFIED</option>

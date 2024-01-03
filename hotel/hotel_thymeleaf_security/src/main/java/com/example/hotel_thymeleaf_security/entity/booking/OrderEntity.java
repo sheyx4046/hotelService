@@ -17,11 +17,10 @@ import java.util.UUID;
 @Builder
 public class OrderEntity extends BaseEntity {
     private UUID userId;
-    private UUID hotelId;
-    private Double price;
+    private UUID villaId;
+    private Double totalPrice;
     private LocalDate startDay;
     private LocalDate endDay;
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
-
 }

@@ -40,6 +40,10 @@
   <script th:src="@{/css/assets/js/vendors.min.js}"></script>
   <!-- BEGIN Vendor JS-->
 
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+
   <!-- BEGIN: Page Vendor JS-->
   <script th:src="@{/css/assets/js/jquery.steps.min.js}"></script>
   <script th:src="@{/css/assets/js/moment-with-locales.min.js}"></script>
@@ -60,12 +64,12 @@
 <body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
 
 <!-- BEGIN: Header-->
-<div th:replace="admin/dashboard-fragment :: header"></div>
+<div th:replace="~{admin/dashboard-fragment :: header}"></div>
 <!-- END: Header-->
 
 
 <!-- BEGIN: Main Menu-->
-<div th:replace="admin/dashboard-fragment :: menu(activeItem='villages')"></div>
+<div th:replace="~{admin/dashboard-fragment :: menu(activeItem='villages')}"></div>
 <!-- END: Main Menu-->
 
 
@@ -114,7 +118,6 @@
                       <th scope="col">Name</th>
                       <th scope="col">City</th>
                       <th scope="col">Price</th>
-                      <th scope="col">Room amount</th>
                       <th scope="col">Edit/Delete</th>
                     </tr>
                     </thead>
@@ -125,13 +128,19 @@
                       <td th:text="${villa.name}"></td>
                       <td th:text="${villa.city}"></td>
                       <td th:text="${villa.price}"></td>
-                      <td th:text="${villa.roomAmount}"></td>
                       <td>
-                        <div class="container-a"><a th:href="'/manager/'+${villa.id}+'/edit'"><button type="button" class="btn btn-icon btn-success btn-sm"><i class="la la-edit"></i></button></a>
-
-                          <a th:href="'/manager/'+${villa.id}+'/delete'" th:if="${ #authorization.expression('isAuthenticated()') and (#strings.contains(#authentication.principal.authorities,'SUPER_ADMIN') or #strings.contains(#authentication.principal.authorities,'MANAGER'))}"><button type="button" class="btn btn-icon btn-danger  btn-sm"><i class="la la-remove"></i></button></a>
+                        <div class="container-a">
+                          <a th:href="'/manager/'+${villa.id}+'/edit'" class="mr-1">
+                            <button type="button" class="btn btn-icon btn-success btn-sm">
+                              <i class="fas fa-edit fa-sm"></i> <!-- Adjust size using fa-sm class -->
+                            </button>
+                          </a>
+                          <a th:href="'/manager/'+${villa.id}+'/delete'" th:if="${ #authorization.expression('isAuthenticated()') and (#strings.contains(#authentication.principal.authorities,'SUPER_ADMIN') or #strings.contains(#authentication.principal.authorities,'MANAGER'))}">
+                            <button type="button" class="btn btn-icon btn-danger btn-sm">
+                              <i class="fas fa-trash-alt fa-sm"></i> <!-- Adjust size using fa-sm class -->
+                            </button>
+                          </a>
                         </div>
-
                       </td>
                     </tr>
                     </tbody>

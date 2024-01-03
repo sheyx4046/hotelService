@@ -12,11 +12,12 @@ import com.example.hotel_thymeleaf_security.exception.UserAccessException;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.ContactInfoRepository;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.PaymentMethodRepository;
 import com.example.hotel_thymeleaf_security.repository.hotelRepositories.moreOptionsRepository.RoomAmenityRepository;
-import com.example.hotel_thymeleaf_security.repository.userRepository.UserRepository;
 import com.example.hotel_thymeleaf_security.repository.villa.VillaRepository;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -28,17 +29,24 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class VillaServiceImpl implements VillageService {
     private final VillaRepository villaRepository;
-    private final UserRepository userRepository;
     private final UserService userService;
     private final ContactInfoRepository contactInfoRepository;
     private final RoomAmenityRepository roomAmenityRepository;
     private final FileService fileService;
-    private final OrderServiceImpl orderServiceImpl;
     private final ModelMapper modelMapper;
     private final PaymentMethodRepository methodRepository;
+
+    public VillaServiceImpl(VillaRepository villaRepository,@Lazy UserService userService, ContactInfoRepository contactInfoRepository, RoomAmenityRepository roomAmenityRepository, FileService fileService, ModelMapper modelMapper, PaymentMethodRepository methodRepository) {
+        this.villaRepository = villaRepository;
+        this.userService = userService;
+        this.contactInfoRepository = contactInfoRepository;
+        this.roomAmenityRepository = roomAmenityRepository;
+        this.fileService = fileService;
+        this.modelMapper = modelMapper;
+        this.methodRepository = methodRepository;
+    }
 
 
     @Override

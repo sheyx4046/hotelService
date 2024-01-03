@@ -60,12 +60,12 @@
 <body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
 
 <!-- BEGIN: Header-->
-<div th:replace="admin/dashboard-fragment :: header"></div>
+<div th:replace="~{admin/dashboard-fragment :: header}"></div>
 <!-- END: Header-->
 
 
 <!-- BEGIN: Main Menu-->
-<div th:replace="admin/dashboard-fragment :: menu(activeItem='edit_villa')"></div>
+<div th:replace="~{admin/dashboard-fragment :: menu(activeItem='edit_villa')}"></div>
 <!-- END: Main Menu-->
 
 

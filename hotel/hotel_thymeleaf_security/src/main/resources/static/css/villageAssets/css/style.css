@@ -489,3 +489,8 @@
     padding-right: 0;
     border-right: none;
 }
+
+.img-resize{
+    height: 204px;
+    width: 340px;
+}
