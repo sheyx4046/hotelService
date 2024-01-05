@@ -1,6 +1,7 @@
 package com.example.hotel_thymeleaf_security.service.village;
 
 
+import com.example.hotel_thymeleaf_security.entity.booking.BookingStatus;
 import com.example.hotel_thymeleaf_security.entity.booking.OrderEntity;
 import com.example.hotel_thymeleaf_security.entity.dtos.OrderDto;
 import com.example.hotel_thymeleaf_security.entity.user.Role;
@@ -38,10 +39,7 @@ public class OrderServiceImpl implements OrderService {
     private final VillageService villageService;
     private final UserService userService;
 
-    public List<OrderEntity>UserBookingsHistory(Pageable pageable, UUID userId){
 
-    return orderRepository.findAllByUserId(userId);
-    }
 
 //    public List<LocalDate> DaysOff(UUID villaId) {
 ////        List<OrderEntity> orderEntities = orderRepository.findOrderEntitiesByBookingStatusRoomId(villaId).orElseThrow(() -> new DataNotFoundException("Booking not found"));
@@ -211,9 +209,19 @@ public class OrderServiceImpl implements OrderService {
     public void canceledOrder(String owner, UUID orderId, String description) {
         UserEntity byEmail = userService.getByEmail(owner);
         OrderEntity byId = getById(orderId);
-        if(isOwnerVillageOfOrder(byEmail.getId(),orderId)){
+        if(isOwnerVillageOfOrder(byEmail.getId(),orderId) || byEmail.getRole().equals(Role.ADMIN) || byEmail.getRole().equals(Role.SUPER_ADMIN)){
             byId.setDescription(description);
             byId.setBookingStatus(CANCELLED);
+            orderRepository.save(byId);
+        }
+    }
+
+    @Override
+    public void acceptOrder(String name, UUID orderId) {
+        UserEntity user = userService.getByEmail(name);
+        OrderEntity byId = getById(orderId);
+        if(isOwnerVillageOfOrder(user.getId(), orderId) || user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPER_ADMIN)){
+            byId.setBookingStatus(BOOKED);
             orderRepository.save(byId);
         }
     }

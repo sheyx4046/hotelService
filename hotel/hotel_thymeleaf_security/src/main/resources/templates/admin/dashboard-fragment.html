@@ -48,6 +48,8 @@
                     </li>
                     <li th:class="${activeItem == 'edit_villa' ? 'active' : ''}"><a class="menu-item" href="/manager/edit"><i></i><span>Edit Village</span></a>
                     </li>
+                    <li th:class="${activeItem == 'order_villa' ? 'active' : ''}"><a class="menu-item" href="/manager/orders"><i></i><span>Orders</span></a>
+                    </li>
                 </ul>
             </li>
             <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ADMIN') or #strings.contains(#authentication.principal.authorities,'SUPER_ADMIN')}" class=" navigation-header"><span data-i18n="Users">Users</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Users"></i>

@@ -121,11 +121,21 @@ class ManagerController {
         }
         return "manager/orders";
     }
-    @GetMapping("/order/{orderId}/cancel")
+    @PostMapping("/order/{orderId}/cancel")
     public String cancelOrder(Principal principal,
-                              @PathVariable UUID orderId
+                              @PathVariable UUID orderId,
+                              @RequestParam("description") String desc
                               ){
+        orderService.canceledOrder(principal.getName(), orderId, desc);
+        return "redirect:/manager/orders";
+    }
 
-        return "";
+    @GetMapping("/order/{orderId}/accept")
+    public String acceptOrder(
+            @PathVariable UUID orderId,
+            Principal principal
+    ){
+        orderService.acceptOrder(principal.getName(), orderId);
+        return "redirect:/manager/orders";
     }
 }

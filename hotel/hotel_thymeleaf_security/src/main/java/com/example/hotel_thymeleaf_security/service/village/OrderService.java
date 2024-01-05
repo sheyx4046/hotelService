@@ -15,4 +15,5 @@ public interface OrderService extends BaseService<OrderEntity, OrderDto> {
     Page<OrderEntity> getByOrderedPage(Pageable pageable, String user);
     Page<OrderEntity> getOrderedPageOwner(Pageable pageable, String owner);
     void canceledOrder(String owner, UUID orderId, String description);
+    void acceptOrder(String name, UUID orderId);
 }
