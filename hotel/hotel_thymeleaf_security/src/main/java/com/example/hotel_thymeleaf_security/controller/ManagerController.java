@@ -1,8 +1,10 @@
 package com.example.hotel_thymeleaf_security.controller;
 
+import com.example.hotel_thymeleaf_security.entity.booking.OrderEntity;
 import com.example.hotel_thymeleaf_security.entity.dtos.VillageResponseDto;
 import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.service.user.userService.UserService;
+import com.example.hotel_thymeleaf_security.service.village.OrderService;
 import com.example.hotel_thymeleaf_security.service.village.VillageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,8 @@ import java.util.stream.IntStream;
 class ManagerController {
     private final VillageService villageService;
     private final UserService userService;
+    private final OrderService orderService;
+
     @GetMapping()
     public String managerDashboard(){
         return "manager/index";
@@ -95,5 +99,33 @@ class ManagerController {
                                 Principal principal){
         villageService.deleteByIdAndUser(villaId, principal.getName());
         return "redirect:/manager/getVillages";
+    }
+
+    @GetMapping("/orders")
+    public String ordersPage(Principal principal,
+                             @RequestParam("page") Optional<Integer> page,
+                             @RequestParam("size") Optional<Integer> size,
+                             Model model){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+        Page<OrderEntity> orderEntities = orderService.getOrderedPageOwner(PageRequest.of(currentPage - 1, pageSize), principal.getName());
+        model.addAttribute("orders", orderEntities);
+        int totalPages = orderEntities.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+            model.addAttribute("user", userService);
+            model.addAttribute("villageService", villageService);
+        }
+        return "manager/orders";
+    }
+    @GetMapping("/order/{orderId}/cancel")
+    public String cancelOrder(Principal principal,
+                              @PathVariable UUID orderId
+                              ){
+
+        return "";
     }
 }

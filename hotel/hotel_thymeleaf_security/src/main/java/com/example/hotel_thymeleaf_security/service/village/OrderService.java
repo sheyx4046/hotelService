@@ -13,4 +13,6 @@ public interface OrderService extends BaseService<OrderEntity, OrderDto> {
     void delete(UUID OrderId, String userEmail) throws NoPermissionException;
     Page<OrderEntity> getAllPage(Pageable pageable);
     Page<OrderEntity> getByOrderedPage(Pageable pageable, String user);
+    Page<OrderEntity> getOrderedPageOwner(Pageable pageable, String owner);
+    void canceledOrder(String owner, UUID orderId, String description);
 }

@@ -21,6 +21,7 @@ public class OrderEntity extends BaseEntity {
     private Double totalPrice;
     private LocalDate startDay;
     private LocalDate endDay;
+    private String description;
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
 }

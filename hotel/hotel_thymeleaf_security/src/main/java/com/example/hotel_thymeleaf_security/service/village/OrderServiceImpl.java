@@ -5,6 +5,7 @@ import com.example.hotel_thymeleaf_security.entity.booking.OrderEntity;
 import com.example.hotel_thymeleaf_security.entity.dtos.OrderDto;
 import com.example.hotel_thymeleaf_security.entity.user.Role;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
+import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.exception.DataNotFoundException;
 import com.example.hotel_thymeleaf_security.repository.booking.OrderRepository;
 import com.example.hotel_thymeleaf_security.repository.villa.VillaRepository;
@@ -25,24 +26,22 @@ import java.util.List;
 
 import java.util.UUID;
 
-import static com.example.hotel_thymeleaf_security.entity.booking.BookingStatus.BOOKED;
-import static com.example.hotel_thymeleaf_security.entity.booking.BookingStatus.FINISHED;
+import static com.example.hotel_thymeleaf_security.entity.booking.BookingStatus.*;
 
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-
-
     private final ModelMapper modelMapper;
     private final OrderRepository orderRepository;
     private final VillaRepository villaRepository;
+    private final VillageService villageService;
     private final UserService userService;
 
     public List<OrderEntity>UserBookingsHistory(Pageable pageable, UUID userId){
 
-return orderRepository.findAllByUserId(userId);
-}
+    return orderRepository.findAllByUserId(userId);
+    }
 
 //    public List<LocalDate> DaysOff(UUID villaId) {
 ////        List<OrderEntity> orderEntities = orderRepository.findOrderEntitiesByBookingStatusRoomId(villaId).orElseThrow(() -> new DataNotFoundException("Booking not found"));
@@ -176,7 +175,6 @@ return orderRepository.findAllByUserId(userId);
                                                         :orderRepository.findAllByUserId(userEntity.getId());
         int startItem = currentPage * pageSize;
         List<OrderEntity> list;
-
         if (startItem >= all.size()) {
             list = Collections.emptyList();
         } else {
@@ -185,6 +183,39 @@ return orderRepository.findAllByUserId(userId);
         }
 
         return new PageImpl<>(list, pageable, all.size());
+    }
+
+    @Override
+    public Page<OrderEntity> getOrderedPageOwner(Pageable pageable, String owner) {
+        UserEntity user = userService.getByEmail(owner);
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        List<VillaRentEntity> villaRentEntities = villaRepository.findVillaRentEntitiesByOwnerId(user.getId());
+        List<UUID> villaIds = new ArrayList<>();
+        for(VillaRentEntity villa: villaRentEntities){
+            villaIds.add(villa.getId());
+        }
+        List<OrderEntity> allOrders = orderRepository.findOrderEntitiesByVillaIdIn(villaIds);
+        int startItem = currentPage * pageSize;
+        List<OrderEntity> list;
+        if (startItem >= allOrders.size()) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, allOrders.size());
+            list = allOrders.subList(startItem, toIndex);
+        }
+        return new PageImpl<>(list, pageable, allOrders.size());
+    }
+
+    @Override
+    public void canceledOrder(String owner, UUID orderId, String description) {
+        UserEntity byEmail = userService.getByEmail(owner);
+        OrderEntity byId = getById(orderId);
+        if(isOwnerVillageOfOrder(byEmail.getId(),orderId)){
+            byId.setDescription(description);
+            byId.setBookingStatus(CANCELLED);
+            orderRepository.save(byId);
+        }
     }
 
     @Override
@@ -209,5 +240,10 @@ return orderRepository.findAllByUserId(userId);
     @Override
     public void deleteById(UUID id) {
         orderRepository.deleteById(id);
+    }
+
+    private Boolean isOwnerVillageOfOrder(UUID ownerId, UUID orderId){
+        OrderEntity orderEntity = getById(orderId);
+        return villageService.getById(orderEntity.getVillaId()).getOwnerId().equals(ownerId);
     }
 }
