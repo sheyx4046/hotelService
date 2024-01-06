@@ -82,7 +82,7 @@ public class AdminController {
     @PreAuthorize(value = "hasRole('SUPER_ADMIN')")
     public String deleteUser(@PathVariable UUID userId){
         userService.deleteById(userId);
-        return "/admin";
+        return "redirect:/admin/users-list";
     }
 
     @GetMapping("/add")
