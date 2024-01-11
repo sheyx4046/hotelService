@@ -19,5 +19,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID> {
     List<OrderEntity> findByBookingStatus(com.example.hotel_thymeleaf_security.entity.booking.BookingStatus bookingStatus);
 
     List<OrderEntity> findOrderEntitiesByVillaIdIn(List<UUID> villaId);
+
+    List<OrderEntity> findOrderEntitiesByVillaIdInOrderByCreatedDateDesc(List<UUID> villaId);
 }
 

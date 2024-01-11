@@ -138,7 +138,7 @@ public class OrderServiceImpl implements OrderService {
         UserEntity user = userService.getByEmail(userEmail);
         OrderEntity byId = orderRepository.findById(orderId).orElseThrow(
                 ()->new DataNotFoundException("order not found"));
-        if (byId.getUserId() == user.getId() || (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPER_ADMIN) || userService.isManagerOfVilla(user.getEmail(), byId.getVillaId()))){
+        if (byId.getUserId().equals(user.getId()) || (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPER_ADMIN) || userService.isManagerOfVilla(user.getEmail(), byId.getVillaId()))){
             deleteById(byId.getId());
         }else{
         throw new NoPermissionException("you are not allowed...");}
@@ -169,7 +169,7 @@ public class OrderServiceImpl implements OrderService {
         UserEntity userEntity = userService.getByEmail(user);
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
-        List<OrderEntity> all = userEntity.getRole().equals(Role.ADMIN) || userEntity.getRole().equals(Role.SUPER_ADMIN)?orderRepository.findAll()
+        List<OrderEntity> all = (userEntity.getRole().equals(Role.ADMIN) || userEntity.getRole().equals(Role.SUPER_ADMIN))?orderRepository.findAll()
                                                         :orderRepository.findAllByUserId(userEntity.getId());
         int startItem = currentPage * pageSize;
         List<OrderEntity> list;
@@ -193,7 +193,7 @@ public class OrderServiceImpl implements OrderService {
         for(VillaRentEntity villa: villaRentEntities){
             villaIds.add(villa.getId());
         }
-        List<OrderEntity> allOrders = orderRepository.findOrderEntitiesByVillaIdIn(villaIds);
+        List<OrderEntity> allOrders = orderRepository.findOrderEntitiesByVillaIdInOrderByCreatedDateDesc(villaIds);
         int startItem = currentPage * pageSize;
         List<OrderEntity> list;
         if (startItem >= allOrders.size()) {
@@ -229,7 +229,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderEntity create(OrderDto orderDto) {
         OrderEntity map = modelMapper.map(orderDto, OrderEntity.class);
-        map.setBookingStatus(BOOKED);
+        map.setBookingStatus(PENDING);
         return orderRepository.save(map);
     }
 

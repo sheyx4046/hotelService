@@ -1,5 +1,6 @@
 package com.example.hotel_thymeleaf_security.controller;
 
+import com.example.hotel_thymeleaf_security.entity.dtos.FindDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.FormDto;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
@@ -13,10 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -71,17 +69,13 @@ public class HomeController {
     @GetMapping("/find")
     public String findPage(
             Model model,
-            @RequestParam(required = false) String from,
-            @RequestParam(required = false) String to,
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) String minPrice,
-            @RequestParam(required = false) String maxPrice,
+            @ModelAttribute FindDto findDto,
             @RequestParam("page")Optional<Integer> page,
             @RequestParam("size")Optional<Integer> size
             ) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(6);
-        Page<VillaRentEntity> villas = villageService.getAllPage(PageRequest.of(currentPage - 1, pageSize));
+        Page<VillaRentEntity> villas = villageService.searchByDatesAndPricesAndCity(findDto, PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("villas", villas);
         int totalPages = villas.getTotalPages();
         if (totalPages > 0) {

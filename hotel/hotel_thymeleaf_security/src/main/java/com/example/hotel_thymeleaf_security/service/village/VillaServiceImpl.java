@@ -1,5 +1,6 @@
 package com.example.hotel_thymeleaf_security.service.village;
 
+import com.example.hotel_thymeleaf_security.entity.dtos.FindDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.VillageResponseDto;
 import com.example.hotel_thymeleaf_security.entity.user.UserEntity;
 import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
@@ -37,8 +38,9 @@ public class VillaServiceImpl implements VillageService {
     private final FileService fileService;
     private final ModelMapper modelMapper;
     private final PaymentMethodRepository methodRepository;
+    private final OrderService orderService;
 
-    public VillaServiceImpl(VillaRepository villaRepository,@Lazy UserService userService, ContactInfoRepository contactInfoRepository, RoomAmenityRepository roomAmenityRepository, FileService fileService, ModelMapper modelMapper, PaymentMethodRepository methodRepository) {
+    public VillaServiceImpl(VillaRepository villaRepository, @Lazy UserService userService, ContactInfoRepository contactInfoRepository, RoomAmenityRepository roomAmenityRepository, FileService fileService, ModelMapper modelMapper, PaymentMethodRepository methodRepository,@Lazy OrderService orderService) {
         this.villaRepository = villaRepository;
         this.userService = userService;
         this.contactInfoRepository = contactInfoRepository;
@@ -46,6 +48,7 @@ public class VillaServiceImpl implements VillageService {
         this.fileService = fileService;
         this.modelMapper = modelMapper;
         this.methodRepository = methodRepository;
+        this.orderService = orderService;
     }
 
 
@@ -251,6 +254,22 @@ public class VillaServiceImpl implements VillageService {
     @Override
     public ContactInfo getContactInfo(UUID villageId) {
         return getById(villageId).getContactInfo();
+    }
+
+    @Override
+    public Page<VillaRentEntity> searchByDatesAndPricesAndCity(FindDto findDto, Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        List<VillaRentEntity> villages = villaRepository.findHotelsBySearchCriteria(findDto.getCity(), findDto.getMinPrice(), findDto.getMaxPrice(), findDto.getFrom(), findDto.getTo());
+        int startItem = currentPage*pageSize;
+        List<VillaRentEntity> list;
+        if (startItem >= villages.size()){
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, villages.size());
+            list = villages.subList(startItem, toIndex);
+        }
+        return new PageImpl<>(list, pageable, villages.size());
     }
 
     private List<PaymentMethod> savePaymentMethods(boolean cash, boolean creditCard) {

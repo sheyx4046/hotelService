@@ -1,5 +1,6 @@
 package com.example.hotel_thymeleaf_security.service.village;
 
+import com.example.hotel_thymeleaf_security.entity.dtos.FindDto;
 import com.example.hotel_thymeleaf_security.entity.dtos.VillageResponseDto;
 import com.example.hotel_thymeleaf_security.entity.villa.VillaRentEntity;
 import com.example.hotel_thymeleaf_security.entity.village.moreOptions.moreOptions.ContactInfo;
@@ -20,8 +21,7 @@ public interface VillageService extends BaseService<VillaRentEntity, VillageResp
     List<VillaRentEntity> getAllByOwner(String owner);
     List<String> getPaymentMethods(UUID villageID);
     VillaRentEntity getLastVillage(String name);
-
     String getLocation(UUID villageId);
-
     ContactInfo getContactInfo(UUID villageId);
+    Page<VillaRentEntity> searchByDatesAndPricesAndCity(FindDto findDto,Pageable pageable);
 }
